@@ -71,14 +71,14 @@ function App() {
     setEditId(entry.ques_id);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (entry) => {
     try {
       await axios.post("/api/WaslaAdmin/deleteQuestions", {
-        ques_id: id,
-        ques_title: "",
-        order:"",
+        ques_id: entry.ques_id,
+        ques_title: entry.ques_title,
+        order:entry.order,
         ques_type: "",
-        lang_code: language
+        lang_code: entry.lang_code
       });
       fetchQuestions();
     } catch {
@@ -191,7 +191,7 @@ function App() {
                           </button>
                           <button
                             className="btn btn-sm btn-danger"
-                            onClick={() => handleDelete(entry.ques_id)}
+                            onClick={() => handleDelete(entry)}
                           >
                             <FaTrash className="me-1" /> Delete
                           </button>
