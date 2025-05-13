@@ -1,0 +1,204 @@
+
+.navbar-custom {
+  background: white;
+  height: auto;
+  min-height: 90px;
+  padding: 10px 50px !important;
+  border-bottom: 2px solid #ddd;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  .container-fluid {
+    padding: 0;
+  }
+
+  .logo {
+    width: 135px;
+    height: 35px;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+// RTL/LTR specific styles
+[dir="rtl"] {
+  .navbar-custom {
+    .brand {
+      margin-right: 12px;
+      margin-left: 23px;
+    }
+    .nav-items {
+      margin-right: 0 !important;
+      margin-left: auto !important; // Push to left side in RTL
+    }
+
+    .nav-icons {
+      margin-right: auto !important;
+      margin-left: 0 !important;
+    }
+    .nav-item {
+      margin-right: 0;
+      margin-left: 15px;
+      text-align: center;
+    }
+
+    .user-name-col {
+      text-align: right;
+    }
+  }
+}
+
+[dir="ltr"] {
+  .navbar-custom {
+    .brand {
+      margin-left: 12px;
+      margin-right: 23px;
+    }
+
+    .nav-items {
+      margin-right: auto !important; // Default left-aligned in LTR
+      margin-left: 0 !important;
+    }
+  }
+}
+
+// Nav items
+.nav-items{
+    margin-right: auto;
+    margin-left: 0;
+}
+.nav-items,
+.nav-icons {
+  padding-top: 8px;
+}
+.nav-item {
+  font-weight: 400 !important;
+  font-family: "Arial" !important;
+  font-size: 16px !important;
+  color: #542d72 !important;
+  margin-right: 15px !important;
+  padding: 0.5rem 1rem !important;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #b181d6;
+  }
+}
+
+// Icons
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  .icon {
+    font-size: 32px;
+    color: #542d72;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-right: 15px;
+
+    &:hover {
+      color: #b181d6;
+    }
+  }
+
+  .search-icon {
+    margin-right: 0;
+  }
+}
+
+// User info
+.user-info {
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  .user-icon-col {
+    padding: 0;
+  }
+
+  .user-name-col {
+    padding: 0 0 0 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .userName {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+  }
+}
+
+// Responsive styles
+@media (max-width: 992px) {
+  .navbar-custom {
+    padding: 10px 15px !important;
+
+    .logo {
+      width: 110px;
+      height: 28px;
+    }
+
+    .navbar-collapse {
+      background: white;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-item {
+      margin: 5px 0;
+      padding: 8px 0;
+      text-align: center;
+    }
+
+    .nav-icons {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      .icon {
+        margin: 5px 0;
+      }
+    }
+
+    .user-info {
+      margin: 5px 0;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-custom {
+    min-height: 80px;
+
+    .logo {
+      width: 100px;
+      height: 25px;
+    }
+
+    .userName {
+      max-width: 80px;
+    }
+    .nav-icons {
+      .icon {
+        margin: 0;
+        font-size: 21px;
+      }
+    }
+  }
+}
+
+
