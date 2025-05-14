@@ -1,0 +1,102 @@
+@import "./variables";
+.purbleBtn {
+  background-color: $purple-color !important;
+  border-color: $purple-color !important;
+  color: white !important;
+}
+.transBtn {
+  background-color: transparent !important;
+  border-color: $purple-color !important;
+  color: $purple-color !important;
+}
+.FullWidthBtn {
+  width: 100% !important;
+  height: 50px !important;
+  border-radius: 5px !important;
+  margin: 30px 0 !important;
+  border-width: 1px !important;
+  font-size: 20px !important;
+  @media only screen and (max-width: 900px) {
+    font-size: 15px;
+  }
+}
+.SmallWidthBtn {
+  width: 300px;
+  height: 50px !important;
+  margin: 30px 0;
+  border-width: 1px !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  @media only screen and (max-width: 900px) {
+    font-size: 15px !important;
+    width: auto !important;
+  }
+}
+.roundedBtn {
+  border-radius: 50px !important;
+}
+.formInput {
+  width: 100%;
+  height: 50px !important;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: $purple-color !important;
+  color: $purple-color;
+  margin-bottom: 10px;
+}
+.formLabel {
+  font-size: 18px;
+  color: #000;
+  //margin: 10px 0;
+}
+.centerSection {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  // padding: 20px;
+}
+.logo_img {
+  width: 200px;
+  height: auto;
+}
+.centerContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  div {
+    margin: 20px 0;
+  }
+}
+.alert-main {
+  padding: 20px;
+  border-radius: 6px;
+  .alert-header {
+    color: $purple-color;
+  }
+  .alert-button {
+    width: 200px;
+  }
+}
+.errorTxt {
+  color: red !important;
+}
+
+.right {
+  direction: rtl;
+  text-align: right;
+}
+.left {
+  direction: ltr;
+  text-align: left;
+}
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none !important;
+}
+.marked {
+  color: $dark-green-color;
+}
