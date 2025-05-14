@@ -20,6 +20,7 @@ import {
   clearMessages
 } from '../../slices/productSlice';
 import './Services.scss';
+import LoadingPage from '../Loader/LoadingPage';
 
 const Services = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const Services = () => {
     errorMessage
   } = useSelector((state) => state.products);
 
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -45,8 +47,14 @@ const Services = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchParentProducts());
-    dispatch(fetchProductTree());
+    const loadData = async () => {
+        await dispatch(fetchParentProducts());
+        await dispatch(fetchProductTree());
+        setLoading(false);
+      };
+      
+      loadData();
+
   }, [dispatch]);
 
   const handleInputChange = (e) => {
@@ -156,6 +164,10 @@ const Services = () => {
     ));
   };
 
+
+  if (status === 'loading' && productTree.length === 0 && parentProducts.length === 0) {
+    return <LoadingPage />;
+  }
   return (
     <Container className="py-4">
       <Row className="mb-4">
