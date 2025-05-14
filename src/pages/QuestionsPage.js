@@ -59,7 +59,7 @@ const QuestionsPage = () => {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
-        <h2 className="mb-4 questions-heading">Add Your Questions</h2>
+        <h2 className="mb-4 questions-heading">Questions Management</h2>
         <div className="mb-4 position-relative" style={{ width: "250px" }}>
           <FaSearch className="position-absolute" style={{ left: "10px", top: "50%", transform: "translateY(-50%)", color: "#888" }} />
           <input

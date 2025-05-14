@@ -1,0 +1,226 @@
+$primary-color: #542D72;
+$secondary-color: lighten($primary-color, 20%);
+$light-purple: lighten($primary-color, 60%);
+$white: #ffffff;
+$light-gray: #f8f9fa;
+$deleted-row: #ffebee; // Light red background for deleted rows
+
+.product-management {
+  .header-row {
+    margin-bottom: 2rem;
+    
+    h2 {
+      color: $primary-color;
+      font-weight: 600;
+    }
+  }
+
+  .btn-primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    
+    &:hover, &:focus {
+      background-color: darken($primary-color, 10%);
+      border-color: darken($primary-color, 10%);
+    }
+  }
+
+  .btn-outline-primary {
+    color: $primary-color;
+    border-color: $primary-color;
+    
+    &:hover, &:focus {
+      background-color: $primary-color;
+      color: $white;
+    }
+  }
+
+  .btn-outline-danger {
+    &:hover, &:focus {
+      color: $white;
+    }
+  }
+
+  .modal {
+    .modal-header {
+      background-color: $primary-color;
+      color: $white;
+      
+      .close {
+        color: $white;
+        text-shadow: none;
+        opacity: 0.8;
+        
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .table {
+    margin-bottom: 0;
+    
+    thead {
+      background-color: $primary-color;
+      color: $white;
+      
+      th {
+        border-bottom: none;
+        // Remove the active column from header
+        &:nth-child(4) {
+          display: none;
+        }
+      }
+    }
+    
+    tbody {
+      tr {
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: $light-purple;
+        }
+
+        // Style for deleted rows (inactive products)
+        &.inactive-row,&[data-active="false"] {
+            background-color: $deleted-row !important;
+            color: #b71c1c;
+            
+            td {
+              text-decoration: line-through;
+              opacity: 0.8;
+            }
+            
+            &:hover {
+              background-color: darken($deleted-row, 5%) !important;
+            }
+            
+            .btn-warning, .btn-danger {
+              opacity: 0.7;
+            }
+          }
+      }
+      
+      // Hide the active status column cells
+      td:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    
+    .card-body {
+      padding: 0;
+    }
+  }
+
+  .spinner-border {
+    color: $primary-color;
+  }
+
+  .alert {
+    margin: 1rem;
+  }
+
+  .form-control, .form-select {
+    &:focus {
+      border-color: $secondary-color;
+      box-shadow: 0 0 0 0.25rem rgba($secondary-color, 0.25);
+    }
+  }
+
+  .action-buttons {
+    .btn {
+      padding: 0.25rem 0.5rem;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .product-management {
+    .header-row {
+      flex-direction: column;
+      
+      .text-end {
+        text-align: left !important;
+        margin-top: 1rem;
+      }
+    }
+    
+    .table {
+      display: block;
+      overflow-x: auto;
+      
+      // Ensure hidden columns stay hidden on mobile
+      thead th:nth-child(4),
+      tbody td:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+}
+
+.search-input {
+    border: 1px solid $secondary-color;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+  
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+      outline: none;
+    }
+  }
+  
+  // For the "No products found" message
+  .no-products {
+    color: $primary-color;
+    font-style: italic;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  // Responsive adjustments for search bar
+  @media (max-width: 768px) {
+    .search-input {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .yellow-btn {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    
+    &:hover {
+      background-color: #e0a800;
+      border-color: #d39e00;
+    }
+  }
+
+  .product-row {
+    &.inactive-row {
+      background-color: #ffeeee !important; // Light red
+      color: #cc0000;
+      
+      td {
+        text-decoration: line-through;
+        opacity: 0.8;
+      }
+      
+      &:hover {
+        background-color: #ffdddd !important; // Slightly darker red on hover
+      }
+      
+      .btn {
+        opacity: 0.7;
+      }
+    }
+  }
