@@ -1,95 +1,133 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { checkAUTH } from "../helper/helperFN";
+import { history } from "../index";
 const API_URL = process.env.REACT_APP_API_URL;
 
+// Helper function to get authentication headers
+const getAuthHeaders = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = user?.accessToken;
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  };
+};
 // Async thunks
 export const fetchParentProducts = createAsyncThunk(
-  'products/fetchParentProducts',
+  "products/fetchParentProducts",
   async () => {
-    const response = await axios.post(`${API_URL}/GetProduct`, {
-      parent: 0,
-      active: true
-    });
-    return response.data;
+    if (checkAUTH()) {
+      const response = await axios.post(
+        `${API_URL}/GetProduct`,
+        {
+          parent: 0,
+          active: true,
+        },
+        getAuthHeaders()
+      );
+      return response.data;
+    } else {
+      // Redirect to login if not authenticated
+      history.push("/login");
+      window.location.reload();
+      return null;
+    }
   }
 );
 
 export const fetchProductTree = createAsyncThunk(
-  'products/fetchProductTree',
+  "products/fetchProductTree",
   async () => {
-    const response = await axios.post(`${API_URL}/GetProduct_Tree`);
-    return response.data;
+    if (checkAUTH()) {
+      const response = await axios.post(
+        `${API_URL}/GetProduct_Tree`,
+        {},
+        getAuthHeaders()
+      );
+      return response.data;
+    } else {
+      // Redirect to login if not authenticated
+      history.push("/login");
+      window.location.reload();
+      return null;
+    }
   }
 );
 
 export const saveProduct = createAsyncThunk(
-  'products/saveProduct',
+  "products/saveProduct",
   async (productData) => {
-    const response = await axios.post(`${API_URL}/SaveProduct`, productData);
+    const response = await axios.post(
+      `${API_URL}/SaveProduct`,
+      productData,
+      getAuthHeaders()
+    );
     return response.data;
   }
 );
 
 const productSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState: {
     parentProducts: [],
     productTree: [],
-    status: 'idle',
+    status: "idle",
     error: null,
     successMessage: null,
-    errorMessage: null
+    errorMessage: null,
   },
   reducers: {
     clearMessages: (state) => {
       state.successMessage = null;
       state.errorMessage = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       // Fetch Parent Products
       .addCase(fetchParentProducts.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchParentProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.parentProducts = action.payload;
       })
       .addCase(fetchParentProducts.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.error.message;
       })
-      
+
       // Fetch Product Tree
       .addCase(fetchProductTree.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchProductTree.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.productTree = action.payload;
       })
       .addCase(fetchProductTree.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.error.message;
       })
-      
+
       // Save Product
       .addCase(saveProduct.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(saveProduct.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.successMessage = action.payload.productId 
-          ? 'Service updated successfully!' 
-          : 'Service created successfully!';
+        state.status = "succeeded";
+        state.successMessage = action.payload.productId
+          ? "Service updated successfully!"
+          : "Service created successfully!";
       })
       .addCase(saveProduct.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.errorMessage = action.error.message;
       });
-  }
+  },
 });
 
 export const { clearMessages } = productSlice.actions;

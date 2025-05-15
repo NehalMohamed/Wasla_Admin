@@ -13,21 +13,20 @@ function App() {
     <>
       <BrowserRouter>
         <Container fluid className="p-0">
-          <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          <div className="main-container">
-            <Routes>
-              <Route
-                path="/"
-                element={<QuestionsPage searchTerm={searchTerm} />}
-              />
-              <Route
-                path="/questions"
-                element={<QuestionsPage searchTerm={searchTerm} />}
-              />
-              <Route exact path="/services" element={<ServicesPage />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-          </div>
+          {/* <div className="main-container"> */}
+          <Routes>
+            <Route
+              path="/"
+              element={<QuestionsPage searchTerm={searchTerm} />}
+            />
+            <Route
+              path="/questions"
+              element={<QuestionsPage searchTerm={searchTerm} />}
+            />
+            <Route exact path="/services" element={<ServicesPage />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+          {/* </div> */}
         </Container>
       </BrowserRouter>
     </>

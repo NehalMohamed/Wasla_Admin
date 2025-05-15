@@ -9,6 +9,8 @@ function Login() {
       <Row className="justify-content-md-center">
         <Col lg={5} md={12} sm={12} xs={12}>
           <div className="login_form">
+            <h2> Welcome Back!</h2>
+            <p>log into your account, please enter your details.</p>
             <LoginForm />
           </div>
         </Col>

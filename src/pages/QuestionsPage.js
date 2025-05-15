@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Spinner, Alert } from "react-bootstrap";
-import { FaSearch } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { FaSearch } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchQuestions,
   saveQuestion,
-  deleteQuestion
+  deleteQuestion,
 } from "../slices/questionsSlice";
 import QuestionForm from "../components/Questions/QuestionForm";
 import QuestionsList from "../components/Questions/QuestionsList";
 import "../components/Questions/Question.scss";
-
+import CustomNavbar from "../components/Navbar/Navbar";
 const QuestionsPage = () => {
   const [question, setQuestion] = useState("");
   const [order, setOrder] = useState("");
@@ -33,7 +33,7 @@ const QuestionsPage = () => {
       ques_title: question,
       order: order.toString(),
       ques_type: "",
-      lang_code: language
+      lang_code: language,
     };
 
     await dispatch(saveQuestion(payload));
@@ -58,38 +58,49 @@ const QuestionsPage = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center">
-        <h2 className="mb-4 questions-heading">Questions Management</h2>
-        <div className="mb-4 position-relative" style={{ width: "250px" }}>
-          <FaSearch className="position-absolute" style={{ left: "10px", top: "50%", transform: "translateY(-50%)", color: "#888" }} />
-          <input
-            type="text"
-            className="form-control ps-6"
-            placeholder="Search By language ..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ paddingLeft: "30px" }}
-          />
+      <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <div className="main-container">
+        <div className="d-flex justify-content-between align-items-center">
+          <h2 className="mb-4 questions-heading">Questions Management</h2>
+          <div className="mb-4 position-relative" style={{ width: "250px" }}>
+            <FaSearch
+              className="position-absolute"
+              style={{
+                left: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#888",
+              }}
+            />
+            <input
+              type="text"
+              className="form-control ps-6"
+              placeholder="Search By language ..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ paddingLeft: "30px" }}
+            />
+          </div>
         </div>
+        <QuestionForm
+          question={question}
+          setQuestion={setQuestion}
+          order={order}
+          setOrder={setOrder}
+          language={language}
+          setLanguage={setLanguage}
+          editId={editId}
+          handleAdd={handleAdd}
+        />
+        <QuestionsList
+          data={data}
+          searchTerm={searchTerm}
+          loading={loading}
+          error={error}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
       </div>
-      <QuestionForm 
-        question={question} 
-        setQuestion={setQuestion}
-        order={order} 
-        setOrder={setOrder}
-        language={language} 
-        setLanguage={setLanguage}
-        editId={editId} 
-        handleAdd={handleAdd}
-      />
-      <QuestionsList 
-        data={data} 
-        searchTerm={searchTerm}
-        loading={loading} 
-        error={error}
-        handleEdit={handleEdit} 
-        handleDelete={handleDelete}
-      />
     </>
   );
 };

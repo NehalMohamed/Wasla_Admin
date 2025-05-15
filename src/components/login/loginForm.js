@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginUser } from "../../slices/LoginSlice";
 import LoadingPage from "../Loader/LoadingPage";
-import PopUp from "../shared/popup/PopUp";
+import CustomMsg from "../shared/CustomPopUp/CustomMsg";
 
 //normal login form
 
@@ -100,7 +100,10 @@ function LoginForm() {
       </Button>
       {loading ? <LoadingPage /> : null}
       {showAlert ? (
-        <PopUp msg={User != null ? User.msg : errors} closeAlert={closeAlert} />
+        <CustomMsg
+          msg={User != null ? User.msg : errors}
+          closeAlert={closeAlert}
+        />
       ) : null}
     </Form>
   );
