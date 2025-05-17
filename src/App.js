@@ -3,7 +3,6 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import CustomNavbar from "./components/Navbar/Navbar";
 import QuestionsPage from "./pages/QuestionsPage";
 import ServicesPage from "./pages/ServicesPage";
 import Login from "./components/login/login";

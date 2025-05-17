@@ -42,6 +42,60 @@ body {
   padding: 20px;
 }
 
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+.main-content {
+  transition: all 0.3s ease;
+  flex-grow: 1;
+  padding: 20px;
+  
+  &.menu-expanded {
+    margin-left: 250px;
+  }
+  
+  &.menu-collapsed {
+    margin-left: 80px;
+  }
+}
 
+@media (max-width: 767px) {
+  .main-content {
+    &.menu-expanded {
+      margin-left: 250px;
+    }
+    
+    &.menu-collapsed {
+      margin-left: 0;
+    }
+  }
+}
+
+[dir="rtl"] {
+  .main-content {
+    &.menu-expanded {
+      margin-left: 0;
+      margin-right: 250px;
+    }
+    
+    &.menu-collapsed {
+      margin-left: 0;
+      margin-right: 80px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .main-content {
+      &.menu-expanded {
+        margin-right: 250px;
+      }
+      
+      &.menu-collapsed {
+        margin-right: 0;
+      }
+    }
+  }
+}
 
 

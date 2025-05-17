@@ -21,7 +21,6 @@ import {
 } from "../../slices/productSlice";
 import "./Services.scss";
 import LoadingPage from "../Loader/LoadingPage";
-import CustomNavbar from "../Navbar/Navbar";
 const Services = () => {
   const dispatch = useDispatch();
   const {
@@ -32,7 +31,6 @@ const Services = () => {
     successMessage,
     errorMessage,
   } = useSelector((state) => state.products);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -178,7 +176,6 @@ const Services = () => {
   }
   return (
     <>
-      <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <Container className="py-4">
         <Row className="mb-4">
           <Col>
@@ -308,7 +305,7 @@ const Services = () => {
             ) : error ? (
               <div className="alert alert-danger">{error}</div>
             ) : (
-              <Table striped bordered hover responsive>
+              <Table hover responsive>
                 <thead>
                   <tr>
                     <th>Service Name</th>

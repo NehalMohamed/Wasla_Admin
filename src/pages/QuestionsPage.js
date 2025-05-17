@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner, Alert } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import SideMenu from "../components/Navbar/SideMenu";
 import {
   fetchQuestions,
   saveQuestion,
@@ -10,7 +11,6 @@ import {
 import QuestionForm from "../components/Questions/QuestionForm";
 import QuestionsList from "../components/Questions/QuestionsList";
 import "../components/Questions/Question.scss";
-import CustomNavbar from "../components/Navbar/Navbar";
 const QuestionsPage = () => {
   const [question, setQuestion] = useState("");
   const [order, setOrder] = useState("");
@@ -56,10 +56,12 @@ const QuestionsPage = () => {
     // fetchQuestions not needed here because the reducer updates local state
   };
 
+  const [menuExpanded, setMenuExpanded] = useState(true);
+  
   return (
-    <>
-      <CustomNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <div className="main-container">
+     <div className="app-container">
+      <SideMenu onToggle={setMenuExpanded}/>
+      <main className={`main-content ${menuExpanded ? 'menu-expanded' : 'menu-collapsed'}`}>
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="mb-4 questions-heading">Questions Management</h2>
           <div className="mb-4 position-relative" style={{ width: "250px" }}>
@@ -100,8 +102,8 @@ const QuestionsPage = () => {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
         />
-      </div>
-    </>
+      </main>
+    </div>
   );
 };
 
