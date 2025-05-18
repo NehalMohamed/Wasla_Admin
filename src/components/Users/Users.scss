@@ -1,0 +1,50 @@
+// Variables
+$primary-color: #542d72;
+$secondary-color: lighten($primary-color, 20%);
+$light-bg: lighten($primary-color, 60%);
+
+// Users Page Styles
+.users-page {
+  padding: 2rem 0;
+
+  .page-title {
+    color: $primary-color;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .users-table {
+    th {
+        background-color: #f1e6fb;
+        color: $primary-color;
+    }
+
+    .role-badge {
+      text-transform: capitalize;
+      font-weight: 500;
+
+      &.role-admin {
+        background-color: darken($primary-color, 10%);
+      }
+
+      &.role-editor {
+        background-color: $secondary-color;
+      }
+
+      &.role-user {
+        background-color: lighten($primary-color, 30%);
+        color: #333;
+      }
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    color: $primary-color;
+    font-weight: 500;
+    background-color: $light-bg;
+    border-radius: 0.5rem;
+  }
+}

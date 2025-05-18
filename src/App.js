@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import QuestionsPage from "./pages/QuestionsPage";
 import ServicesPage from "./pages/ServicesPage";
+import UsersPage from "./pages/UsersPage";
 import Login from "./components/login/login";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,11 +17,11 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<QuestionsPage searchTerm={searchTerm} />}
+              element={<UsersPage />}
             />
             <Route
               path="/questions"
-              element={<QuestionsPage searchTerm={searchTerm} />}
+              element={<QuestionsPage />}
             />
             <Route exact path="/services" element={<ServicesPage />} />
             <Route path="/login" element={<Login />} />
