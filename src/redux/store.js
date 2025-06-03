@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import usersReducer from '../slices/usersSlice';
 import questionsReducer from "../slices/questionsSlice";
 import productReducer from "../slices/productSlice";
+import pricingReducer from '../slices/pricingSlice';
 import LoginReducer from "../slices/LoginSlice";
 
 export const store = configureStore({
@@ -9,7 +10,8 @@ export const store = configureStore({
     login: LoginReducer,
     questions: questionsReducer,
     products: productReducer,
-    users : usersReducer
+    users : usersReducer,
+    pricing : pricingReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,0 +1,86 @@
+// Variables
+$primary-color: #542D72;
+$secondary-color: lighten($primary-color, 20%);
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+$yellow-btn: #ffb300e0;
+$yellow-btn-hover: #ffb300cb;
+
+  .page-title {
+    line-height: 60px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #542D72;
+  }
+
+  // Form Styling
+  .form-control,
+  .form-select {
+    height: 55px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+
+  .btn-primary {
+    height: 55px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: $primary-color;
+    border-color: $primary-color;
+  }
+
+  .btn-primary:hover {
+    background-color: #b181d6;
+    border-color: #b181d6;
+  }
+
+  // Table Styling
+  .table-wrapper {
+    margin-top: 30px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th {
+    background-color: #f1e6fb;
+    color: $primary-color;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .table td {
+    text-align: center;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+  }
+
+  .yellow-btn {
+    color: white;
+    background-color: $yellow-btn !important;
+  }
+
+  .yellow-btn:hover {
+    color: white;
+    background-color: $yellow-btn-hover !important;
+  }
+  .purple-btn{
+    color: white;
+    background-color: $primary-color !important;
+    &:hover{
+       color: white;
+       background-color: $primary-color !important; 
+    }
+  }
+
+  input.form-control:hover,
+  input.form-control:focus,
+  select.form-select:hover,
+  select.form-select:focus {
+    border-color: #9375aa;
+    box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
+  }

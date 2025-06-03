@@ -6,6 +6,7 @@ import "./App.css";
 import QuestionsPage from "./pages/QuestionsPage";
 import ServicesPage from "./pages/ServicesPage";
 import UsersPage from "./pages/UsersPage";
+import PricingPage from "./pages/PricingPage";
 import Login from "./components/login/login";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,6 +25,7 @@ function App() {
               element={<QuestionsPage />}
             />
             <Route exact path="/services" element={<ServicesPage />} />
+            <Route exact path="/pricing" element={<PricingPage />} />
             <Route path="/login" element={<Login />} />
           </Routes>
           {/* </div> */}

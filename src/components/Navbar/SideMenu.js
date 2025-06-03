@@ -8,7 +8,8 @@ import {
   FiLogOut, 
   FiChevronLeft,
   FiChevronRight,
-  FiSearch
+  FiSearch,
+  FiDollarSign
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import "./SideMenu.scss";
@@ -33,9 +34,13 @@ const SideMenu = ({ onToggle }) => {
       setIsMobile(mobile);
       if (!mobile) {
         setIsExpanded(true);
-      } else {
+      }
+       else {
         setIsExpanded(false);
       }
+      //  if (mobile) {
+      //   setIsExpanded(false);
+      // }
     };
 
     window.addEventListener('resize', handleResize);
@@ -55,6 +60,13 @@ const SideMenu = ({ onToggle }) => {
     if (onToggle) onToggle(newState);
   };
 
+  const handleNavigation = (e, path) => {
+    e.preventDefault();
+    setIsExpanded(false);
+    if (onToggle) onToggle(false);
+    navigate(path);
+  };
+
   return (
     <div className={`side-menu ${isExpanded ? "expanded" : "collapsed"} ${isMobile ? "mobile" : ""}`}>
       {/* Top Bar with Logo and Toggle */}
@@ -68,17 +80,25 @@ const SideMenu = ({ onToggle }) => {
       {/* Main Menu Content */}
       <div className="side-menu-content">
         <Nav className="flex-column">
-          <Nav.Link href="/" className="side-menu-item">
+          <Nav.Link href="/" className="side-menu-item"
+          onClick={(e) => handleNavigation(e, "/")}>
             <FiHome className="menu-icon" />
             {isExpanded && <span>Home</span>}
           </Nav.Link>
-          <Nav.Link href="/questions" className="side-menu-item">
+          <Nav.Link href="/questions" className="side-menu-item"
+          onClick={(e) => handleNavigation(e, "/questions")}>
             <FiHelpCircle className="menu-icon" />
             {isExpanded && <span>Questions</span>}
           </Nav.Link>
-          <Nav.Link href="/services" className="side-menu-item">
+          <Nav.Link href="/services" className="side-menu-item"
+          onClick={(e) => handleNavigation(e, "/services")}>
             <FiSettings className="menu-icon" />
             {isExpanded && <span>Services</span>}
+          </Nav.Link>
+          <Nav.Link href="/pricing" className="side-menu-item" 
+          onClick={(e) => handleNavigation(e, "/pricing")}>
+            <FiDollarSign className="menu-icon" />
+            {isExpanded && <span>Pricing</span>}
           </Nav.Link>
         </Nav>
 
