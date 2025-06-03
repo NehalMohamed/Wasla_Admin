@@ -67,7 +67,8 @@ const PricingPage = () => {
         { code: 'USD', symbol: '$' },
         { code: 'EUR', symbol: '€' },
         { code: 'GBP', symbol: '£' },
-        { code: 'AED', symbol: 'AED' }
+        { code: 'AED', symbol: 'AED' },
+        { code: 'EGP', symbol: 'EGP' }
     ];
 
     useEffect(() => {

@@ -42,7 +42,16 @@ const Services = () => {
     productParent: 0,
     product_desc: "",
     active: true,
+    lang_code:"en",
+    leaf:false,
+    price:0
   });
+
+   const languages = [
+        { code: 'en', name: 'English' },
+        { code: 'de', name: 'German' },
+        { code: 'ar', name: 'Arabic' }
+    ];
 
   useEffect(() => {
     const loadData = async () => {
@@ -78,6 +87,9 @@ const Services = () => {
       productParent: 0,
       product_desc: "",
       active: true,
+      lang_code:"en",
+      leaf:false,
+      price:0
     });
     setEditMode(false);
     setShowForm(false);
@@ -90,6 +102,9 @@ const Services = () => {
       productParent: product.productParent,
       product_desc: product.product_desc || "",
       active: true,
+      lang_code:product.lang_code,
+      leaf:false,
+      price:0
     });
     setEditMode(true);
     setShowForm(true);
@@ -108,6 +123,9 @@ const Services = () => {
           productParent: productToDelete.productParent,
           product_desc: productToDelete.product_desc || "",
           active: false,
+          lang_code:productToDelete.lang_code,
+          leaf:productToDelete.leaf,
+          price:productToDelete.price
         })
       ).then(() => {
         dispatch(fetchParentProducts());
@@ -144,6 +162,7 @@ const Services = () => {
                   (p) => p.productId === product.productParent
                 )?.productName || "N/A"}
           </td>
+          <td>{product.lang_code}</td>
           <td>{product.product_desc || "-"}</td>
           <td>
             <button
@@ -256,6 +275,21 @@ const Services = () => {
                   ))}
                 </Form.Select>
               </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>language</Form.Label>
+                  <Form.Control
+                      as="select"
+                      name="lang_code"
+                      value={currentProduct.lang_code}
+                      onChange={handleInputChange}
+                      required
+                  >
+                      {languages.map((lang, index) => (
+                          <option key={index} value={lang.code}>{lang.code}</option>
+                      ))}
+                  </Form.Control>
+              </Form.Group>
+                              
 
               <Form.Group className="mb-3">
                 <Form.Label>Description</Form.Label>
@@ -310,6 +344,7 @@ const Services = () => {
                   <tr>
                     <th>Service Name</th>
                     <th>Parent</th>
+                    <th>Language</th>
                     <th>Description</th>
                     <th>Actions</th>
                   </tr>
