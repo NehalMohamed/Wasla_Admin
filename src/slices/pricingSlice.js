@@ -79,14 +79,14 @@ export const savePackageFeatures = createAsyncThunk(
    if (checkAUTH()) {
     try {
      
-      const formattedFeatures ={
+      const formattedFeatures =[{
         id,
         package_id,
         feature_name: feature,
         feature_desc: feature,
         lang_code,
         active
-      };
+      }];
       
       const response = await axios.post(
         `${BASE_URL}/SavePricingPKgFeatureLst`,
@@ -127,6 +127,28 @@ export const fetchPackageFeatures = createAsyncThunk(
           window.location.reload();
           return null;
         }
+  }
+);
+
+export const fetchServices = createAsyncThunk(
+  'pricing/fetchServices',
+  async ({ parent, active, lang }, { rejectWithValue }) => {
+    if (checkAUTH()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/GetProduct`,
+          { parent, active, lang },
+          getAuthHeaders()
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
+    } else {
+      history.push("/login");
+      window.location.reload();
+      return null;
+    }
   }
 );
 
@@ -200,6 +222,18 @@ const pricingSlice = createSlice({
     .addCase(fetchPackageFeatures.rejected, (state, action) => {
       state.featuresLoading = false;
       state.featuresError = action.payload;
+    })
+    .addCase(fetchServices.pending, (state) => {
+    state.servicesLoading = true;
+    state.servicesError = null;
+    })
+    .addCase(fetchServices.fulfilled, (state, action) => {
+    state.servicesLoading = false;
+    state.services = action.payload;
+    })
+    .addCase(fetchServices.rejected, (state, action) => {
+    state.servicesLoading = false;
+    state.servicesError = action.payload;
     });
   }
 });

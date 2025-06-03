@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaPlus, FaEdit } from 'react-icons/fa';
-import { Form, Button, Row, Col, Spinner, Alert, Modal, Table } from 'react-bootstrap';
+import { Form, Button, Row, Col} from 'react-bootstrap';
 
 const PricingForm = ({
     services,
@@ -14,7 +14,7 @@ const PricingForm = ({
     return (
         <Form onSubmit={onSubmit} className="mb-4">
             <Row className="mb-3">
-                <Col md={4}>
+                <Col xs={12} md={4} className="mb-2 mb-md-0">
                     <Form.Group controlId="service">
                         <Form.Control
                             as="select"
@@ -24,14 +24,14 @@ const PricingForm = ({
                             required
                         >
                             <option value="">Select Service</option>
-                            {services.map((service, index) => (
-                                <option key={index} value={service.service_id}>{service.service_Name}</option>
+                            {services?.map((service, index) => (
+                                <option key={index} value={service.productId}>{service.productName}</option>
                             ))}
                         </Form.Control>
                     </Form.Group>
                 </Col>
 
-                <Col md={4}>
+                <Col xs={12} md={4} className="mb-2 mb-md-0">
                     <Form.Group controlId="package_name">
                         <Form.Control
                             type="text"
@@ -44,7 +44,7 @@ const PricingForm = ({
                     </Form.Group>
                 </Col>
 
-                <Col md={4}>
+                <Col xs={12} md={4}>
                     <Form.Group controlId="package_desc">
                         <Form.Control
                             type="text"
@@ -58,7 +58,7 @@ const PricingForm = ({
                 </Col>
             </Row>
             <Row className="mb-3">
-                <Col md={2}>
+                 <Col xs={6} md={2} className="mb-2 mb-md-0">
                     <Form.Group controlId="package_price">
                         <Form.Control
                             type="number"
@@ -71,7 +71,7 @@ const PricingForm = ({
                     </Form.Group>
                 </Col>
 
-                <Col md={2}>
+                <Col xs={6} md={2} className="mb-2 mb-md-0">
                     <Form.Group controlId="package_sale_price">
                         <Form.Control
                             type="number"
@@ -83,11 +83,11 @@ const PricingForm = ({
                         />
                     </Form.Group>
                 </Col>
-                <Col md={2}>
+                <Col xs={6} md={2} className="mb-2 mb-md-0">
                     <Form.Group controlId="order">
                         <Form.Control
                             type="number"
-                            placeholder="order"
+                            placeholder="Order"
                             name="order"
                             value={formData.order}
                             onChange={onInputChange}
@@ -96,7 +96,7 @@ const PricingForm = ({
                     </Form.Group>
                 </Col>
 
-                <Col md={2}>
+                <Col xs={6} md={2} className="mb-2 mb-md-0">
                     <Form.Group controlId="curr_code">
                         <Form.Control
                             as="select"
@@ -111,7 +111,7 @@ const PricingForm = ({
                         </Form.Control>
                     </Form.Group>
                 </Col>
-                <Col md={2}>
+                <Col xs={6} md={2} className="mb-2 mb-md-0">
                     <Form.Group controlId="lang_code">
                         <Form.Control
                             as="select"
@@ -126,7 +126,7 @@ const PricingForm = ({
                         </Form.Control>
                     </Form.Group>
                 </Col>
-                <Col md={2}>
+                <Col xs={6} md={2}>
                     <Button variant="primary" type="submit" className="w-100">
                         {editId !== null ? (
                             <>
@@ -139,7 +139,6 @@ const PricingForm = ({
                         )}
                     </Button>
                 </Col>
-
             </Row>
         </Form>
     );

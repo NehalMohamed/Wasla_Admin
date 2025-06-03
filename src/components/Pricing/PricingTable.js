@@ -21,12 +21,12 @@ const PricingTable = ({
           <tr>
             <th>Service</th>
             <th>Package</th>
-            <th>Description</th>
+            <th className="d-none d-md-table-cell">Description</th>
             <th>Price</th>
-            <th>Sale Price</th>
-            <th>Order</th>
-            <th>Curr.</th>
-            <th>Lang.</th>
+            <th className="d-none d-md-table-cell">Sale Price</th>
+            <th className="d-none d-md-table-cell">Order</th>
+            <th className="d-none d-md-table-cell">Curr.</th>
+            <th className="d-none d-md-table-cell">Lang.</th>
             <th>Features</th>
             <th>Actions</th>
           </tr>
@@ -36,12 +36,12 @@ const PricingTable = ({
             <tr key={item.package_id}>
               <td>{item.service_name}</td>
               <td>{item.package_name}</td>
-              <td>{item.package_desc}</td>
+              <td className="d-none d-md-table-cell">{item.package_desc}</td>
               <td>{item.package_price}</td>
-              <td>{item.package_sale_price}</td>
-              <td>{item.order}</td>
-              <td>{item.curr_code}</td>
-              <td>{item.lang_code}</td>
+              <td className="d-none d-md-table-cell">{item.package_sale_price}</td>
+              <td className="d-none d-md-table-cell">{item.order}</td>
+              <td className="d-none d-md-table-cell">{item.curr_code}</td>
+              <td className="d-none d-md-table-cell">{item.lang_code}</td>
               <td>
                 <button
                   className="btn btn-sm purple-btn"
@@ -53,20 +53,22 @@ const PricingTable = ({
                 </button>
               </td>
               <td>
+                <div className="d-flex">
                 <button
                   className="btn btn-sm yellow-btn me-2"
                   onClick={() => onEditPackage(item.package_id)}
                 >
-                  <FaEdit className="me-1" /> 
+                  <FaEdit /> 
                   {/* Edit */}
                 </button>
                 <button
                   className="btn btn-sm btn-danger"
                   onClick={() => onDeletePackage(item.package_id)}
                 >
-                  <FaTrash className="me-1" /> 
+                  <FaTrash /> 
                   {/* Delete */}
                 </button>
+                </div>
               </td>
             </tr>
           ))}

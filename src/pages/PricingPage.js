@@ -6,6 +6,7 @@ import {
     savePricingPackage,
     savePackageFeatures,
     fetchPackageFeatures,
+    fetchServices,
     clearError
 } from '../slices/pricingSlice';
 import PricingForm from '../components/Pricing/PricingForm';
@@ -21,6 +22,7 @@ const PricingPage = () => {
     const dispatch = useDispatch();
     const {
         data: pricingData,
+        services,
         loading,
         error,
         featuresLoading,
@@ -51,11 +53,11 @@ const PricingPage = () => {
     const [editId, setEditId] = useState(null);
 
     // Services, languages, currencies
-    const services = [
-        { service_id: 1, service_Name: 'Web Application' },
-        { service_id: 2, service_Name: 'Marketing' },
-        { service_id: 5, service_Name: 'Branding' }
-    ];
+    // const services = [
+    //     { service_id: 1, service_Name: 'Web Application' },
+    //     { service_id: 2, service_Name: 'Marketing' },
+    //     { service_id: 5, service_Name: 'Branding' }
+    // ];
     const languages = [
         { code: 'en', name: 'English' },
         { code: 'de', name: 'German' },
@@ -68,6 +70,9 @@ const PricingPage = () => {
         { code: 'AED', symbol: 'AED' }
     ];
 
+    useEffect(() => {
+        dispatch(fetchServices({ parent: 0, active: true, lang: 'en' }));
+    }, [dispatch]);
     // Fetch pricing data on component mount
     useEffect(() => {
         dispatch(fetchPricingData({ lang: 'all', curr_code: 'all' }));
