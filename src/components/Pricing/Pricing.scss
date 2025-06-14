@@ -44,7 +44,10 @@ $yellow-btn-hover: #ffb300cb;
         font-size: 16px;
     }
   }
-
+ .form-check-input:checked{
+      background-color: #b181d6;
+    border-color: #b181d6;
+ }
   .btn-primary:hover {
     background-color: #b181d6;
     border-color: #b181d6;

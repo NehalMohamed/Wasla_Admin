@@ -43,12 +43,15 @@ const PricingPage = () => {
     const [formData, setFormData] = useState({
         service_id: '',
         package_name: '',
+        package_code: '',
         package_desc: '',
         package_price: '',
         package_sale_price: '',
         order: 0,
         lang_code: 'en',
-        curr_code: 'USD'
+        curr_code: 'USD',
+        is_recommend: false,
+        service_code: ''
     });
     const [editId, setEditId] = useState(null);
 
@@ -100,10 +103,20 @@ const PricingPage = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        if (name === 'service_id') {
+            const selectedService = services.find(s => s.productId === value);
+            setFormData({
+                ...formData,
+                [name]: value,
+                service_code: selectedService?.service_code || ''
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
+
     };
 
     const handleSubmit = async (e) => {
@@ -112,6 +125,7 @@ const PricingPage = () => {
         const packageData = {
             package_id: editId || 0,
             package_name: formData.package_name,
+            package_code: formData.package_code,
             package_desc: formData.package_desc,
             package_details: '',
             package_sale_price: parseFloat(formData.package_sale_price),
@@ -124,7 +138,9 @@ const PricingPage = () => {
             curr_code: formData.curr_code,
             discount_amount: 0,
             discount_type: 0,
-            service_id: formData.service_id
+            service_id: formData.service_id,
+            is_recommend: formData.is_recommend,
+            service_code: formData.service_code
         };
 
         try {
@@ -138,12 +154,15 @@ const PricingPage = () => {
                 setFormData({
                     service_id: '',
                     package_name: '',
+                    package_code:'',
                     package_desc: '',
                     package_price: '',
                     package_sale_price: '',
                     order: 0,
                     lang_code: 'en',
-                    curr_code: 'USD'
+                    curr_code: 'USD',
+                    is_recommend:false,
+                    service_code:''
                 });
                 setEditId(null);
 
@@ -185,12 +204,15 @@ const PricingPage = () => {
             setFormData({
                 service_id: packageToEdit.service_id,
                 package_name: packageToEdit.package_name,
+                 package_code: packageToEdit.package_code || '',
                 package_desc: packageToEdit.package_desc,
                 package_price: packageToEdit.package_price,
                 package_sale_price: packageToEdit.package_sale_price,
                 order: packageToEdit.order,
                 lang_code: packageToEdit.lang_code,
-                curr_code: packageToEdit.curr_code
+                curr_code: packageToEdit.curr_code,
+                is_recommend: packageToEdit.is_recommend || false, 
+                service_code: packageToEdit.service_code || ''
             });
             setEditId(id);
         }

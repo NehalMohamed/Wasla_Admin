@@ -45,7 +45,7 @@ function LoginForm() {
       dispatch(LoginUser(formData)).then((result) => {
         if (result.payload && result.payload.isSuccessed) {
           setShowAlert(false);
-          navigate("/");
+          navigate("/users");
         } else {
           setShowAlert(true);
         }

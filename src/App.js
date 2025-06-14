@@ -16,8 +16,9 @@ function App() {
         <Container fluid className="p-0">
           {/* <div className="main-container"> */}
           <Routes>
+            <Route path="/" element={<Login />} />
             <Route
-              path="/"
+              path="/users"
               element={<UsersPage />}
             />
             <Route
@@ -26,7 +27,7 @@ function App() {
             />
             <Route exact path="/services" element={<ServicesPage />} />
             <Route exact path="/pricing" element={<PricingPage />} />
-            <Route path="/login" element={<Login />} />
+            
           </Routes>
           {/* </div> */}
         </Container>

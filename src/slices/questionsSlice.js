@@ -33,7 +33,7 @@ export const fetchQuestions = createAsyncThunk(
       }
     } else {
       // Redirect to login if not authenticated
-      history.push("/login");
+      history.push("/");
       window.location.reload();
       return null;
     }

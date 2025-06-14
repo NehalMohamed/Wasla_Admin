@@ -51,7 +51,7 @@ const SideMenu = ({ onToggle }) => {
   const logOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   const toggleExpand = () => {
@@ -80,8 +80,8 @@ const SideMenu = ({ onToggle }) => {
       {/* Main Menu Content */}
       <div className="side-menu-content">
         <Nav className="flex-column">
-          <Nav.Link href="/" className="side-menu-item"
-          onClick={(e) => handleNavigation(e, "/")}>
+          <Nav.Link href="/users" className="side-menu-item"
+          onClick={(e) => handleNavigation(e, "/users")}>
             <FiHome className="menu-icon" />
             {isExpanded && <span>Home</span>}
           </Nav.Link>

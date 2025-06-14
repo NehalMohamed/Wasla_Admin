@@ -44,7 +44,8 @@ const Services = () => {
     active: true,
     lang_code:"en",
     leaf:false,
-    price:0
+    price:0,
+    service_code: ""
   });
 
    const languages = [
@@ -89,7 +90,8 @@ const Services = () => {
       active: true,
       lang_code:"en",
       leaf:false,
-      price:0
+      price:0,
+      service_code: ""
     });
     setEditMode(false);
     setShowForm(false);
@@ -104,7 +106,8 @@ const Services = () => {
       active: true,
       lang_code:product.lang_code,
       leaf:false,
-      price:0
+      price:0,
+      service_code: product.service_code || ""
     });
     setEditMode(true);
     setShowForm(true);
@@ -125,7 +128,8 @@ const Services = () => {
           active: false,
           lang_code:productToDelete.lang_code,
           leaf:productToDelete.leaf,
-          price:productToDelete.price
+          price:productToDelete.price,
+          service_code: productToDelete.service_code || ""
         })
       ).then(() => {
         dispatch(fetchParentProducts());
@@ -155,6 +159,7 @@ const Services = () => {
           <td style={{ paddingLeft: `${level * 20}px` }}>
             {product.productName}
           </td>
+          <td>{product.service_code || "-"}</td>
           <td>
             {product.productParent === 0
               ? "Root"
@@ -170,14 +175,14 @@ const Services = () => {
               onClick={() => handleEdit(product)}
               disabled={!product.active}
             >
-              <FaEdit className="me-1" /> Edit
+              <FaEdit className="me-1" />
             </button>
             <button
               className="btn btn-sm btn-danger"
               onClick={() => handleDelete(product)}
               disabled={!product.active}
             >
-              <FaTrash className="me-1" /> Delete
+              <FaTrash className="me-1" /> 
             </button>
           </td>
         </tr>
@@ -259,7 +264,16 @@ const Services = () => {
                   required
                 />
               </Form.Group>
-
+              <Form.Group className="mb-3">
+                <Form.Label>Service Code</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="service_code"
+                  value={currentProduct.service_code}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Parent Service</Form.Label>
                 <Form.Select
@@ -343,6 +357,7 @@ const Services = () => {
                 <thead>
                   <tr>
                     <th>Service Name</th>
+                    <th>Service Code</th>
                     <th>Parent</th>
                     <th>Language</th>
                     <th>Description</th>
@@ -354,7 +369,7 @@ const Services = () => {
                     renderProductTree(productTree)
                   ) : (
                     <tr>
-                      <td colSpan="5" className="text-center">
+                      <td colSpan="6" className="text-center">
                         No Services found
                       </td>
                     </tr>

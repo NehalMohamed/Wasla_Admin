@@ -31,7 +31,7 @@ export const fetchParentProducts = createAsyncThunk(
       return response.data;
     } else {
       // Redirect to login if not authenticated
-      history.push("/login");
+      history.push("/");
       window.location.reload();
       return null;
     }
@@ -50,7 +50,7 @@ export const fetchProductTree = createAsyncThunk(
       return response.data;
     } else {
       // Redirect to login if not authenticated
-      history.push("/login");
+      history.push("/");
       window.location.reload();
       return null;
     }

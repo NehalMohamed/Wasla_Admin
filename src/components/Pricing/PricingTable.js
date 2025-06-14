@@ -21,6 +21,7 @@ const PricingTable = ({
           <tr>
             <th>Service</th>
             <th>Package</th>
+            <th>Code</th>
             <th className="d-none d-md-table-cell">Description</th>
             <th>Price</th>
             <th className="d-none d-md-table-cell">Sale Price</th>
@@ -36,6 +37,7 @@ const PricingTable = ({
             <tr key={item.package_id}>
               <td>{item.service_name}</td>
               <td>{item.package_name}</td>
+              <td>{item.package_code}</td>
               <td className="d-none d-md-table-cell">{item.package_desc}</td>
               <td>{item.package_price}</td>
               <td className="d-none d-md-table-cell">{item.package_sale_price}</td>

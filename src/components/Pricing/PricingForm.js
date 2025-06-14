@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaPlus, FaEdit } from 'react-icons/fa';
-import { Form, Button, Row, Col} from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
 const PricingForm = ({
     services,
@@ -14,7 +14,7 @@ const PricingForm = ({
     return (
         <Form onSubmit={onSubmit} className="mb-4">
             <Row className="mb-3">
-                <Col xs={12} md={4} className="mb-2 mb-md-0">
+                <Col xs={12} md={3} className="mb-2 mb-md-0">
                     <Form.Group controlId="service">
                         <Form.Control
                             as="select"
@@ -31,7 +31,7 @@ const PricingForm = ({
                     </Form.Group>
                 </Col>
 
-                <Col xs={12} md={4} className="mb-2 mb-md-0">
+                <Col xs={12} md={3} className="mb-2 mb-md-0">
                     <Form.Group controlId="package_name">
                         <Form.Control
                             type="text"
@@ -43,12 +43,23 @@ const PricingForm = ({
                         />
                     </Form.Group>
                 </Col>
-
-                <Col xs={12} md={4}>
+                <Col xs={6} md={2} className="mb-2 mb-md-0">
+                    <Form.Group controlId="package_code">
+                        <Form.Control
+                            type="text"
+                            placeholder="Code"
+                            name="package_code"
+                            value={formData.package_code}
+                            onChange={onInputChange}
+                            required
+                        />
+                    </Form.Group>
+                </Col>
+                <Col xs={12} md={2}>
                     <Form.Group controlId="package_desc">
                         <Form.Control
                             type="text"
-                            placeholder="Package Description"
+                            placeholder="Description"
                             name="package_desc"
                             value={formData.package_desc}
                             onChange={onInputChange}
@@ -56,9 +67,25 @@ const PricingForm = ({
                         />
                     </Form.Group>
                 </Col>
+                <Col xs={6} md={2} className="mb-2 mb-md-0">
+                    <Form.Group controlId="is_recommend">
+                        <Form.Check
+                            type="checkbox"
+                            label="Recommended"
+                            name="is_recommend"
+                            checked={formData.is_recommend}
+                            onChange={(e) => onInputChange({
+                                target: {
+                                    name: 'is_recommend',
+                                    value: e.target.checked
+                                }
+                            })}
+                        />
+                    </Form.Group>
+                </Col>
             </Row>
             <Row className="mb-3">
-                 <Col xs={6} md={2} className="mb-2 mb-md-0">
+                <Col xs={6} md={2} className="mb-2 mb-md-0">
                     <Form.Group controlId="package_price">
                         <Form.Control
                             type="number"

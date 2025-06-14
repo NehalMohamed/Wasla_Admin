@@ -22,7 +22,7 @@ const CustomNavbar = () => {
   const logOut = () => {
     localStorage.removeItem("token"); // Remove auth token
     localStorage.removeItem("user"); // Remove user info
-    navigate("/login"); // Redirect to login page
+    navigate("/"); // Redirect to login page
   };
 
   return (

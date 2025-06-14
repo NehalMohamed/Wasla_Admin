@@ -41,7 +41,7 @@ export const fetchPricingData = createAsyncThunk(
         }
     } else {
           // Redirect to login if not authenticated
-          history.push("/login");
+          history.push("/");
           window.location.reload();
           return null;
         }
@@ -65,7 +65,7 @@ export const savePricingPackage = createAsyncThunk(
     }
 }else {
           // Redirect to login if not authenticated
-          history.push("/login");
+          history.push("/");
           window.location.reload();
           return null;
         }
@@ -99,7 +99,7 @@ export const savePackageFeatures = createAsyncThunk(
     }
     }else {
           // Redirect to login if not authenticated
-          history.push("/login");
+          history.push("/");
           window.location.reload();
           return null;
         }
@@ -123,7 +123,7 @@ export const fetchPackageFeatures = createAsyncThunk(
     } 
 }else {
           // Redirect to login if not authenticated
-          history.push("/login");
+          history.push("/");
           window.location.reload();
           return null;
         }
@@ -145,7 +145,7 @@ export const fetchServices = createAsyncThunk(
         return rejectWithValue(error.response?.data?.message || error.message);
       }
     } else {
-      history.push("/login");
+      history.push("/");
       window.location.reload();
       return null;
     }
