@@ -42,17 +42,17 @@ const Services = () => {
     productParent: 0,
     product_desc: "",
     active: true,
-    lang_code:"en",
-    leaf:false,
-    price:0,
-    service_code: ""
+    lang_code: "en",
+    leaf: false,
+    price: 0,
+    service_code: "",
   });
 
-   const languages = [
-        { code: 'en', name: 'English' },
-        { code: 'de', name: 'German' },
-        { code: 'ar', name: 'Arabic' }
-    ];
+  const languages = [
+    { code: "en", name: "English" },
+    { code: "de", name: "German" },
+    { code: "ar", name: "Arabic" },
+  ];
 
   useEffect(() => {
     const loadData = async () => {
@@ -88,10 +88,10 @@ const Services = () => {
       productParent: 0,
       product_desc: "",
       active: true,
-      lang_code:"en",
-      leaf:false,
-      price:0,
-      service_code: ""
+      lang_code: "en",
+      leaf: false,
+      price: 0,
+      service_code: "",
     });
     setEditMode(false);
     setShowForm(false);
@@ -104,10 +104,10 @@ const Services = () => {
       productParent: product.productParent,
       product_desc: product.product_desc || "",
       active: true,
-      lang_code:product.lang_code,
-      leaf:false,
-      price:0,
-      service_code: product.service_code || ""
+      lang_code: product.lang_code,
+      leaf: false,
+      price: 0,
+      service_code: product.service_code || "",
     });
     setEditMode(true);
     setShowForm(true);
@@ -126,10 +126,10 @@ const Services = () => {
           productParent: productToDelete.productParent,
           product_desc: productToDelete.product_desc || "",
           active: false,
-          lang_code:productToDelete.lang_code,
-          leaf:productToDelete.leaf,
-          price:productToDelete.price,
-          service_code: productToDelete.service_code || ""
+          lang_code: productToDelete.lang_code,
+          leaf: productToDelete.leaf,
+          price: productToDelete.price,
+          service_code: productToDelete.service_code || "",
         })
       ).then(() => {
         dispatch(fetchParentProducts());
@@ -182,7 +182,7 @@ const Services = () => {
               onClick={() => handleDelete(product)}
               disabled={!product.active}
             >
-              <FaTrash className="me-1" /> 
+              <FaTrash className="me-1" />
             </button>
           </td>
         </tr>
@@ -291,19 +291,20 @@ const Services = () => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>language</Form.Label>
-                  <Form.Control
-                      as="select"
-                      name="lang_code"
-                      value={currentProduct.lang_code}
-                      onChange={handleInputChange}
-                      required
-                  >
-                      {languages.map((lang, index) => (
-                          <option key={index} value={lang.code}>{lang.code}</option>
-                      ))}
-                  </Form.Control>
+                <Form.Control
+                  as="select"
+                  name="lang_code"
+                  value={currentProduct.lang_code}
+                  onChange={handleInputChange}
+                  required
+                >
+                  {languages.map((lang, index) => (
+                    <option key={index} value={lang.code}>
+                      {lang.code}
+                    </option>
+                  ))}
+                </Form.Control>
               </Form.Group>
-                              
 
               <Form.Group className="mb-3">
                 <Form.Label>Description</Form.Label>

@@ -1,19 +1,17 @@
-import React from 'react';
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
-import { Spinner, Alert } from 'react-bootstrap';
-
-const PricingTable = ({ 
-  pricingData, 
-  languages, 
-  loading, 
-  error, 
-  onDeletePackage, 
-  onEditPackage, 
-  onOpenFeaturesModal 
+import React from "react";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { Spinner, Alert } from "react-bootstrap";
+const PricingTable = ({
+  pricingData,
+  languages,
+  loading,
+  error,
+  onDeletePackage,
+  onEditPackage,
+  onOpenFeaturesModal,
 }) => {
   if (loading) return <Spinner animation="border" />;
   if (error) return <Alert variant="danger">{error}</Alert>;
-
   return (
     <div className="table-wrapper">
       <table className="table">
@@ -40,7 +38,9 @@ const PricingTable = ({
               <td>{item.package_code}</td>
               <td className="d-none d-md-table-cell">{item.package_desc}</td>
               <td>{item.package_price}</td>
-              <td className="d-none d-md-table-cell">{item.package_sale_price}</td>
+              <td className="d-none d-md-table-cell">
+                {item.package_sale_price}
+              </td>
               <td className="d-none d-md-table-cell">{item.order}</td>
               <td className="d-none d-md-table-cell">{item.curr_code}</td>
               <td className="d-none d-md-table-cell">{item.lang_code}</td>
@@ -49,27 +49,27 @@ const PricingTable = ({
                   className="btn btn-sm purple-btn"
                   onClick={() => onOpenFeaturesModal(item.package_id)}
                 >
-                  <FaPlus className="me-1" /> 
+                  <FaPlus className="me-1" />
                   {/* Features  */}
                   {/* ({item.features.length}) */}
                 </button>
               </td>
               <td>
                 <div className="d-flex">
-                <button
-                  className="btn btn-sm yellow-btn me-2"
-                  onClick={() => onEditPackage(item.package_id)}
-                >
-                  <FaEdit /> 
-                  {/* Edit */}
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => onDeletePackage(item.package_id)}
-                >
-                  <FaTrash /> 
-                  {/* Delete */}
-                </button>
+                  <button
+                    className="btn btn-sm yellow-btn me-2"
+                    onClick={() => onEditPackage(item.package_id)}
+                  >
+                    <FaEdit />
+                    {/* Edit */}
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => onDeletePackage(item.package_id)}
+                  >
+                    <FaTrash />
+                    {/* Delete */}
+                  </button>
                 </div>
               </td>
             </tr>
