@@ -116,7 +116,7 @@ const PricingForm = ({
               value={formData.package_price}
               onChange={onInputChange}
               required
-              disa
+              disabled={formData.is_custom == true}
             />
           </Form.Group>
         </Col>
@@ -130,6 +130,7 @@ const PricingForm = ({
               value={formData.package_sale_price}
               onChange={onInputChange}
               required
+              disabled={formData.is_custom == true}
             />
           </Form.Group>
         </Col>
