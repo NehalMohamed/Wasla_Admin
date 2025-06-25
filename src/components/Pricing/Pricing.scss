@@ -16,23 +16,30 @@ $yellow-btn-hover: #ffb300cb;
   // Form Styling
   .form-control,
   .form-select {
-    height: 55px;
+    height: 40px;
     font-size: 14px;
     border-radius: 10px;
     
     @media (max-width: 768px) {
-        height: 45px;
+        height: 40;
         font-size: 16px;
     }
   }
-
+  label{
+    font-size: 14px;
+    color: #444;
+  }
+  .form-check{
+    margin-top: 30px;
+  }
   .btn-primary {
-    height: 55px;
-    font-size: 18px;
+    height: 40px;
+    font-size: 16px;
     font-weight: bold;
     border-radius: 10px;
     background-color: $primary-color;
     border-color: $primary-color;
+    margin-top: 30px;
 
     &:hover {
         background-color: #b181d6;
@@ -40,7 +47,7 @@ $yellow-btn-hover: #ffb300cb;
     }
 
     @media (max-width: 768px) {
-        height: 45px;
+        height: 40px;
         font-size: 16px;
     }
   }

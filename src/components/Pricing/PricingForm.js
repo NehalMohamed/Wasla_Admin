@@ -16,6 +16,7 @@ const PricingForm = ({
       <Row className="mb-3">
         <Col xs={12} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="service">
+            <Form.Label>Service</Form.Label>
             <Form.Control
               as="select"
               name="service_id"
@@ -35,6 +36,7 @@ const PricingForm = ({
 
         <Col xs={12} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="package_name">
+            <Form.Label>Package</Form.Label>
             <Form.Control
               type="text"
               placeholder="Package Name"
@@ -47,6 +49,7 @@ const PricingForm = ({
         </Col>
         <Col xs={6} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="package_code">
+            <Form.Label>Code</Form.Label>
             <Form.Control
               type="text"
               placeholder="Code"
@@ -59,6 +62,7 @@ const PricingForm = ({
         </Col>
         <Col xs={12} md={2}>
           <Form.Group controlId="package_desc">
+            <Form.Label>Description</Form.Label>
             <Form.Control
               type="text"
               placeholder="Description"
@@ -109,6 +113,7 @@ const PricingForm = ({
       <Row className="mb-3">
         <Col xs={6} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="package_price">
+            <Form.Label>Price</Form.Label>
             <Form.Control
               type="number"
               placeholder="Price"
@@ -123,6 +128,7 @@ const PricingForm = ({
 
         <Col xs={6} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="package_sale_price">
+            <Form.Label>Sale Price</Form.Label>
             <Form.Control
               type="number"
               placeholder="Sale Price"
@@ -136,6 +142,7 @@ const PricingForm = ({
         </Col>
         <Col xs={6} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="order">
+            <Form.Label>Order</Form.Label>
             <Form.Control
               type="number"
               placeholder="Order"
@@ -149,6 +156,7 @@ const PricingForm = ({
 
         <Col xs={6} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="curr_code">
+            <Form.Label>Currency</Form.Label>
             <Form.Control
               as="select"
               name="curr_code"
@@ -166,6 +174,7 @@ const PricingForm = ({
         </Col>
         <Col xs={6} md={2} className="mb-2 mb-md-0">
           <Form.Group controlId="lang_code">
+            <Form.Label>Lang.</Form.Label>
             <Form.Control
               as="select"
               name="lang_code"
