@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
-import { 
-  FiHome, 
-  FiHelpCircle, 
-  FiSettings, 
-  FiUser, 
-  FiLogOut, 
+import {
+  FiHome,
+  FiHelpCircle,
+  FiSettings,
+  FiUser,
+  FiLogOut,
   FiChevronLeft,
   FiChevronRight,
   FiSearch,
-  FiDollarSign
+  FiDollarSign,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import "./SideMenu.scss";
@@ -34,8 +34,7 @@ const SideMenu = ({ onToggle }) => {
       setIsMobile(mobile);
       if (!mobile) {
         setIsExpanded(true);
-      }
-       else {
+      } else {
         setIsExpanded(false);
       }
       //  if (mobile) {
@@ -43,9 +42,9 @@ const SideMenu = ({ onToggle }) => {
       // }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const logOut = () => {
@@ -68,62 +67,90 @@ const SideMenu = ({ onToggle }) => {
   };
 
   return (
-    <div className={`side-menu ${isExpanded ? "expanded" : "collapsed"} ${isMobile ? "mobile" : ""}`}>
+    <div
+      className={`side-menu ${isExpanded ? "expanded" : "collapsed"} ${
+        isMobile ? "mobile" : ""
+      }`}
+    >
       {/* Top Bar with Logo and Toggle */}
       <div className="side-menu-topbar">
         {isExpanded && <img src="/waslalogo.png" alt="Logo" className="logo" />}
         <button className="toggle-button" onClick={toggleExpand}>
-          {isExpanded ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
+          {isExpanded ? (
+            <FiChevronLeft size={20} />
+          ) : (
+            <FiChevronRight size={20} />
+          )}
         </button>
       </div>
 
       {/* Main Menu Content */}
       <div className="side-menu-content">
         <Nav className="flex-column">
-          <Nav.Link href="/users" className="side-menu-item"
-          onClick={(e) => handleNavigation(e, "/users")}>
+          <Nav.Link
+            href="/users"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/users")}
+          >
             <FiHome className="menu-icon" />
             {isExpanded && <span>Home</span>}
           </Nav.Link>
-          <Nav.Link href="/questions" className="side-menu-item"
-          onClick={(e) => handleNavigation(e, "/questions")}>
+          <Nav.Link
+            href="/questions"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/questions")}
+          >
             <FiHelpCircle className="menu-icon" />
             {isExpanded && <span>Questions</span>}
           </Nav.Link>
-          <Nav.Link href="/services" className="side-menu-item"
-          onClick={(e) => handleNavigation(e, "/services")}>
+          <Nav.Link
+            href="/services"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/services")}
+          >
             <FiSettings className="menu-icon" />
             {isExpanded && <span>Services</span>}
           </Nav.Link>
-          <Nav.Link href="/pricing" className="side-menu-item" 
-          onClick={(e) => handleNavigation(e, "/pricing")}>
+          <Nav.Link
+            href="/pricing"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/pricing")}
+          >
             <FiDollarSign className="menu-icon" />
             {isExpanded && <span>Pricing</span>}
+          </Nav.Link>
+          <Nav.Link
+            href="/packages"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/packages")}
+          >
+            <FiDollarSign className="menu-icon" />
+            {isExpanded && <span>packages</span>}
           </Nav.Link>
         </Nav>
 
         {/* Bottom Section */}
         <div className="side-menu-footer">
-        <div className="footer-content">
+          <div className="footer-content">
             <div className="user-info">
-            <FiUser className="user-icon" />
-            {isExpanded && <span className="user-title">{MyName}</span>}
+              <FiUser className="user-icon" />
+              {isExpanded && <span className="user-title">{MyName}</span>}
             </div>
-            
+
             <div className="menu-actions">
-            <button className="menu-action-button">
+              <button className="menu-action-button">
                 <FiSearch className="action-icon" />
                 {isExpanded && <span>Search</span>}
-            </button>
-            
-            {MyName && (
+              </button>
+
+              {MyName && (
                 <button className="menu-action-button" onClick={logOut}>
-                <FiLogOut className="action-icon" />
-                {isExpanded && <span>Logout</span>}
+                  <FiLogOut className="action-icon" />
+                  {isExpanded && <span>Logout</span>}
                 </button>
-            )}
+              )}
             </div>
-        </div>
+          </div>
         </div>
       </div>
     </div>

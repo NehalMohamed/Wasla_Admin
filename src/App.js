@@ -7,6 +7,7 @@ import QuestionsPage from "./pages/QuestionsPage";
 import ServicesPage from "./pages/ServicesPage";
 import UsersPage from "./pages/UsersPage";
 import PricingPage from "./pages/PricingPage";
+import PackagesPage from "./components/Packages/PricingPackages";
 import Login from "./components/login/login";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,17 +18,11 @@ function App() {
           {/* <div className="main-container"> */}
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route
-              path="/users"
-              element={<UsersPage />}
-            />
-            <Route
-              path="/questions"
-              element={<QuestionsPage />}
-            />
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="/questions" element={<QuestionsPage />} />
             <Route exact path="/services" element={<ServicesPage />} />
             <Route exact path="/pricing" element={<PricingPage />} />
-            
+            <Route exact path="/packages" element={<PackagesPage />} />
           </Routes>
           {/* </div> */}
         </Container>

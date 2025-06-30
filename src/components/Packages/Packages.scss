@@ -1,0 +1,24 @@
+.result_list{
+.accordion{
+    margin-bottom: 20px;
+}
+th{
+    text-align: center;
+     padding: 10px;
+     text-transform: capitalize;
+}
+td{
+    padding: 10px;
+    text-align: center;
+}
+.action_btn{
+    margin: 0 3px;
+    background-color: transparent !important;
+    border: 0;
+    color: #00bc82;
+    &:hover{
+        background-color: transparent !important;
+        border: 0;
+    }
+}
+}
