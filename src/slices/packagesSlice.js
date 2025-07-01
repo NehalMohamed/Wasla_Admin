@@ -200,6 +200,7 @@ export const getPackageFeatures = createAsyncThunk(
       var response = await axios
         .post(BASE_URL + "/getPackageFeatures", payload, getAuthHeaders())
         .then((res) => {
+          console.log("res ", res);
           return res.data;
         })
         .catch((error) => {

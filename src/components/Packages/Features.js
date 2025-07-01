@@ -16,20 +16,24 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
   );
   useEffect(() => {
     dispatch(getMainFeatures());
-    dispatch(getPackageFeatures({ package_id: pkg.package_id }));
+    dispatch(
+      getPackageFeatures({ package_id: pkg.package_id, lang_code: "en" })
+    );
     return () => {};
   }, []);
-  const onDeleteFeature = (feature) => {};
-  const handleAdd = () => {
+  const onDeleteFeature = (feat) => {
     const data = {
-      id: 0,
-      feature_id: feature,
-      package_id: pkg.package_id,
+      id: feat.id,
+      feature_id: feat.feature_id,
+      package_id: feat.package_id,
+      delete: true,
     };
     dispatch(AssignFeaturesToPackage(data)).then((result) => {
       if (result.payload && result.payload.success) {
         setFeature(0);
-        dispatch(getPackageFeatures({ package_id: pkg.package_id }));
+        dispatch(
+          getPackageFeatures({ package_id: pkg.package_id, lang_code: "en" })
+        );
       } else {
         console.log("result.payload ", result.payload);
         setFeature(0);
@@ -37,7 +41,27 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
       }
     });
   };
-
+  const handleAdd = () => {
+    const data = {
+      id: 0,
+      feature_id: feature,
+      package_id: pkg.package_id,
+      delete: false,
+    };
+    dispatch(AssignFeaturesToPackage(data)).then((result) => {
+      if (result.payload && result.payload.success) {
+        setFeature(0);
+        dispatch(
+          getPackageFeatures({ package_id: pkg.package_id, lang_code: "en" })
+        );
+      } else {
+        console.log("result.payload ", result.payload);
+        setFeature(0);
+        showError(result.payload.errors);
+      }
+    });
+  };
+  console.log("PackageFeatures", PackageFeatures);
   return (
     <>
       <Modal show={show} onHide={onHide} size="lg">
@@ -59,11 +83,12 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
                   required
                 >
                   <option key={0}>Select Feature</option>
-                  {Features.map((feat, index) => (
-                    <option key={index} value={feat.id}>
-                      {feat.feature_code} - {feat.feature_default_name}
-                    </option>
-                  ))}
+                  {Features &&
+                    Features.map((feat, index) => (
+                      <option key={index} value={feat.id}>
+                        {feat.feature_code} - {feat.feature_default_name}
+                      </option>
+                    ))}
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -84,21 +109,22 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
                 </tr>
               </thead>
               <tbody>
-                {PackageFeatures.map((feat, idx) => (
-                  <tr key={idx}>
-                    <td>{feat.feature_code}</td>
-                    <td>{feat.feature_default_name}</td>
-                    <td>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => onDeleteFeature(feat)}
-                      >
-                        <FaTrash className="me-1" /> Delete
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+                {PackageFeatures &&
+                  PackageFeatures.map((feat, idx) => (
+                    <tr key={idx}>
+                      <td>{feat.feature_code}</td>
+                      <td>{feat.feature_default_name}</td>
+                      <td>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => onDeleteFeature(feat)}
+                        >
+                          <FaTrash className="me-1" /> Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

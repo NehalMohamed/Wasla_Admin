@@ -23,7 +23,32 @@ const PriceModal = ({ show, onHide, pkg }) => {
     );
     return () => {};
   }, []);
-  const onDeletePrice = (price) => {};
+  const onDeletePrice = (row) => {
+    const data = {
+      id: row.id,
+      service_package_id: row.service_package_id,
+      curr_code: row.curr_code,
+      package_price: row.package_price,
+      package_sale_price: row.package_sale_price,
+      discount_amount: row.discount_amount,
+      discount_type: row.discount_type,
+      delete: true,
+    };
+    dispatch(AssignPriceToPackage(data)).then((result) => {
+      if (result.payload && result.payload.success) {
+        setPrice(0);
+        setSalePrice(0);
+        setCurrency("");
+        dispatch(
+          getServicePackagePrice({ service_package_id: pkg.service_package_id })
+        );
+      } else {
+        setPrice(0);
+        setSalePrice(0);
+        setCurrency("");
+      }
+    });
+  };
   const handleAdd = () => {
     const data = {
       id: 0,
@@ -33,6 +58,7 @@ const PriceModal = ({ show, onHide, pkg }) => {
       package_sale_price: salePrice,
       discount_amount: 0,
       discount_type: 0,
+      delete: false,
     };
     dispatch(AssignPriceToPackage(data)).then((result) => {
       if (result.payload && result.payload.success) {

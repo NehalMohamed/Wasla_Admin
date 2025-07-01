@@ -23,7 +23,11 @@ const PricingPackages = () => {
   const { services, packages, loading, error, PackagesWithService } =
     useSelector((state) => state.packages);
 
-  const [formData, setFormData] = useState({ service_id: 0, package_id: 0 });
+  const [formData, setFormData] = useState({
+    service_id: 0,
+    package_id: 0,
+    is_recommend: false,
+  });
   const [menuExpanded, setMenuExpanded] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -44,7 +48,6 @@ const PricingPackages = () => {
       [e.target.name]: e.target.value,
     });
   };
-  console.log("services ", services);
   const onSubmit = (e) => {
     e.preventDefault();
     formData["id"] = 0;
@@ -54,6 +57,7 @@ const PricingPackages = () => {
         setFormData({
           service_id: "",
           package_id: "",
+          is_recommend: false,
         });
         dispatch(getServiceGrpWithPkgs());
       } else {
@@ -62,27 +66,27 @@ const PricingPackages = () => {
       }
     });
   };
-  const EditPackage = (pkg) => {
-    const data = {
-      id: pkg.package_id,
-      package_code: pkg.package_code,
-      is_recommend: pkg.is_recommend,
-      is_custom: pkg.is_custom,
-      active: pkg.active,
-      default_name: pkg.default_name,
-      order: pkg.order,
-    };
-    // dispatch(SaveMainPackage(data)).then((result) => {
-    //   if (result.payload && result.payload.success) {
-    //     setShowPopup(false);
+  // const EditPackage = (pkg) => {
+  //   const data = {
+  //     id: pkg.package_id,
+  //     package_code: pkg.package_code,
+  //     is_recommend: pkg.is_recommend,
+  //     is_custom: pkg.is_custom,
+  //     active: pkg.active,
+  //     default_name: pkg.default_name,
+  //     order: pkg.order,
+  //   };
+  //   // dispatch(SaveMainPackage(data)).then((result) => {
+  //   //   if (result.payload && result.payload.success) {
+  //   //     setShowPopup(false);
 
-    //     dispatch(getServiceGrpWithPkgs());
-    //   } else {
-    //     setShowPopup(true);
-    //     setPopupMessage(result.payload.errors);
-    //   }
-    // });
-  };
+  //   //     dispatch(getServiceGrpWithPkgs());
+  //   //   } else {
+  //   //     setShowPopup(true);
+  //   //     setPopupMessage(result.payload.errors);
+  //   //   }
+  //   // });
+  // };
   const showError = (err) => {
     setShowPopup(true);
     setPopupMessage(err);
@@ -119,7 +123,7 @@ const PricingPackages = () => {
         </div>
         <Form onSubmit={onSubmit} className="mb-4">
           <Row className="mb-3">
-            <Col xs={12} md={4} className="mb-2 mb-md-0">
+            <Col xs={12} md={3} className="mb-2 mb-md-0">
               <Form.Group controlId="service">
                 <Form.Label>Service</Form.Label>
                 <Form.Control
@@ -139,7 +143,7 @@ const PricingPackages = () => {
                 </Form.Control>
               </Form.Group>
             </Col>
-            <Col xs={12} md={4} className="mb-2 mb-md-0">
+            <Col xs={12} md={3} className="mb-2 mb-md-0">
               <Form.Group controlId="service">
                 <Form.Label>Package</Form.Label>
                 <Form.Control
@@ -159,7 +163,32 @@ const PricingPackages = () => {
                 </Form.Control>
               </Form.Group>
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={12} md={3} className="mb-2 mb-md-0">
+              <Form.Group controlId="is_recommend">
+                <Form.Check
+                  type="checkbox"
+                  label="Recommended"
+                  name="is_recommend"
+                  checked={formData.is_recommend}
+                  onChange={
+                    (e) => {
+                      setFormData({
+                        ...formData,
+                        is_recommend: e.target.checked,
+                      });
+                    }
+
+                    // onInputChange({
+                    //   target: {
+                    //     name: "is_recommend",
+                    //     value: e.target.checked,
+                    //   },
+                    // })
+                  }
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={3}>
               <Button variant="primary" type="submit" className="w-100">
                 <FaPlus className="me-1" /> Add
               </Button>
@@ -168,7 +197,11 @@ const PricingPackages = () => {
         </Form>
         <div className="result_list">
           {PackagesWithService &&
-            PackagesWithService?.map((row, index) => (
+            PackagesWithService?.filter((item) =>
+              item.service_default_name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
+            ).map((row, index) => (
               <Accordion defaultActiveKey={index}>
                 <Accordion.Item eventKey={index}>
                   <Accordion.Header>
@@ -209,13 +242,13 @@ const PricingPackages = () => {
                               </td>
                               <td>{pkg.order}</td>
                               <td>
-                                <button
+                                {/* <button
                                   className="btn btn-sm action_btn"
                                   disabled={loading}
                                   onClick={() => EditPackage(pkg)}
                                 >
                                   <FiEdit className="me-1" />
-                                </button>
+                                </button> */}
                                 <button
                                   className="btn btn-sm action_btn"
                                   disabled={loading}
