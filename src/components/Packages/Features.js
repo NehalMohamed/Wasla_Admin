@@ -17,7 +17,10 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
   useEffect(() => {
     dispatch(getMainFeatures());
     dispatch(
-      getPackageFeatures({ package_id: pkg.package_id, lang_code: "en" })
+      getPackageFeatures({
+        service_package_id: pkg.service_package_id,
+        lang_code: "en",
+      })
     );
     return () => {};
   }, []);
@@ -25,14 +28,17 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
     const data = {
       id: feat.id,
       feature_id: feat.feature_id,
-      package_id: feat.package_id,
+      service_package_id: feat.service_package_id,
       delete: true,
     };
     dispatch(AssignFeaturesToPackage(data)).then((result) => {
       if (result.payload && result.payload.success) {
         setFeature(0);
         dispatch(
-          getPackageFeatures({ package_id: pkg.package_id, lang_code: "en" })
+          getPackageFeatures({
+            service_package_id: pkg.service_package_id,
+            lang_code: "en",
+          })
         );
       } else {
         console.log("result.payload ", result.payload);
@@ -45,14 +51,17 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
     const data = {
       id: 0,
       feature_id: feature,
-      package_id: pkg.package_id,
+      service_package_id: pkg.service_package_id,
       delete: false,
     };
     dispatch(AssignFeaturesToPackage(data)).then((result) => {
       if (result.payload && result.payload.success) {
         setFeature(0);
         dispatch(
-          getPackageFeatures({ package_id: pkg.package_id, lang_code: "en" })
+          getPackageFeatures({
+            service_package_id: pkg.service_package_id,
+            lang_code: "en",
+          })
         );
       } else {
         console.log("result.payload ", result.payload);
