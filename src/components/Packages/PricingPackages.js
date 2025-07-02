@@ -37,8 +37,8 @@ const PricingPackages = () => {
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [ActivePkg, setActivePkg] = useState(null);
   useEffect(() => {
-    dispatch(fetchMainServices());
-    dispatch(fetchMainPackages());
+    dispatch(fetchMainServices({ isDropDown: false }));
+    dispatch(fetchMainPackages({ isDropDown: false }));
     dispatch(getServiceGrpWithPkgs());
   }, []);
 

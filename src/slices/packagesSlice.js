@@ -24,7 +24,7 @@ export const fetchMainServices = createAsyncThunk(
   async (payload, thunkAPI) => {
     if (checkAUTH()) {
       var response = await axios
-        .post(BASE_URL + "/getMainServices", {}, getAuthHeaders())
+        .post(BASE_URL + "/getMainServices", payload, getAuthHeaders())
         .then((res) => {
           return res.data;
         })
@@ -50,7 +50,7 @@ export const fetchMainPackages = createAsyncThunk(
   async (payload, thunkAPI) => {
     if (checkAUTH()) {
       var response = await axios
-        .post(BASE_URL + "/getMainPackages", {}, getAuthHeaders())
+        .post(BASE_URL + "/getMainPackages", payload, getAuthHeaders())
         .then((res) => {
           return res.data;
         })
