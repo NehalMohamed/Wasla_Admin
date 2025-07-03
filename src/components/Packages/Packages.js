@@ -1,42 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
-import { fetchServices } from '../../slices/servicesSlice';
-import ServicesForm from './ServicesForm';
-import ServicesList from './ServicesList';
+import { fetchPackages } from '../../slices/packagesSlice';
+import PackagesForm from './PackagesForm';
+import PackagesList from './PackagesList';
 import PopUp from '../shared/popup/PopUp';
 import LoadingPage from '../Loader/LoadingPage';
-import './Services.scss';
+import './Packages.scss';
 
-const Services = () => {
+const Packages = () => {
   const dispatch = useDispatch();
-  const { items, status, error } = useSelector(state => state.services);
+  const { items , status, error } = useSelector(state => state.packages);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('alert');
 
   useEffect(() => {
-    const loadServices = async () => {
+    const loadPackages = async () => {
       try {
-        await dispatch(fetchServices()).unwrap();
+        await dispatch(fetchPackages()).unwrap();
       } catch (error) {
-        console.log(error)
-        setPopupMessage('Failed to load services');
+        setPopupMessage('Failed to load packages');
         setPopupType('error');
         setShowPopup(true);
       }
     };
-    loadServices();
+    loadPackages();
   }, [dispatch]);
 
-  const filteredServices = items.filter(service =>
-    service.service_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    service.default_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPackages = items.filter(pkg =>
+    pkg.package_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pkg.default_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="services-container">
+    <div className="packages-container">
       {status === 'loading' && <LoadingPage />}
 
       <PopUp
@@ -48,7 +47,7 @@ const Services = () => {
       />
 
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="services-heading mb-0">Services Management</h2>
+        <h2 className="packages-heading mb-0">Packages Management</h2>
         <div className="position-relative" style={{ width: "250px" }}>
           <FaSearch
             className="position-absolute"
@@ -62,7 +61,7 @@ const Services = () => {
           <input
             type="text"
             className="form-control ps-6"
-            placeholder="Search services..."
+            placeholder="Search packages..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ paddingLeft: "30px" }}
@@ -70,14 +69,14 @@ const Services = () => {
         </div>
       </div>
 
-      <ServicesForm
+      <PackagesForm
         setPopupMessage={setPopupMessage}
         setPopupType={setPopupType}
         setShowPopup={setShowPopup}
       />
 
-      <ServicesList
-        services={filteredServices}
+      <PackagesList
+        packages={filteredPackages}
         loading={status === 'loading'}
         setPopupMessage={setPopupMessage}
         setPopupType={setPopupType}
@@ -87,4 +86,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Packages;

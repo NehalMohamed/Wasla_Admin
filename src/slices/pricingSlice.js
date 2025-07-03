@@ -1,11 +1,10 @@
 // pricingSlice.js
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { checkAUTH } from "../helper/helperFN";
 import { history } from "../index";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-
 
 // Helper function to get authentication headers
 const getAuthHeaders = () => {
@@ -14,130 +13,72 @@ const getAuthHeaders = () => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json",
+      "Accept-Language": "en",
     },
   };
 };
 
-// Async thunk for fetching pricing data
-export const fetchPricingData = createAsyncThunk(
-  'pricing/fetchPricingData',
-  async ({ lang, curr_code }, { rejectWithValue }) => {
+//services dropdown data
+export const fetchMainServices = createAsyncThunk(
+  "fetchMainServices",
+  async (payload, thunkAPI) => {
     if (checkAUTH()) {
-        try {
-            const packages = {
-            "service_id": 0,
-            "curr_code": curr_code,
-            "lang_code": lang,
-            "active": true
-            };
-        const response = await axios.post(
-            `${BASE_URL}/GetPricingPackages`,
-            packages,
-            getAuthHeaders()
-        );
-        return response.data;
-        } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-        }
+      var response = await axios
+        .post(BASE_URL + "/getMainServices", payload, getAuthHeaders())
+        .then((res) => {
+          return res.data;
+        })
+        .catch((error) => {
+          if (error.response.status == 401) {
+            history.push("/login");
+            window.location.reload();
+          } else {
+            return error.response.data;
+          }
+        });
+      return response;
     } else {
-          // Redirect to login if not authenticated
-          history.push("/");
-          window.location.reload();
-          return null;
-        }
-  }
-);
-
-// Async thunk for saving pricing package
-export const savePricingPackage = createAsyncThunk(
-  'pricing/savePricingPackage',
-  async (packageData, { rejectWithValue }) => {
-   if (checkAUTH()) {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/SavePricingPackage`,
-        packageData,
-        getAuthHeaders()
-      );
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      history.push("/");
+      window.location.reload();
     }
-}else {
-          // Redirect to login if not authenticated
-          history.push("/");
-          window.location.reload();
-          return null;
-        }
   }
 );
+////packages dropdown data
 
-// Async thunk for saving features
-export const savePackageFeatures = createAsyncThunk(
-  'pricing/savePackageFeatures',
-  async ({ id,package_id, feature, lang_code, active }, { rejectWithValue }) => {
-   if (checkAUTH()) {
-    try {
-     
-      const formattedFeatures =[{
-        id,
-        package_id,
-        feature_name: feature,
-        feature_desc: feature,
-        lang_code,
-        active
-      }];
-      
-      const response = await axios.post(
-        `${BASE_URL}/SavePricingPKgFeatureLst`,
-        formattedFeatures,
-         getAuthHeaders()
-      );
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+export const fetchMainPackages = createAsyncThunk(
+  "fetchMainPackages",
+  async (payload, thunkAPI) => {
+    if (checkAUTH()) {
+      var response = await axios
+        .post(BASE_URL + "/getMainPackages", payload, getAuthHeaders())
+        .then((res) => {
+          return res.data;
+        })
+        .catch((error) => {
+          if (error.response.status == 401) {
+            history.push("/login");
+            window.location.reload();
+          } else {
+            return error.response.data;
+          }
+        });
+      return response;
+    } else {
+      history.push("/");
+      window.location.reload();
     }
-    }else {
-          // Redirect to login if not authenticated
-          history.push("/");
-          window.location.reload();
-          return null;
-        }
   }
 );
 
-// Async thunk for fetching features
-export const fetchPackageFeatures = createAsyncThunk(
-  'pricing/fetchPackageFeatures',
-  async ({ package_id, lang_code }, { rejectWithValue }) => {
-   if (checkAUTH()) {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/GetPricingPkgFeatures`,
-        { package_id, active: true, lang_code },
-        getAuthHeaders()
-      );
-      return { package_id, features: response.data };
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
-    } 
-}else {
-          // Redirect to login if not authenticated
-          history.push("/");
-          window.location.reload();
-          return null;
-        }
-  }
-);
-
-export const fetchServices = createAsyncThunk(
-  'pricing/fetchServices',
-  async ({ parent, active, lang }, { rejectWithValue }) => {
+//assign price to package
+export const AssignPriceToPackage = createAsyncThunk(
+  "AssignPriceToPackage",
+  async (data, { rejectWithValue }) => {
     if (checkAUTH()) {
       try {
         const response = await axios.post(
-          `${BASE_URL}/GetProduct`,
-          { parent, active, lang },
+          `${BASE_URL}/AssignPriceToPackage`,
+          data,
           getAuthHeaders()
         );
         return response.data;
@@ -145,6 +86,79 @@ export const fetchServices = createAsyncThunk(
         return rejectWithValue(error.response?.data?.message || error.message);
       }
     } else {
+      // Redirect to login if not authenticated
+      history.push("/");
+      window.location.reload();
+      return null;
+    }
+  }
+);
+////packages data with service grouping
+
+export const getServiceGrpWithPkgs = createAsyncThunk(
+  "getServiceGrpWithPkgs",
+  async (payload, thunkAPI) => {
+    if (checkAUTH()) {
+      var response = await axios
+        .post(BASE_URL + "/getServiceGrpWithPkgs", {}, getAuthHeaders())
+        .then((res) => {
+          return res.data;
+        })
+        .catch((error) => {
+          if (error.response.status == 401) {
+            history.push("/login");
+            window.location.reload();
+          } else {
+            return error.response.data;
+          }
+        });
+      return response;
+    } else {
+      history.push("/");
+      window.location.reload();
+    }
+  }
+);
+//edit & save main package
+export const SaveMainPackage = createAsyncThunk(
+  "SaveMainPackage",
+  async (data, { rejectWithValue }) => {
+    if (checkAUTH()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/SaveMainPackage`,
+          data,
+          getAuthHeaders()
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
+    } else {
+      // Redirect to login if not authenticated
+      history.push("/");
+      window.location.reload();
+      return null;
+    }
+  }
+);
+// Async thunk for saving pricing package
+export const AssignPackagesToService = createAsyncThunk(
+  "AssignPackagesToService",
+  async (data, { rejectWithValue }) => {
+    if (checkAUTH()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/AssignPackagesToService`,
+          data,
+          getAuthHeaders()
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
+    } else {
+      // Redirect to login if not authenticated
       history.push("/");
       window.location.reload();
       return null;
@@ -152,91 +166,246 @@ export const fetchServices = createAsyncThunk(
   }
 );
 
-const pricingSlice = createSlice({
-  name: 'pricing',
+//fetch prices with currency for specific package
+export const getServicePackagePrice = createAsyncThunk(
+  "getServicePackagePrice",
+  async (payload, thunkAPI) => {
+    if (checkAUTH()) {
+      var response = await axios
+        .post(BASE_URL + "/getServicePackagePrice", payload, getAuthHeaders())
+        .then((res) => {
+          return res.data;
+        })
+        .catch((error) => {
+          if (error.response.status == 401) {
+            history.push("/");
+            window.location.reload();
+          } else {
+            return error.response.data;
+          }
+        });
+      return response;
+    } else {
+      history.push("/");
+      window.location.reload();
+    }
+  }
+);
+
+//fetch features for specific package
+export const getPackageFeatures = createAsyncThunk(
+  "getPackageFeatures",
+  async (payload, thunkAPI) => {
+    if (checkAUTH()) {
+      var response = await axios
+        .post(BASE_URL + "/getPackageFeatures", payload, getAuthHeaders())
+        .then((res) => {
+          console.log("res ", res);
+          return res.data;
+        })
+        .catch((error) => {
+          if (error.response.status == 401) {
+            history.push("/");
+            window.location.reload();
+          } else {
+            return error.response.data;
+          }
+        });
+      return response;
+    } else {
+      history.push("/");
+      window.location.reload();
+    }
+  }
+);
+
+//fetch features dropdown
+export const getMainFeatures = createAsyncThunk(
+  "getMainFeatures",
+  async (payload, thunkAPI) => {
+    if (checkAUTH()) {
+      var response = await axios
+        .post(BASE_URL + "/getMainFeatures", {}, getAuthHeaders())
+        .then((res) => {
+          return res.data;
+        })
+        .catch((error) => {
+          if (error.response.status == 401) {
+            history.push("/");
+            window.location.reload();
+          } else {
+            return error.response.data;
+          }
+        });
+      return response;
+    } else {
+      history.push("/");
+      window.location.reload();
+    }
+  }
+);
+
+// Async thunk for assign feature to package
+export const AssignFeaturesToPackage = createAsyncThunk(
+  "AssignFeaturesToPackage",
+  async (data, { rejectWithValue }) => {
+    if (checkAUTH()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/AssignFeaturesToPackage`,
+          data,
+          getAuthHeaders()
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
+    } else {
+      // Redirect to login if not authenticated
+      history.push("/");
+      window.location.reload();
+      return null;
+    }
+  }
+);
+const packagesSlice = createSlice({
+  name: "packages",
   initialState: {
-    data: [],
+    services: [],
+    packages: [],
+    PackagesWithService: [],
     loading: false,
     error: null,
-    featuresLoading: false,
-    featuresError: null
+    Prices: [],
+    Features: [],
+    PackageFeatures: [],
   },
   reducers: {
     clearError: (state) => {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
-      // Fetch pricing data
-      .addCase(fetchPricingData.pending, (state) => {
+      // Fetch services data
+      .addCase(fetchMainServices.pending, (state) => {
+        console.log("loadingggggg ");
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPricingData.fulfilled, (state, action) => {
+      .addCase(fetchMainServices.fulfilled, (state, action) => {
+        console.log("rrrr ", action.payload);
         state.loading = false;
-        state.data = action.payload;
+        state.services = action.payload;
       })
-      .addCase(fetchPricingData.rejected, (state, action) => {
+      .addCase(fetchMainServices.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      
-      // Save pricing package
-      .addCase(savePricingPackage.pending, (state) => {
+      .addCase(fetchMainPackages.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(savePricingPackage.fulfilled, (state, action) => {
+      .addCase(fetchMainPackages.fulfilled, (state, action) => {
+        state.loading = false;
+        state.packages = action.payload;
+      })
+      .addCase(fetchMainPackages.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getServiceGrpWithPkgs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getServiceGrpWithPkgs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.PackagesWithService = action.payload;
+      })
+      .addCase(getServiceGrpWithPkgs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Assign Packages To Service
+      .addCase(AssignPackagesToService.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(AssignPackagesToService.fulfilled, (state, action) => {
         state.loading = false;
         // Update or add the package in state.data
       })
-      .addCase(savePricingPackage.rejected, (state, action) => {
+      .addCase(AssignPackagesToService.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      
-      // Save features
-      .addCase(savePackageFeatures.pending, (state) => {
-        state.featuresLoading = true;
-        state.featuresError = null;
+      // Assign prices with currency To package
+      .addCase(AssignPriceToPackage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(savePackageFeatures.fulfilled, (state, action) => {
-        state.featuresLoading = false;
-        // Update features for the specific package
+      .addCase(AssignPriceToPackage.fulfilled, (state, action) => {
+        state.loading = false;
+        // Update or add the package in state.data
       })
-      .addCase(savePackageFeatures.rejected, (state, action) => {
-        state.featuresLoading = false;
-        state.featuresError = action.payload;
+      .addCase(AssignPriceToPackage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
-      
-      // Fetch features
-      .addCase(fetchPackageFeatures.pending, (state) => {
-      state.featuresLoading = true;
-      state.featuresError = null;
-    })
-    .addCase(fetchPackageFeatures.fulfilled, (state, action) => {
-      state.featuresLoading = false;
-      state.features = action.payload|| [];
-    })
-    .addCase(fetchPackageFeatures.rejected, (state, action) => {
-      state.featuresLoading = false;
-      state.featuresError = action.payload;
-    })
-    .addCase(fetchServices.pending, (state) => {
-    state.servicesLoading = true;
-    state.servicesError = null;
-    })
-    .addCase(fetchServices.fulfilled, (state, action) => {
-    state.servicesLoading = false;
-    state.services = action.payload;
-    })
-    .addCase(fetchServices.rejected, (state, action) => {
-    state.servicesLoading = false;
-    state.servicesError = action.payload;
-    });
-  }
+
+      //get prices
+      .addCase(getServicePackagePrice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getServicePackagePrice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.Prices = action.payload;
+      })
+      .addCase(getServicePackagePrice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //get features for package
+      .addCase(getPackageFeatures.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getPackageFeatures.fulfilled, (state, action) => {
+        state.loading = false;
+        state.PackageFeatures = action.payload;
+      })
+      .addCase(getPackageFeatures.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //get features dropdown
+      .addCase(getMainFeatures.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getMainFeatures.fulfilled, (state, action) => {
+        state.loading = false;
+        state.Features = action.payload;
+      })
+      .addCase(getMainFeatures.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Assign featuresTo package
+      .addCase(AssignFeaturesToPackage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(AssignFeaturesToPackage.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(AssignFeaturesToPackage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
-export const { clearError } = pricingSlice.actions;
-export default pricingSlice.reducer;
+export const { clearError } = packagesSlice.actions;
+export default packagesSlice.reducer;

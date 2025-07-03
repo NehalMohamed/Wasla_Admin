@@ -4,223 +4,221 @@ $light-purple: lighten($primary-color, 60%);
 $white: #ffffff;
 $light-gray: #f8f9fa;
 $deleted-row: #ffebee; // Light red background for deleted rows
-
-.product-management {
-  .header-row {
-    margin-bottom: 2rem;
-    
-    h2 {
-      color: $primary-color;
-      font-weight: 600;
-    }
-  }
-
-  .btn-primary {
-    background-color: $primary-color;
-    border-color: $primary-color;
-    
-    &:hover, &:focus {
-      background-color: darken($primary-color, 10%);
-      border-color: darken($primary-color, 10%);
-    }
-  }
-
-  .btn-outline-primary {
-    color: $primary-color;
-    border-color: $primary-color;
-    
-    &:hover, &:focus {
-      background-color: $primary-color;
-      color: $white;
-    }
-  }
-
-  .btn-outline-danger {
-    &:hover, &:focus {
-      color: $white;
-    }
-  }
-
-  .modal {
-    .modal-header {
-      background-color: $primary-color;
-      color: $white;
-      
-      .close {
-        color: $white;
-        text-shadow: none;
-        opacity: 0.8;
-        
-        &:hover {
-          opacity: 1;
-        }
-      }
-    }
-  }
-
-  .table {
-    margin-bottom: 0;
-    
-    thead {
-      background-color: $primary-color;
-      color: $white;
-      
-      th {
-        border-bottom: none;
-        // Remove the active column from header
-        &:nth-child(4) {
-          display: none;
-        }
-      }
-    }
-    
-    tbody {
-      tr {
-        transition: background-color 0.2s;
-        
-        &:hover {
-          background-color: $light-purple;
-        }
-
-        // Style for deleted rows (inactive products)
-        &.inactive-row,&[data-active="false"] {
-            background-color: $deleted-row !important;
-            color: #b71c1c;
-            
-            td {
-              text-decoration: line-through;
-              opacity: 0.8;
-            }
-            
-            &:hover {
-              background-color: darken($deleted-row, 5%) !important;
-            }
-            
-            .btn-warning, .btn-danger {
-              opacity: 0.7;
-            }
-          }
-      }
-      
-      // Hide the active status column cells
-      td:nth-child(4) {
-        display: none;
-      }
-    }
-  }
-
-  .card {
-    border: none;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    
-    .card-body {
-      padding: 0;
-    }
-  }
-
-  .spinner-border {
-    color: $primary-color;
-  }
-
-  .alert {
-    margin: 1rem;
-  }
-
-  .form-control, .form-select {
-    &:focus {
-      border-color: $secondary-color;
-      box-shadow: 0 0 0 0.25rem rgba($secondary-color, 0.25);
-    }
-  }
-
-  .action-buttons {
-    .btn {
-      padding: 0.25rem 0.5rem;
-    }
-  }
+.services-container {
+  background-color: transparent;
+  width: 100%;
+  max-width: 100%;
 }
 
-// Responsive adjustments
-@media (max-width: 768px) {
-  .product-management {
-    .header-row {
-      flex-direction: column;
-      
-      .text-end {
-        text-align: left !important;
-        margin-top: 1rem;
-      }
-    }
-    
-    .table {
-      display: block;
-      overflow-x: auto;
-      
-      // Ensure hidden columns stay hidden on mobile
-      thead th:nth-child(4),
-      tbody td:nth-child(4) {
-        display: none;
-      }
-    }
-  }
+.header-with-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.services-heading {
+  font-size: 30px;
+  font-weight: bold;
+  color: #542D72;
+  margin: 0;
+}
+
+.search-container {
+  position: relative;
+  width: 250px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
 }
 
 .search-input {
-    border: 1px solid $secondary-color;
-    border-radius: 4px;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
+  padding-left: 30px;
+  width: 100%;
+}
+
+.form-control,
+.form-select {
+  height: 55px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  height: 55px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: #542d72;
+  border-color: #542d72;
+}
+
+.btn-primary:hover {
+  background-color: #b181d6;
+  border-color: #b181d6;
+}
+
+/* Table Styling */
+.table-wrapper {
+  margin-top: 30px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: #f1e6fb;
+  color: #542d72;
+  text-align: center;
+  padding: 15px;
+}
+
+.table td {
+  text-align: center;
+  padding: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.yellow-btn {
+  color: white;
+  background-color: #ffb300e0 !important;
+}
+
+.yellow-btn:hover {
+  color: white;
+  background-color: #ffb300cb !important;
+}
+
+input.form-control:hover,
+input.form-control:focus,
+select.form-select:hover,
+select.form-select:focus {
+  border-color: #9375aa;
+  box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
+}
+
+.inactive-row {
+  background-color: #ffeeee !important;
+  color: #cc0000;
   
-    &:focus {
-      border-color: $primary-color;
-      box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
-      outline: none;
-    }
+  td {
+    text-decoration: line-through;
+    opacity: 0.8;
   }
+}
+
+.form-check-input:checked {
+  background-color: #542d72;
+  border-color: #542d72;
+}
+/* Add these styles to Services.scss */
+
+.expand-button {
+  background: none;
+  border: none;
+  color: $primary-color;
+  padding: 0;
+  cursor: pointer;
+}
+
+.translation-header {
+   background-color: #f1e6fb;
   
-  // For the "No products found" message
-  .no-products {
-    color: $primary-color;
-    font-style: italic;
-    padding: 1rem;
+  td {
+    padding: 8px 15px !important;
+    border-top: none !important;
+    color: #542D72;
+    background-color: #f1e6fb;
     text-align: center;
   }
+}
+
+.translation-row {
+  background-color: $light-gray;
   
-  // Responsive adjustments for search bar
-  @media (max-width: 768px) {
-    .search-input {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
+  td {
+    padding: 10px 15px 10px 50px !important;
+    border-top: none !important;
+  }
+}
+
+.translation-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.translation-item {
+  min-width: 200px;
+}
+
+.inactive-row .translation-header,
+.inactive-row .translation-row {
+  background-color: lighten($deleted-row, 3%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .services-heading {
+    font-size: 24px;
+    line-height: 40px;
   }
 
-  .yellow-btn {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    color: #212529;
+  .header-with-search {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-container {
+    width: 100%;
+    margin-top: 15px;
+  }
+  
+  .services-heading {
+    font-size: 24px;
+  }
+
+  .form-control,
+  .form-select {
+    height: 45px;
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    height: 45px;
+    font-size: 16px;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .translation-header {
+    display: none;
+  }
+  
+  .translation-row {
+    td {
+      padding: 10px !important;
+    }
     
-    &:hover {
-      background-color: #e0a800;
-      border-color: #d39e00;
-    }
-  }
-
-  .product-row {
-    &.inactive-row {
-      background-color: #ffeeee !important; // Light red
-      color: #cc0000;
+    .d-flex {
+      flex-direction: column;
+      gap: 5px;
       
-      td {
-        text-decoration: line-through;
-        opacity: 0.8;
-      }
-      
-      &:hover {
-        background-color: #ffdddd !important; // Slightly darker red on hover
-      }
-      
-      .btn {
-        opacity: 0.7;
+      > div {
+        width: 100% !important;
       }
     }
   }
+}

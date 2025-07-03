@@ -1,4 +1,3 @@
-// packagesSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { checkAUTH } from "../helper/helperFN";
@@ -6,6 +5,7 @@ import { history } from "../index";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+// Helper function to get authentication headers
 const getAuthHeaders = () => {
     let accessToken = localStorage.getItem("token");
     return {
@@ -17,13 +17,13 @@ const getAuthHeaders = () => {
     };
 };
 
-export const fetchPackages = createAsyncThunk(
-    'packages/fetchPackages',
+export const fetchServices = createAsyncThunk(
+    'services/fetchServices',
     async (_, { rejectWithValue }) => {
         if (checkAUTH()) {
             try {
                 const response = await axios.post(
-                    `${API_URL}/getMainPackages`,
+                    `${API_URL}/getMainServices`,
                     { isDropDown: false },
                     getAuthHeaders()
                 );
@@ -32,6 +32,7 @@ export const fetchPackages = createAsyncThunk(
                 return rejectWithValue(error.response?.data?.message || error.message);
             }
         } else {
+            // Redirect to login if not authenticated
             history.push("/");
             window.location.reload();
             return null;
@@ -39,23 +40,25 @@ export const fetchPackages = createAsyncThunk(
     }
 );
 
-export const savePackage = createAsyncThunk(
-    'packages/savePackage',
-    async (packageData, { rejectWithValue }) => {
+export const saveService = createAsyncThunk(
+    'services/saveService',
+    async (serviceData, { rejectWithValue }) => {
         if (checkAUTH()) {
             try {
                 const response = await axios.post(
-                    `${API_URL}/SaveMainPackage`,
-                    packageData,
+                    `${API_URL}/SaveMainServices`,
+                    serviceData,
                     getAuthHeaders()
                 );
                 
+                // Check if the API returned an error message
                 if (response.data.errors) {
                     return rejectWithValue(response.data.errors);
                 }
                 
-                return { ...packageData, id: response.data.idOut };
+                return { ...serviceData, id: response.data.idOut };
             } catch (error) {
+                // Handle both API errors and network errors
                 const errorMessage = error.response?.data?.errors || 
                                    error.response?.data?.message || 
                                    error.message;
@@ -69,23 +72,25 @@ export const savePackage = createAsyncThunk(
     }
 );
 
-export const savePackageTranslation = createAsyncThunk(
-    'packages/savePackageTranslation',
+export const saveTranslation = createAsyncThunk(
+    'services/saveTranslation',
     async (translationData, { rejectWithValue }) => {
         if (checkAUTH()) {
             try {
                 const response = await axios.post(
-                    `${API_URL}/SavePackageTranslations`,
+                    `${API_URL}/SaveServicesTranslations`,
                     translationData,
                     getAuthHeaders()
                 );
                 
+                // Check if the API returned an error message
                 if (response.data.errors) {
                     return rejectWithValue(response.data.errors);
                 }
                 
                 return { ...translationData, id: response.data.idOut };
             } catch (error) {
+                // Handle both API errors and network errors
                 const errorMessage = error.response?.data?.errors || 
                                    error.response?.data?.message || 
                                    error.message;
@@ -99,24 +104,24 @@ export const savePackageTranslation = createAsyncThunk(
     }
 );
 
-const packagesSlice = createSlice({
-    name: 'packages',
+const servicesSlice = createSlice({
+    name: 'services',
     initialState: {
         items: [],
         status: 'idle',
         error: null,
-        currentPackage: null,
+        currentService: null,
         saveStatus: 'idle',
         saveError: null,
         translationStatus: 'idle',
         translationError: null
     },
     reducers: {
-        setCurrentPackage: (state, action) => {
-            state.currentPackage = action.payload;
+        setCurrentService: (state, action) => {
+            state.currentService = action.payload;
         },
-        clearCurrentPackage: (state) => {
-            state.currentPackage = null;
+        clearCurrentService: (state) => {
+            state.currentService = null;
         },
         resetSaveStatus: (state) => {
             state.saveStatus = 'idle';
@@ -129,64 +134,70 @@ const packagesSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchPackages.pending, (state) => {
+            // Fetch Services
+            .addCase(fetchServices.pending, (state) => {
                 state.status = 'loading';
                 state.error = null;
             })
-            .addCase(fetchPackages.fulfilled, (state, action) => {
-                 state.status = 'succeeded';
-                 state.items = action.payload;
+            .addCase(fetchServices.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.items = action.payload;
             })
-            .addCase(fetchPackages.rejected, (state, action) => {
+            .addCase(fetchServices.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload || action.error.message;
             })
             
-            .addCase(savePackage.pending, (state) => {
+            // Save Service
+            .addCase(saveService.pending, (state) => {
                 state.saveStatus = 'loading';
                 state.saveError = null;
             })
-            .addCase(savePackage.fulfilled, (state, action) => {
+            .addCase(saveService.fulfilled, (state, action) => {
                 state.saveStatus = 'succeeded';
-                const existingIndex = state.items.findIndex(p => p.id === action.payload.id);
+                const existingIndex = state.items.findIndex(s => s.id === action.payload.id);
                 if (existingIndex >= 0) {
                     state.items[existingIndex] = action.payload;
                 } else {
                     state.items.push(action.payload);
                 }
-                state.currentPackage = action.payload;
+                state.currentService = action.payload;
             })
-            .addCase(savePackage.rejected, (state, action) => {
+            .addCase(saveService.rejected, (state, action) => {
                 state.saveStatus = 'failed';
                 state.saveError = action.payload || action.error.message;
             })
             
-            .addCase(savePackageTranslation.pending, (state) => {
+            // Save Translation
+            .addCase(saveTranslation.pending, (state) => {
                 state.translationStatus = 'loading';
                 state.translationError = null;
             })
-            .addCase(savePackageTranslation.fulfilled, (state, action) => {
+            .addCase(saveTranslation.fulfilled, (state, action) => {
                 state.translationStatus = 'succeeded';
-                if (state.currentPackage) {
-                    const translationIndex = state.currentPackage.package_translations?.findIndex(
+                if (state.currentService) {
+                    const translationIndex = state.currentService.service_translations?.findIndex(
                         t => t.id === action.payload.id
                     );
                     
                     if (action.payload.delete) {
-                        state.currentPackage.package_translations = state.currentPackage.package_translations?.filter(
+                        // Remove deleted translation
+                        state.currentService.service_translations = state.currentService.service_translations?.filter(
                             t => t.id !== action.payload.id
                         );
                     } else if (translationIndex >= 0) {
-                        state.currentPackage.package_translations[translationIndex] = action.payload;
+                        // Update existing translation
+                        state.currentService.service_translations[translationIndex] = action.payload;
                     } else {
-                        state.currentPackage.package_translations = [
-                            ...(state.currentPackage.package_translations || []),
+                        // Add new translation
+                        state.currentService.service_translations = [
+                            ...(state.currentService.service_translations || []),
                             action.payload
                         ];
                     }
                 }
             })
-            .addCase(savePackageTranslation.rejected, (state, action) => {
+            .addCase(saveTranslation.rejected, (state, action) => {
                 state.translationStatus = 'failed';
                 state.translationError = action.payload || action.error.message;
             });
@@ -194,10 +205,10 @@ const packagesSlice = createSlice({
 });
 
 export const { 
-    setCurrentPackage, 
-    clearCurrentPackage,
+    setCurrentService, 
+    clearCurrentService,
     resetSaveStatus,
     resetTranslationStatus
-} = packagesSlice.actions;
+} = servicesSlice.actions;
 
-export default packagesSlice.reducer;
+export default servicesSlice.reducer;

@@ -100,3 +100,39 @@ a:active {
 .marked {
   color: $dark-green-color;
 }
+
+  .yellow-btn {
+    color: white;
+    background-color: $yellow-btn !important;
+    &:hover{
+      color: white;
+      background-color: $yellow-btn-hover !important;
+    }
+  }
+   
+  .green-btn {
+    color: #fff !important;
+    background-color: #00bc82 !important;
+    border-color: #00bc82 !important;
+    &:hover{
+       color: white;
+       background-color: #00bc82 !important; 
+        border-color: #00bc82 !important;
+    }
+  }
+  .purple-btn{
+    color: white;
+    background-color: $primary-color !important;
+    &:hover{
+       color: white;
+       background-color: $primary-color !important; 
+    }
+  }
+
+  input.form-control:hover,
+  input.form-control:focus,
+  select.form-select:hover,
+  select.form-select:focus {
+    border-color: #9375aa;
+    box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
+  }

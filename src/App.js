@@ -3,11 +3,12 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import "./styles/shared.scss";
 import QuestionsPage from "./pages/QuestionsPage";
 import ServicesPage from "./pages/ServicesPage";
 import UsersPage from "./pages/UsersPage";
+import PackagesPage from "./pages/PackagesPage";
 import PricingPage from "./pages/PricingPage";
-import PackagesPage from "./components/Packages/PricingPackages";
 import Login from "./components/login/login";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,8 +22,8 @@ function App() {
             <Route path="/users" element={<UsersPage />} />
             <Route path="/questions" element={<QuestionsPage />} />
             <Route exact path="/services" element={<ServicesPage />} />
+             <Route exact path="/packages" element={<PackagesPage />} />
             <Route exact path="/pricing" element={<PricingPage />} />
-            <Route exact path="/packages" element={<PackagesPage />} />
           </Routes>
           {/* </div> */}
         </Container>

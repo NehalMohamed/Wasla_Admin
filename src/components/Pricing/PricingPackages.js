@@ -6,7 +6,7 @@ import {
   getServiceGrpWithPkgs,
   AssignPackagesToService,
   SaveMainPackage,
-} from "../../slices/packagesSlice";
+} from "../../slices/pricingSlice";
 import PopUp from "../shared/popup/PopUp";
 import LoadingPage from "../Loader/LoadingPage";
 import { FaEdit, FaSearch } from "react-icons/fa";
@@ -14,14 +14,13 @@ import { FiDollarSign, FiLayers, FiEdit } from "react-icons/fi";
 
 import { Form, Row, Col, Button, Accordion, Table } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
-import SideMenu from "../Navbar/SideMenu";
 import PriceModal from "./PriceModal";
 import FeatureModal from "./Features";
-import "./Packages.scss";
+import "./pricing.scss";
 const PricingPackages = () => {
   const dispatch = useDispatch();
   const { services, packages, loading, error, PackagesWithService } =
-    useSelector((state) => state.packages);
+    useSelector((state) => state.pricing);
 
   const [formData, setFormData] = useState({
     service_id: 0,
@@ -92,13 +91,7 @@ const PricingPackages = () => {
     setPopupMessage(err);
   };
   return (
-    <div className="app-container">
-      <SideMenu onToggle={setMenuExpanded} />
-      <main
-        className={`main-content ${
-          menuExpanded ? "menu-expanded" : "menu-collapsed"
-        }`}
-      >
+      <>
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="mb-4 page-title">Packages Management</h2>
           <div className="mb-4 position-relative" style={{ width: "250px" }}>
@@ -166,6 +159,7 @@ const PricingPackages = () => {
             <Col xs={12} md={3} className="mb-2 mb-md-0">
               <Form.Group controlId="is_recommend">
                 <Form.Check
+                className="mt-30"
                   type="checkbox"
                   label="Recommended"
                   name="is_recommend"
@@ -189,7 +183,7 @@ const PricingPackages = () => {
               </Form.Group>
             </Col>
             <Col xs={12} md={3}>
-              <Button variant="primary" type="submit" className="w-100">
+              <Button variant="primary" type="submit" className="w-100 mt-30">
                 <FaPlus className="me-1" /> Add
               </Button>
             </Col>
@@ -279,7 +273,6 @@ const PricingPackages = () => {
               </Accordion>
             ))}
         </div>
-      </main>
       {loading ? <LoadingPage /> : null}
       <PopUp
         show={showPopup}
@@ -309,7 +302,7 @@ const PricingPackages = () => {
           showError={(error) => showError(error)}
         />
       ) : null}
-    </div>
+    </>
   );
 };
 

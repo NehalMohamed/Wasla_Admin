@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   AssignPriceToPackage,
   getServicePackagePrice,
-} from "../../slices/packagesSlice";
+} from "../../slices/pricingSlice";
 import { Modal, Button, Form, Col, Table, Row } from "react-bootstrap";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ const PriceModal = ({ show, onHide, pkg }) => {
   const [price, setPrice] = useState(0);
   const [salePrice, setSalePrice] = useState(0);
   const [currency, setCurrency] = useState("EGP");
-  const { Prices, loading, error } = useSelector((state) => state.packages);
+  const { Prices, loading, error } = useSelector((state) => state.pricing);
   const currencies = [
     { code: "USD", symbol: "$" },
     { code: "EUR", symbol: "€" },

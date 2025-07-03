@@ -41,14 +41,16 @@ const QuestionsList = ({
                 <button
                   className="btn btn-sm btn-warning me-2 yellow-btn"
                   onClick={() => handleEdit(entry)}
+                  title="Edit"
                 >
-                  <FaEdit className="me-1" /> Edit
+                  <FaEdit className="me-1" /> 
                 </button>
                 <button
                   className="btn btn-sm btn-danger"
                   onClick={() => handleDelete(entry)}
+                  title="Delete"
                 >
-                  <FaTrash className="me-1" /> Delete
+                  <FaTrash className="me-1" /> 
                 </button>
               </td>
             </tr>

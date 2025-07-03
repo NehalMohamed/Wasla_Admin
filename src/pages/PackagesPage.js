@@ -1,18 +1,18 @@
-import React , { useState } from "react";
-import PricingPackages from "../components/Pricing/PricingPackages";
+import React, { useState } from "react";
+import Packages from "../components/Packages/Packages";
 import SideMenu from "../components/Navbar/SideMenu";
 
-const PricingPage = () => {
+const PackagesPage = () => {
    const [menuExpanded, setMenuExpanded] = useState(true);
 
   return (
      <div className="app-container">
       <SideMenu onToggle={setMenuExpanded}/>
       <main className={`main-content ${menuExpanded ? 'menu-expanded' : 'menu-collapsed'}`}>
-      <PricingPackages />
+      <Packages />
       </main>
     </div>
   );
 };
 
-export default PricingPage;
+export default PackagesPage;

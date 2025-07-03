@@ -3,7 +3,7 @@ import {
   getPackageFeatures,
   getMainFeatures,
   AssignFeaturesToPackage,
-} from "../../slices/packagesSlice";
+} from "../../slices/pricingSlice";
 import { Modal, Button, Form, Col, Table, Row } from "react-bootstrap";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
   const dispatch = useDispatch();
   const [feature, setFeature] = useState(0);
   const { Features, PackageFeatures, loading, error } = useSelector(
-    (state) => state.packages
+    (state) => state.pricing
   );
   useEffect(() => {
     dispatch(getMainFeatures());
@@ -108,7 +108,7 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
             </Col>
           </Row>
 
-          <div className="table-wrapper">
+          <div className="feature-table table-wrapper">
             <table className="table">
               <thead>
                 <tr>

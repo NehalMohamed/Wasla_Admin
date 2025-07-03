@@ -1,29 +1,224 @@
-.result_list{
-.accordion{
-    margin-bottom: 20px;
-}
-th{
-    text-align: center;
-     padding: 10px;
-     text-transform: capitalize;
-}
-td{
-    padding: 10px;
-    text-align: center;
-}
-.action_btn{
-    margin: 0 3px;
-    background-color: transparent !important;
-    border: 0;
-    color: #00bc82;
-    &:hover{
-        background-color: transparent !important;
-        border: 0;
-    }
-}
-.accordion-button{
-    background-color: #b181d8;
-    color: white !important;
+$primary-color: #542D72;
+$secondary-color: lighten($primary-color, 20%);
+$light-purple: lighten($primary-color, 60%);
+$white: #ffffff;
+$light-gray: #f8f9fa;
+$deleted-row: #ffebee;
+
+.packages-container {
+  background-color: transparent;
+  width: 100%;
+  max-width: 100%;
 }
 
+.header-with-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.packages-heading {
+  font-size: 30px;
+  font-weight: bold;
+  color: #542D72;
+  margin: 0;
+}
+
+.search-container {
+  position: relative;
+  width: 250px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.search-input {
+  padding-left: 30px;
+  width: 100%;
+}
+
+.form-control,
+.form-select {
+  height: 55px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  height: 55px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: #542d72;
+  border-color: #542d72;
+}
+
+.btn-primary:hover {
+  background-color: #b181d6;
+  border-color: #b181d6;
+}
+
+/* Table Styling */
+.table-wrapper {
+  margin-top: 30px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: #f1e6fb;
+  color: #542d72;
+  text-align: center;
+  padding: 15px;
+}
+
+.table td {
+  text-align: center;
+  padding: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.yellow-btn {
+  color: white;
+  background-color: #ffb300e0 !important;
+}
+
+.yellow-btn:hover {
+  color: white;
+  background-color: #ffb300cb !important;
+}
+
+input.form-control:hover,
+input.form-control:focus,
+select.form-select:hover,
+select.form-select:focus {
+  border-color: #9375aa;
+  box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
+}
+
+.inactive-row {
+  background-color: #ffeeee !important;
+  color: #cc0000;
+  
+  td {
+    text-decoration: line-through;
+    opacity: 0.8;
+  }
+}
+
+.form-check-input:checked {
+  background-color: #542d72;
+  border-color: #542d72;
+}
+
+.expand-button {
+  background: none;
+  border: none;
+  color: $primary-color;
+  padding: 0;
+  cursor: pointer;
+}
+
+.translation-header {
+   background-color: #f1e6fb;
+  
+  td {
+    padding: 8px 15px !important;
+    border-top: none !important;
+    color: #542D72;
+    background-color: #f1e6fb;
+    text-align: center;
+  }
+}
+
+.translation-row {
+  background-color: $light-gray;
+  
+  td {
+    padding: 10px 15px 10px 50px !important;
+    border-top: none !important;
+  }
+}
+
+.translation-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.translation-item {
+  min-width: 200px;
+}
+
+.inactive-row .translation-header,
+.inactive-row .translation-row {
+  background-color: lighten($deleted-row, 3%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .packages-heading {
+    font-size: 24px;
+    line-height: 40px;
+  }
+
+  .header-with-search {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-container {
+    width: 100%;
+    margin-top: 15px;
+  }
+  
+  .packages-heading {
+    font-size: 24px;
+  }
+
+  .form-control,
+  .form-select {
+    height: 45px;
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    height: 45px;
+    font-size: 16px;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .translation-header {
+    display: none;
+  }
+  
+  .translation-row {
+    td {
+      padding: 10px !important;
+    }
+    
+    .d-flex {
+      flex-direction: column;
+      gap: 5px;
+      
+      > div {
+        width: 100% !important;
+      }
+    }
+  }
 }
