@@ -16,7 +16,7 @@ import { Form, Row, Col, Button, Accordion, Table } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import PriceModal from "./PriceModal";
 import FeatureModal from "./Features";
-import "./pricing.scss";
+import "./Pricing.scss";
 const PricingPackages = () => {
   const dispatch = useDispatch();
   const { services, packages, loading, error, PackagesWithService } =
@@ -91,188 +91,188 @@ const PricingPackages = () => {
     setPopupMessage(err);
   };
   return (
-      <>
-        <div className="d-flex justify-content-between align-items-center">
-          <h2 className="mb-4 page-title">Packages Management</h2>
-          <div className="mb-4 position-relative" style={{ width: "250px" }}>
-            <FaSearch
-              className="position-absolute"
-              style={{
-                left: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "#888",
-              }}
-            />
-            <input
-              type="text"
-              className="form-control ps-6"
-              placeholder="Search By Service ..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ paddingLeft: "30px" }}
-            />
-          </div>
+    <>
+      <div className="d-flex justify-content-between align-items-center">
+        <h2 className="mb-4 page-title">Packages Management</h2>
+        <div className="mb-4 position-relative" style={{ width: "250px" }}>
+          <FaSearch
+            className="position-absolute"
+            style={{
+              left: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "#888",
+            }}
+          />
+          <input
+            type="text"
+            className="form-control ps-6"
+            placeholder="Search By Service ..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ paddingLeft: "30px" }}
+          />
         </div>
-        <Form onSubmit={onSubmit} className="mb-4">
-          <Row className="mb-3">
-            <Col xs={12} md={3} className="mb-2 mb-md-0">
-              <Form.Group controlId="service">
-                <Form.Label>Service</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="service_id"
-                  onChange={handleInputChange}
-                  value={formData.service_id}
-                  required
-                >
-                  <option value="">Select Service</option>
-                  {services &&
-                    services?.map((service, index) => (
-                      <option key={index} value={service.id}>
-                        {service.service_code} - {service.default_name}
-                      </option>
-                    ))}
-                </Form.Control>
-              </Form.Group>
-            </Col>
-            <Col xs={12} md={3} className="mb-2 mb-md-0">
-              <Form.Group controlId="service">
-                <Form.Label>Package</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="package_id"
-                  onChange={handleInputChange}
-                  value={formData.package_id}
-                  required
-                >
-                  <option value="">Select Package</option>
-                  {packages &&
-                    packages?.map((pkg, index) => (
-                      <option key={index} value={pkg.id}>
-                        {pkg.package_code} - {pkg.default_name}
-                      </option>
-                    ))}
-                </Form.Control>
-              </Form.Group>
-            </Col>
-            <Col xs={12} md={3} className="mb-2 mb-md-0">
-              <Form.Group controlId="is_recommend">
-                <Form.Check
+      </div>
+      <Form onSubmit={onSubmit} className="mb-4">
+        <Row className="mb-3">
+          <Col xs={12} md={3} className="mb-2 mb-md-0">
+            <Form.Group controlId="service">
+              <Form.Label>Service</Form.Label>
+              <Form.Control
+                as="select"
+                name="service_id"
+                onChange={handleInputChange}
+                value={formData.service_id}
+                required
+              >
+                <option value="">Select Service</option>
+                {services &&
+                  services?.map((service, index) => (
+                    <option key={index} value={service.id}>
+                      {service.service_code} - {service.default_name}
+                    </option>
+                  ))}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col xs={12} md={3} className="mb-2 mb-md-0">
+            <Form.Group controlId="service">
+              <Form.Label>Package</Form.Label>
+              <Form.Control
+                as="select"
+                name="package_id"
+                onChange={handleInputChange}
+                value={formData.package_id}
+                required
+              >
+                <option value="">Select Package</option>
+                {packages &&
+                  packages?.map((pkg, index) => (
+                    <option key={index} value={pkg.id}>
+                      {pkg.package_code} - {pkg.default_name}
+                    </option>
+                  ))}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col xs={12} md={3} className="mb-2 mb-md-0">
+            <Form.Group controlId="is_recommend">
+              <Form.Check
                 className="mt-30"
-                  type="checkbox"
-                  label="Recommended"
-                  name="is_recommend"
-                  checked={formData.is_recommend}
-                  onChange={
-                    (e) => {
-                      setFormData({
-                        ...formData,
-                        is_recommend: e.target.checked,
-                      });
-                    }
-
-                    // onInputChange({
-                    //   target: {
-                    //     name: "is_recommend",
-                    //     value: e.target.checked,
-                    //   },
-                    // })
+                type="checkbox"
+                label="Recommended"
+                name="is_recommend"
+                checked={formData.is_recommend}
+                onChange={
+                  (e) => {
+                    setFormData({
+                      ...formData,
+                      is_recommend: e.target.checked,
+                    });
                   }
-                />
-              </Form.Group>
-            </Col>
-            <Col xs={12} md={3}>
-              <Button variant="primary" type="submit" className="w-100 mt-30">
-                <FaPlus className="me-1" /> Add
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-        <div className="result_list">
-          {PackagesWithService &&
-            PackagesWithService?.filter((item) =>
-              item.service_default_name
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase())
-            ).map((row, index) => (
-              <Accordion defaultActiveKey={index}>
-                <Accordion.Item eventKey={index}>
-                  <Accordion.Header>
-                    {row.service_code} - {row.service_default_name}
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <Table responsive>
-                      <thead>
-                        <tr>
-                          <th>Package Code</th>
-                          <th>package name</th>
-                          <th>is recommend</th>
-                          <th>is custom</th>
-                          <th>Order</th>
-                          <th>actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {row &&
-                          row.pkgs &&
-                          row.pkgs.map((pkg, key) => (
-                            <tr key={key}>
-                              <td>{pkg.package_code}</td>
-                              <td>{pkg.package_default_name}</td>
-                              <td>
-                                {pkg.is_recommend ? (
-                                  <span>✔️</span>
-                                ) : (
-                                  <span>❌</span>
-                                )}
-                              </td>
-                              <td>
-                                {pkg.is_custom ? (
-                                  <span>✔️</span>
-                                ) : (
-                                  <span>❌</span>
-                                )}
-                              </td>
-                              <td>{pkg.order}</td>
-                              <td>
-                                {/* <button
+
+                  // onInputChange({
+                  //   target: {
+                  //     name: "is_recommend",
+                  //     value: e.target.checked,
+                  //   },
+                  // })
+                }
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={12} md={3}>
+            <Button variant="primary" type="submit" className="w-100 mt-30">
+              <FaPlus className="me-1" /> Add
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+      <div className="result_list">
+        {PackagesWithService &&
+          PackagesWithService?.filter((item) =>
+            item.service_default_name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          ).map((row, index) => (
+            <Accordion defaultActiveKey={index}>
+              <Accordion.Item eventKey={index}>
+                <Accordion.Header>
+                  {row.service_code} - {row.service_default_name}
+                </Accordion.Header>
+                <Accordion.Body>
+                  <Table responsive>
+                    <thead>
+                      <tr>
+                        <th>Package Code</th>
+                        <th>package name</th>
+                        <th>is recommend</th>
+                        <th>is custom</th>
+                        <th>Order</th>
+                        <th>actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {row &&
+                        row.pkgs &&
+                        row.pkgs.map((pkg, key) => (
+                          <tr key={key}>
+                            <td>{pkg.package_code}</td>
+                            <td>{pkg.package_default_name}</td>
+                            <td>
+                              {pkg.is_recommend ? (
+                                <span>✔️</span>
+                              ) : (
+                                <span>❌</span>
+                              )}
+                            </td>
+                            <td>
+                              {pkg.is_custom ? (
+                                <span>✔️</span>
+                              ) : (
+                                <span>❌</span>
+                              )}
+                            </td>
+                            <td>{pkg.order}</td>
+                            <td>
+                              {/* <button
                                   className="btn btn-sm action_btn"
                                   disabled={loading}
                                   onClick={() => EditPackage(pkg)}
                                 >
                                   <FiEdit className="me-1" />
                                 </button> */}
-                                <button
-                                  className="btn btn-sm action_btn"
-                                  disabled={loading}
-                                  onClick={() => {
-                                    setActivePkg(pkg);
-                                    setShowPriceModal(true);
-                                  }}
-                                >
-                                  <FiDollarSign className="me-1" />
-                                </button>
-                                <button
-                                  className="btn btn-sm action_btn"
-                                  disabled={loading}
-                                  onClick={() => {
-                                    setActivePkg(pkg);
-                                    setShowFeatureModal(true);
-                                  }}
-                                >
-                                  <FiLayers className="me-1" />
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </Table>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-            ))}
-        </div>
+                              <button
+                                className="btn btn-sm action_btn"
+                                disabled={loading}
+                                onClick={() => {
+                                  setActivePkg(pkg);
+                                  setShowPriceModal(true);
+                                }}
+                              >
+                                <FiDollarSign className="me-1" />
+                              </button>
+                              <button
+                                className="btn btn-sm action_btn"
+                                disabled={loading}
+                                onClick={() => {
+                                  setActivePkg(pkg);
+                                  setShowFeatureModal(true);
+                                }}
+                              >
+                                <FiLayers className="me-1" />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </Table>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          ))}
+      </div>
       {loading ? <LoadingPage /> : null}
       <PopUp
         show={showPopup}
