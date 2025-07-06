@@ -9,7 +9,7 @@ import {
 } from "../../slices/pricingSlice";
 import PopUp from "../shared/popup/PopUp";
 import LoadingPage from "../Loader/LoadingPage";
-import { FaEdit, FaSearch } from "react-icons/fa";
+import { FaEdit, FaSearch, FaCheck, FaTimes } from "react-icons/fa";
 import { FiDollarSign, FiLayers, FiEdit } from "react-icons/fi";
 
 import { Form, Row, Col, Button, Accordion, Table } from "react-bootstrap";
@@ -196,7 +196,7 @@ const PricingPackages = () => {
               .toLowerCase()
               .includes(searchTerm.toLowerCase())
           ).map((row, index) => (
-            <Accordion defaultActiveKey={index}>
+            <Accordion key ={index} defaultActiveKey={index}>
               <Accordion.Item eventKey={index}>
                 <Accordion.Header>
                   {row.service_code} - {row.service_default_name}
@@ -206,9 +206,9 @@ const PricingPackages = () => {
                     <thead>
                       <tr>
                         <th>Package Code</th>
-                        <th>package name</th>
-                        <th>is recommend</th>
-                        <th>is custom</th>
+                        <th>Package Name</th>
+                        <th>Recommend</th>
+                        <th>Custom</th>
                         <th>Order</th>
                         <th>actions</th>
                       </tr>
@@ -220,19 +220,19 @@ const PricingPackages = () => {
                           <tr key={key}>
                             <td>{pkg.package_code}</td>
                             <td>{pkg.package_default_name}</td>
-                            <td>
-                              {pkg.is_recommend ? (
-                                <span>✔️</span>
-                              ) : (
-                                <span>❌</span>
-                              )}
+                             <td>
+                                {pkg.is_recommend ? (
+                                    <FaCheck className="text-success" />
+                                ) : (
+                                    <FaTimes className="text-danger" />
+                                )}
                             </td>
                             <td>
-                              {pkg.is_custom ? (
-                                <span>✔️</span>
-                              ) : (
-                                <span>❌</span>
-                              )}
+                                {pkg.is_custom ? (
+                                    <FaCheck className="text-success" />
+                                ) : (
+                                    <FaTimes className="text-danger" />
+                                )}
                             </td>
                             <td>{pkg.order}</td>
                             <td>
@@ -244,24 +244,24 @@ const PricingPackages = () => {
                                   <FiEdit className="me-1" />
                                 </button> */}
                               <button
-                                className="btn btn-sm action_btn"
+                                className="btn btn-sm btn-info me-2 green-btn"
                                 disabled={loading}
                                 onClick={() => {
                                   setActivePkg(pkg);
                                   setShowPriceModal(true);
                                 }}
                               >
-                                <FiDollarSign className="me-1" />
+                                <FiDollarSign/>
                               </button>
                               <button
-                                className="btn btn-sm action_btn"
+                                className="btn btn-sm btn-warning me-2 yellow-btn"
                                 disabled={loading}
                                 onClick={() => {
                                   setActivePkg(pkg);
                                   setShowFeatureModal(true);
                                 }}
                               >
-                                <FiLayers className="me-1" />
+                                <FiLayers/>
                               </button>
                             </td>
                           </tr>

@@ -15,7 +15,7 @@ export const checkAUTH = () => {
   if (authToken && !isTokenExpired(authToken)) {
     return true;
   } else {
-    console.log("token is null Or expired");
+    // console.log("token is null Or expired");
     return false;
   }
 };

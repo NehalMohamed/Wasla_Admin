@@ -1,41 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
-import { fetchServices } from '../../slices/servicesSlice';
-import ServicesForm from './ServicesForm';
-import ServicesList from './ServicesList';
+import { fetchFeatures } from '../../slices/featuresSlice';
+import FeaturesForm from './FeaturesForm';
+import FeaturesList from './FeaturesList';
 import PopUp from '../shared/popup/PopUp';
 import LoadingPage from '../Loader/LoadingPage';
-import './Services.scss';
+import './Features.scss';
 
-const Services = () => {
+const Features = () => {
   const dispatch = useDispatch();
-  const { items, status, error } = useSelector(state => state.services);
+  const { items, status, error } = useSelector(state => state.features);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('alert');
 
   useEffect(() => {
-    const loadServices = async () => {
+    const loadFeatures = async () => {
       try {
-        await dispatch(fetchServices()).unwrap();
+        await dispatch(fetchFeatures()).unwrap();
       } catch (error) {
-        setPopupMessage('Failed to load services');
+        console.log(error)
+        setPopupMessage('Failed to load features');
         setPopupType('error');
         setShowPopup(true);
       }
     };
-    loadServices();
+    loadFeatures();
   }, [dispatch]);
 
-  const filteredServices = items.filter(service =>
-    service.service_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    service.default_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFeatures = items.filter(feature =>
+    feature.feature_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    feature.feature_default_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="services-container">
+    <div className="features-container">
       {status === 'loading' && <LoadingPage />}
 
       <PopUp
@@ -47,7 +48,7 @@ const Services = () => {
       />
 
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="services-heading mb-0">Services Management</h2>
+        <h2 className="features-heading mb-0">Features Management</h2>
         <div className="position-relative" style={{ width: "250px" }}>
           <FaSearch
             className="position-absolute"
@@ -61,7 +62,7 @@ const Services = () => {
           <input
             type="text"
             className="form-control ps-6"
-            placeholder="Search services..."
+            placeholder="Search features..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ paddingLeft: "30px" }}
@@ -69,14 +70,14 @@ const Services = () => {
         </div>
       </div>
 
-      <ServicesForm
+      <FeaturesForm
         setPopupMessage={setPopupMessage}
         setPopupType={setPopupType}
         setShowPopup={setShowPopup}
       />
 
-      <ServicesList
-        services={filteredServices}
+      <FeaturesList
+        features={filteredFeatures}
         loading={status === 'loading'}
         setPopupMessage={setPopupMessage}
         setPopupType={setPopupType}
@@ -86,4 +87,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Features;

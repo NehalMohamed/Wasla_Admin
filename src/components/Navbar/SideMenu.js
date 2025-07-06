@@ -10,6 +10,7 @@ import {
   FiChevronRight,
   FiSearch,
   FiDollarSign,
+  FiLayers
 } from "react-icons/fi";
 import { IoLogoFirebase } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
@@ -103,6 +104,14 @@ const SideMenu = ({ onToggle }) => {
           >
             <FiHelpCircle className="menu-icon" />
             {isExpanded && <span>Questions</span>}
+          </Nav.Link>
+          <Nav.Link
+            href="/features"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/features")}
+          >
+            <FiLayers className="menu-icon" />
+            {isExpanded && <span>Features</span>}
           </Nav.Link>
           <Nav.Link
             href="/services"

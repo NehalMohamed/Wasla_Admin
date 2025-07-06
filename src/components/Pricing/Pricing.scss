@@ -22,8 +22,12 @@ td{
     }
 }
 .accordion-button{
-    background-color: #b181d8;
-    color: white !important;
+    background-color: #f1e6fb;
+    color: #3f3f3f !important;
+    font-weight: bold;
+     &:hove{
+        border-color: #542D72 !important;
+     }
 }
 
 

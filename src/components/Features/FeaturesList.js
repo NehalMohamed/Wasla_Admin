@@ -2,64 +2,67 @@ import React, { useState } from 'react';
 import { FaEdit, FaTrash, FaGlobe, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { setCurrentService, saveService, saveTranslation, fetchServices } from '../../slices/servicesSlice';
-import TranslationModal from './TranslationModal';
+import { setCurrentFeature, saveFeature, saveFeatureTranslation, fetchFeatures } from '../../slices/featuresSlice';
+import FeatureTranslationModal from './FeatureTranslationModal';
 import PopUp from '../shared/popup/PopUp';
 
-const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setShowPopup }) => {
+const FeaturesList = ({ features, loading, setPopupMessage, setPopupType, setShowPopup }) => {
     const dispatch = useDispatch();
     const [showTranslationModal, setShowTranslationModal] = useState(false);
     const [currentTranslation, setCurrentTranslation] = useState(null);
     const [expandedRows, setExpandedRows] = useState([]);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [serviceToDelete, setServiceToDelete] = useState(null);
+    const [featureToDelete, setFeatureToDelete] = useState(null);
     const [showTranslationDeleteConfirm, setShowTranslationDeleteConfirm] = useState(false);
     const [translationToDelete, setTranslationToDelete] = useState(null);
 
-    const handleEdit = async (service) => {
+    const handleEdit = async (feature) => {
         try {
-            dispatch(setCurrentService(service))
-            // Refresh the services data after successful deletion
-            dispatch(fetchServices());
+            dispatch(setCurrentFeature(feature))
+            dispatch(fetchFeatures());
         } catch (error) {
             const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to edit service';
+                            error.message || 'Failed to edit feature';
             setPopupMessage(errorMessage);
             setPopupType('error');
             setShowPopup(true);
         }
     };
 
-     const handleDeleteClick = (service) => {
-        setServiceToDelete(service);
+     const handleDeleteClick = (feature) => {
+        setFeatureToDelete(feature);
         setShowDeleteConfirm(true);
     };
 
     const handleDeleteConfirm = async () => {
         setShowDeleteConfirm(false);
             try {
-                const result = await dispatch(saveService({ ...serviceToDelete, active: false })).unwrap();
-                dispatch(fetchServices());
-                setPopupMessage('Service deleted successfully');
+                const result = await dispatch(saveFeature({ 
+                    ...featureToDelete, 
+                    active: false,
+                    delete: true 
+                })).unwrap();
+                dispatch(fetchFeatures());
+                setPopupMessage('Feature deleted successfully');
                 setPopupType('success');
                 setShowPopup(true);
             } catch (error) {
                 const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to delete service';
+                            error.message || 'Failed to delete feature';
                 setPopupMessage(errorMessage);
                 setPopupType('error');
                 setShowPopup(true);
             }
-            setServiceToDelete(null);
+            setFeatureToDelete(null);
     };
 
-    const handleAddTranslation = (service) => {
+    const handleAddTranslation = (feature) => {
         setCurrentTranslation({
             id: 0,
-            service_id: service.id,
+            feature_id: feature.feature_id,
             lang_code: 'en',
-            productname: '',
-            product_desc: '',
+            feature_name: '',
+            feature_description: '',
             delete: false
         });
         setShowTranslationModal(true);
@@ -73,8 +76,11 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
    const handleDeleteTranslationConfirm = async () => {
     setShowTranslationDeleteConfirm(false);
     try {
-        const result = await dispatch(saveTranslation({ ...translationToDelete, delete: true })).unwrap();
-        dispatch(fetchServices());
+        const result = await dispatch(saveFeatureTranslation({ 
+            ...translationToDelete, 
+            delete: true 
+        })).unwrap();
+        dispatch(fetchFeatures());
         setPopupMessage('Translation deleted successfully');
         setPopupType('success');
         setShowPopup(true);
@@ -124,8 +130,8 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                     <div className="d-flex justify-content-between align-items-center">
                         <div style={{ width: '85%', display: 'flex' }}>
                             <div style={{ width: '25%' }}>{translation.lang_code}</div>
-                            <div style={{ width: '35%' }}>{translation.productname}</div>
-                            <div style={{ width: '40%' }}>{translation.product_desc}</div>
+                            <div style={{ width: '35%' }}>{translation.feature_name}</div>
+                            <div style={{ width: '40%' }}>{translation.feature_description}</div>
                         </div>
                         <div>
                             <button
@@ -166,51 +172,52 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                         </tr>
                     </thead>
                     <tbody>
-                        {services.map(service => (
-                            <React.Fragment key={service.id}>
+                        {features.map(feature => (
+                            <React.Fragment key={feature.feature_id}>
                                 <tr>
                                     <td>
-                                        {service.service_translations?.length > 0 && (
+                                        {feature.features_Translations?.length > 0 && (
                                             <button
                                                 className="expand-button me-3"
-                                                onClick={() => toggleRow(service.id)}
+                                                onClick={() => toggleRow(feature.feature_id)}
                                             >
-                                                {expandedRows.includes(service.id) ? <FaChevronUp /> : <FaChevronDown />}
+                                                {expandedRows.includes(feature.feature_id) ? <FaChevronUp /> : <FaChevronDown />}
                                             </button>
                                         )}
-                                        {service.service_code}
+                                        {feature.feature_code}
                                     </td>
-                                    <td>{service.default_name}</td>
+                                    <td>{feature.feature_default_name}</td>
                                     <td>
                                         <div className="d-flex">
                                             <button
                                                 className="btn btn-sm btn-info me-2 green-btn"
-                                                onClick={() => handleAddTranslation(service)}
+                                                onClick={() => handleAddTranslation(feature)}
                                                 title="Add Translation"
                                             >
                                                 <FaGlobe />
                                             </button>
                                             <button
                                                 className="btn btn-sm btn-warning me-2 yellow-btn"
-                                                onClick={() => handleEdit(service)}
+                                                onClick={() => handleEdit(feature)}
                                                 title="Edit"
                                             >
                                                 <FaEdit />
                                             </button>
                                             <button
                                                 className="btn btn-sm btn-danger"
-                                                onClick={() => handleDeleteClick(service)}
+                                                onClick={() => handleDeleteClick(feature)}
                                                 title="Delete"
+                                                // disabled={!feature.active}
                                             >
                                                 <FaTrash />
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                {expandedRows.includes(service.id) && service.service_translations?.length > 0 && (
+                                {expandedRows.includes(feature.feature_id) && feature.features_Translations?.length > 0 && (
                                     <>
                                         {renderTranslationHeader()}
-                                        {service.service_translations?.map(translation =>
+                                        {feature.features_Translations?.map(translation =>
                                             renderTranslationRow(translation)
                                         )}
                                     </>
@@ -221,7 +228,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                 </table>
             </div>
 
-            <TranslationModal
+            <FeatureTranslationModal
                 show={showTranslationModal}
                 setShow={setShowTranslationModal}
                 currentTranslation={currentTranslation}
@@ -231,12 +238,12 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                 setShowPopup={setShowPopup}
             />
 
-            {/* Service Delete Confirmation Popup */}
+            {/* Feature Delete Confirmation Popup */}
             <PopUp
                 show={showDeleteConfirm}
                 closeAlert={() => setShowDeleteConfirm(false)}
                 confirmAction={handleDeleteConfirm}
-                msg="Are you sure you want to delete this service?"
+                msg="Are you sure you want to delete this feature?"
                 type="confirm"
                 confirmText="Delete"
                 cancelText="Cancel"
@@ -256,4 +263,4 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
     );
 };
 
-export default ServicesList;
+export default FeaturesList;
