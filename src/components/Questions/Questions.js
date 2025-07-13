@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
-import { fetchServices } from '../../slices/servicesSlice';
-import ServicesForm from './ServicesForm';
-import ServicesList from './ServicesList';
+import { fetchQuestions } from '../../slices/questionsSlice';
+import QuestionsForm from './QuestionsForm';
+import QuestionsList from './QuestionsList';
 import PopUp from '../shared/popup/PopUp';
 import LoadingPage from '../Loader/LoadingPage';
-import './Services.scss';
+import './Questions.scss';
 
-// Main component for Services Management
-const Services = () => {
+// Main component for Questions Management
+const Questions = () => {
   const dispatch = useDispatch();
-  // Get services data and status from Redux store
-  const { items, status, error } = useSelector(state => state.services);
+  // Get questions data and status from Redux store
+  const { items, status, error } = useSelector(state => state.questions);
   // State for search functionality
   const [searchTerm, setSearchTerm] = useState('');
   // State for popup management
@@ -20,28 +20,28 @@ const Services = () => {
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('alert');
 
-  // Fetch services on component mount
+  // Fetch questions on component mount
   useEffect(() => {
-    const loadServices = async () => {
+    const loadQuestions = async () => {
       try {
-        await dispatch(fetchServices()).unwrap();
+        await dispatch(fetchQuestions()).unwrap();
       } catch (error) {
-        setPopupMessage('Failed to load services');
+        console.log(error)
+        setPopupMessage('Failed to load questions');
         setPopupType('error');
         setShowPopup(true);
       }
     };
-    loadServices();
+    loadQuestions();
   }, [dispatch]);
 
-  // Filter services based on search term (code or name)
-  const filteredServices = items.filter(service =>
-    service.service_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    service.default_name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filter questions based on search term
+  const filteredQuestions = items.filter(question =>
+    question.ques_title_default.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="services-container">
+    <div className="questions-container">
       {/* Show loading spinner when data is loading */}
       {status === 'loading' && <LoadingPage />}
 
@@ -56,7 +56,7 @@ const Services = () => {
 
       {/* Header section with title and search bar */}
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="services-heading mb-0">Services Management</h2>
+        <h2 className="questions-heading mb-0">Questions Management</h2>
         <div className="position-relative" style={{ width: "250px" }}>
           <FaSearch
             className="position-absolute"
@@ -70,7 +70,7 @@ const Services = () => {
           <input
             type="text"
             className="form-control ps-6"
-            placeholder="Search services..."
+            placeholder="Search questions..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ paddingLeft: "30px" }}
@@ -78,16 +78,16 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Form component for adding/editing services */}
-      <ServicesForm
+      {/* Form component for adding/editing questions */}
+      <QuestionsForm
         setPopupMessage={setPopupMessage}
         setPopupType={setPopupType}
         setShowPopup={setShowPopup}
       />
 
-      {/* List component displaying all services */}
-      <ServicesList
-        services={filteredServices}
+      {/* List component displaying all questions */}
+      <QuestionsList
+        questions={filteredQuestions}
         loading={status === 'loading'}
         setPopupMessage={setPopupMessage}
         setPopupType={setPopupType}
@@ -97,4 +97,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Questions;

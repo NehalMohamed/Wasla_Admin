@@ -17,13 +17,13 @@ const getAuthHeaders = () => {
     };
 };
 
-export const fetchQuestions = createAsyncThunk(
-    'questions/fetchQuestions',
+export const fetchFeatures = createAsyncThunk(
+    'features/fetchFeatures',
     async (_, { rejectWithValue }) => {
         if (checkAUTH()) {
             try {
                 const response = await axios.post(
-                    `${API_URL}/getAdminQuesList`,
+                    `${API_URL}/getFeaturesWithTranslations`,
                     {},
                     getAuthHeaders()
                 );
@@ -39,14 +39,14 @@ export const fetchQuestions = createAsyncThunk(
     }
 );
 
-export const saveQuestion = createAsyncThunk(
-    'questions/saveQuestion',
-    async (questionData, { rejectWithValue }) => {
+export const saveFeature = createAsyncThunk(
+    'features/saveFeature',
+    async (featureData, { rejectWithValue }) => {
         if (checkAUTH()) {
             try {
                 const response = await axios.post(
-                    `${API_URL}/saveMainQuestions`,
-                    questionData,
+                    `${API_URL}/SaveMainFeature`,
+                    featureData,
                     getAuthHeaders()
                 );
                 
@@ -54,7 +54,7 @@ export const saveQuestion = createAsyncThunk(
                     return rejectWithValue(response.data.errors);
                 }
                 
-                return { ...questionData, ques_id: response.data.idOut };
+                return { ...featureData, id: response.data.idOut };
             } catch (error) {
                 const errorMessage = error.response?.data?.errors || 
                                    error.response?.data?.message || 
@@ -69,13 +69,13 @@ export const saveQuestion = createAsyncThunk(
     }
 );
 
-export const saveQuestionTranslation = createAsyncThunk(
-    'questions/saveQuestionTranslation',
+export const saveFeatureTranslation = createAsyncThunk(
+    'features/saveFeatureTranslation',
     async (translationData, { rejectWithValue }) => {
         if (checkAUTH()) {
             try {
                 const response = await axios.post(
-                    `${API_URL}/saveQuestionsTranslation`,
+                    `${API_URL}/SaveFeatureTranslations`,
                     translationData,
                     getAuthHeaders()
                 );
@@ -99,24 +99,24 @@ export const saveQuestionTranslation = createAsyncThunk(
     }
 );
 
-const questionsSlice = createSlice({
-    name: 'questions',
+const featuresSlice = createSlice({
+    name: 'features',
     initialState: {
         items: [],
         status: 'idle',
         error: null,
-        currentQuestion: null,
+        currentFeature: null,
         saveStatus: 'idle',
         saveError: null,
         translationStatus: 'idle',
         translationError: null
     },
     reducers: {
-        setCurrentQuestion: (state, action) => {
-            state.currentQuestion = action.payload;
+        setCurrentFeature: (state, action) => {
+            state.currentFeature = action.payload;
         },
-        clearCurrentQuestion: (state) => {
-            state.currentQuestion = null;
+        clearCurrentFeature: (state) => {
+            state.currentFeature = null;
         },
         resetSaveStatus: (state) => {
             state.saveStatus = 'idle';
@@ -129,70 +129,70 @@ const questionsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // Fetch Questions
-            .addCase(fetchQuestions.pending, (state) => {
+            // Fetch Features
+            .addCase(fetchFeatures.pending, (state) => {
                 state.status = 'loading';
                 state.error = null;
             })
-            .addCase(fetchQuestions.fulfilled, (state, action) => {
+            .addCase(fetchFeatures.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.items = action.payload;
             })
-            .addCase(fetchQuestions.rejected, (state, action) => {
+            .addCase(fetchFeatures.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload || action.error.message;
             })
             
-            // Save Question
-            .addCase(saveQuestion.pending, (state) => {
+            // Save Feature
+            .addCase(saveFeature.pending, (state) => {
                 state.saveStatus = 'loading';
                 state.saveError = null;
             })
-            .addCase(saveQuestion.fulfilled, (state, action) => {
+            .addCase(saveFeature.fulfilled, (state, action) => {
                 state.saveStatus = 'succeeded';
-                const existingIndex = state.items.findIndex(q => q.ques_id === action.payload.ques_id);
+                const existingIndex = state.items.findIndex(f => f.feature_id === action.payload.id);
                 if (existingIndex >= 0) {
                     state.items[existingIndex] = action.payload;
                 } else {
                     state.items.push(action.payload);
                 }
-                state.currentQuestion = action.payload;
+                state.currentFeature = action.payload;
             })
-            .addCase(saveQuestion.rejected, (state, action) => {
+            .addCase(saveFeature.rejected, (state, action) => {
                 state.saveStatus = 'failed';
                 state.saveError = action.payload || action.error.message;
             })
             
             // Save Translation
-            .addCase(saveQuestionTranslation.pending, (state) => {
+            .addCase(saveFeatureTranslation.pending, (state) => {
                 state.translationStatus = 'loading';
                 state.translationError = null;
             })
-            .addCase(saveQuestionTranslation.fulfilled, (state, action) => {
+            .addCase(saveFeatureTranslation.fulfilled, (state, action) => {
                 state.translationStatus = 'succeeded';
-                if (state.currentQuestion) {
-                    const translationIndex = state.currentQuestion.questions?.findIndex(
+                if (state.currentFeature) {
+                    const translationIndex = state.currentFeature.features_Translations?.findIndex(
                         t => t.id === action.payload.id
                     );
                     
                     if (action.payload.delete) {
                         // Remove deleted translation
-                        state.currentQuestion.questions = state.currentQuestion.questions?.filter(
+                        state.currentFeature.features_Translations = state.currentFeature.features_Translations?.filter(
                             t => t.id !== action.payload.id
                         );
                     } else if (translationIndex >= 0) {
                         // Update existing translation
-                        state.currentQuestion.questions[translationIndex] = action.payload;
+                        state.currentFeature.features_Translations[translationIndex] = action.payload;
                     } else {
                         // Add new translation
-                        state.currentQuestion.questions = [
-                            ...(state.currentQuestion.questions || []),
+                        state.currentFeature.features_Translations = [
+                            ...(state.currentFeature.features_Translations || []),
                             action.payload
                         ];
                     }
                 }
             })
-            .addCase(saveQuestionTranslation.rejected, (state, action) => {
+            .addCase(saveFeatureTranslation.rejected, (state, action) => {
                 state.translationStatus = 'failed';
                 state.translationError = action.payload || action.error.message;
             });
@@ -200,10 +200,10 @@ const questionsSlice = createSlice({
 });
 
 export const { 
-    setCurrentQuestion, 
-    clearCurrentQuestion,
+    setCurrentFeature, 
+    clearCurrentFeature,
     resetSaveStatus,
     resetTranslationStatus
-} = questionsSlice.actions;
+} = featuresSlice.actions;
 
-export default questionsSlice.reducer;
+export default featuresSlice.reducer;

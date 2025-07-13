@@ -1,6 +1,8 @@
 
 import { jwtDecode } from "jwt-decode";
 
+// Check if Token Expired
+
 const isTokenExpired = (token) => {
   try {
     const decoded = jwtDecode(token);
@@ -10,12 +12,14 @@ const isTokenExpired = (token) => {
   }
 };
 
+// Check Token if exist or expired
+
 export const checkAUTH = () => {
   const authToken = localStorage.getItem("token");
   if (authToken && !isTokenExpired(authToken)) {
     return true;
   } else {
-    console.log("token is null Or expired");
+    // console.log("token is null Or expired");
     return false;
   }
 };

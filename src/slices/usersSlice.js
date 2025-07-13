@@ -1,11 +1,13 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-const BASE_URL_AUTH = process.env.REACT_APP_AUTH_API_URL;
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+const BASE_URL = process.env.REACT_APP_AUTH_API_URL;
+
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.post(BASE_URL_AUTH + "/GetUsers");
+      const response = await axios.post(`${BASE_URL}/GetUsers`);
       return response.data.users;
     } catch (error) {
       return rejectWithValue(error.response.data);

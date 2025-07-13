@@ -2,37 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaPlus, FaEdit } from 'react-icons/fa';
 import { Spinner, Form, Button, Row, Col } from 'react-bootstrap';
-import { saveService, fetchServices, clearCurrentService } from '../../slices/servicesSlice';
+import { saveQuestion, fetchQuestions, clearCurrentQuestion } from '../../slices/questionsSlice';
 
-// Component for the service form (add/edit)
-const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
+// Component for the question form (add/edit)
+const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   const dispatch = useDispatch();
-  // Get current service and save status from Redux store
-  const { currentService, saveStatus } = useSelector(state => state.services);
+  // Get current question and save status from Redux store
+  const { currentQuestion, saveStatus } = useSelector(state => state.questions);
   // Form state
   const [formData, setFormData] = useState({
-    id: 0,
-    service_code: '',
-    default_name: ''
+    ques_id: 0,
+    ques_title_default: '',
+    ques_type: '',
+    order: 0,
+    active: true
   });
 
-  // Update form data when currentService changes (for editing)
+  // Update form data when currentQuestion changes (for editing)
   useEffect(() => {
-    if (currentService) {
+    if (currentQuestion) {
       setFormData({
-        id: currentService.id,
-        service_code: currentService.service_code,
-        default_name: currentService.default_name
+        ques_id: currentQuestion.ques_id,
+        ques_title_default: currentQuestion.ques_title_default,
+        ques_type:'',
+        order: currentQuestion.order || 0,
+        active: currentQuestion.active
       });
     } else {
-      // Reset form when no service is selected
+      // Reset form when no question is selected
       setFormData({
-        id: 0,
-        service_code: '',
-        default_name: ''
+        ques_id: 0,
+        ques_title_default: '',
+        ques_type: '',
+        order: 0,
+        active: true
       });
     }
-  }, [currentService]);
+  }, [currentQuestion]);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -47,26 +53,27 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Save service to backend
+      // Save question to backend
       const result = await dispatch(
-        saveService({
+        saveQuestion({
           ...formData,
-          active: true
+          active: true,
+          delete: false
         })
       ).unwrap();
 
-      // Refresh services list and reset form
-      dispatch(fetchServices());
-      dispatch(clearCurrentService());
+      // Refresh questions list and reset form
+      dispatch(fetchQuestions());
+      dispatch(clearCurrentQuestion());
       
       // Show success message
-      setPopupMessage(formData.id ? 'Service updated successfully' : 'Service added successfully');
+      setPopupMessage(formData.ques_id ? 'Question updated successfully' : 'Question added successfully');
       setPopupType('success');
       setShowPopup(true);
     } catch (error) {
-      // Handle errors (either string or error object)
+      // Handle errors
       const errorMessage = typeof error === 'string' ? error : 
-                          error.message || 'Failed to save service';
+                          error.message || 'Failed to save question';
       
       setPopupMessage(errorMessage);
       setPopupType('error');
@@ -77,30 +84,30 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Row className="mb-3">
-        {/* Service Code Field */}
+        {/* Question Title Field */}
         <Col md={5}>
-          <Form.Group controlId="serviceCode">
-            <Form.Label>Service Code</Form.Label>
+          <Form.Group controlId="questionTitle">
+            <Form.Label>Question Title</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter service code"
-              name="service_code"
-              value={formData.service_code}
+              placeholder="Enter question title"
+              name="ques_title_default"
+              value={formData.ques_title_default}
               onChange={handleInputChange}
               required
             />
           </Form.Group>
         </Col>
         
-        {/* Default Name Field */}
-        <Col md={5}>
-          <Form.Group controlId="defaultName">
-            <Form.Label>Default Name</Form.Label>
+        {/* Order Field */}
+        <Col md={4}>
+          <Form.Group controlId="questionOrder">
+            <Form.Label>Order</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Enter default name"
-              name="default_name"
-              value={formData.default_name}
+              type="number"
+              placeholder="Enter order"
+              name="order"
+              value={formData.order}
               onChange={handleInputChange}
               required
             />
@@ -108,7 +115,7 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
         </Col>
         
         {/* Submit Button */}
-        <Col md={2} className="d-flex align-items-end">
+        <Col md={3} className="d-flex align-items-end">
           <Button
             type="submit"
             variant="primary"
@@ -117,7 +124,7 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
           >
             {saveStatus === 'loading' ? (
               <Spinner animation="border" size="sm" />
-            ) : formData.id ? (
+            ) : formData.ques_id ? (
               <>
                 <FaEdit className="me-1" /> Update
               </>
@@ -133,4 +140,4 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   );
 };
 
-export default ServicesForm;
+export default QuestionsForm;

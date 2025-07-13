@@ -2,72 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaPlus, FaEdit } from 'react-icons/fa';
 import { Spinner, Form, Button, Row, Col } from 'react-bootstrap';
-import { saveService, fetchServices, clearCurrentService } from '../../slices/servicesSlice';
+import { saveFeature, fetchFeatures, clearCurrentFeature } from '../../slices/featuresSlice';
 
-// Component for the service form (add/edit)
-const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
+const FeaturesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   const dispatch = useDispatch();
-  // Get current service and save status from Redux store
-  const { currentService, saveStatus } = useSelector(state => state.services);
-  // Form state
-  const [formData, setFormData] = useState({
-    id: 0,
-    service_code: '',
-    default_name: ''
-  });
+  const { currentFeature, saveStatus } = useSelector(state => state.features); // Get current feature and save status from Redux store
+  const [formData, setFormData] = useState({ id: 0, feature_code: '', feature_default_name: '' }); // Form state
 
-  // Update form data when currentService changes (for editing)
+  // Update form data when currentFeature changes
   useEffect(() => {
-    if (currentService) {
+    if (currentFeature) {
       setFormData({
-        id: currentService.id,
-        service_code: currentService.service_code,
-        default_name: currentService.default_name
+        id: currentFeature.feature_id,
+        feature_code: currentFeature.feature_code,
+        feature_default_name: currentFeature.feature_default_name
       });
     } else {
-      // Reset form when no service is selected
-      setFormData({
-        id: 0,
-        service_code: '',
-        default_name: ''
-      });
+      setFormData({ id: 0, feature_code: '', feature_default_name: '' });
     }
-  }, [currentService]);
+  }, [currentFeature]);
 
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Save service to backend
       const result = await dispatch(
-        saveService({
-          ...formData,
-          active: true
-        })
+        saveFeature({ ...formData, active: true, delete: false })
       ).unwrap();
 
-      // Refresh services list and reset form
-      dispatch(fetchServices());
-      dispatch(clearCurrentService());
+      dispatch(fetchFeatures());
+      dispatch(clearCurrentFeature());
       
-      // Show success message
-      setPopupMessage(formData.id ? 'Service updated successfully' : 'Service added successfully');
+      setPopupMessage(formData.id ? 'Feature updated successfully' : 'Feature added successfully');
       setPopupType('success');
       setShowPopup(true);
     } catch (error) {
-      // Handle errors (either string or error object)
-      const errorMessage = typeof error === 'string' ? error : 
-                          error.message || 'Failed to save service';
-      
+      const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to save feature';
       setPopupMessage(errorMessage);
       setPopupType('error');
       setShowPopup(true);
@@ -77,37 +53,32 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Row className="mb-3">
-        {/* Service Code Field */}
         <Col md={5}>
-          <Form.Group controlId="serviceCode">
-            <Form.Label>Service Code</Form.Label>
+          <Form.Group controlId="featureCode">
+            <Form.Label>Feature Code</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter service code"
-              name="service_code"
-              value={formData.service_code}
+              placeholder="Enter feature code"
+              name="feature_code"
+              value={formData.feature_code}
               onChange={handleInputChange}
               required
             />
           </Form.Group>
         </Col>
-        
-        {/* Default Name Field */}
         <Col md={5}>
           <Form.Group controlId="defaultName">
             <Form.Label>Default Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter default name"
-              name="default_name"
-              value={formData.default_name}
+              name="feature_default_name"
+              value={formData.feature_default_name}
               onChange={handleInputChange}
               required
             />
           </Form.Group>
         </Col>
-        
-        {/* Submit Button */}
         <Col md={2} className="d-flex align-items-end">
           <Button
             type="submit"
@@ -133,4 +104,4 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   );
 };
 
-export default ServicesForm;
+export default FeaturesForm;

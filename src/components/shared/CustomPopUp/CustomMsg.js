@@ -5,6 +5,8 @@ function CustomMsg(props) {
   const closePOPUP = () => {
     props.closeAlert();
   };
+
+  // popup for show msg with close button 
   return (
     <div className="popupBack">
       <div className="popup" onClose={closePOPUP}>

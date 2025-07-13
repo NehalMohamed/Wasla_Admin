@@ -2,7 +2,8 @@ import { Button,Modal } from "react-bootstrap";
 import React , { useEffect } from "react";
 // import Popup from 'react-animated-popup'
 import "./popup.scss";
-
+ 
+// popup with success , error, confirm and alert classes
 const PopUp = ({ 
   show, 
   closeAlert, 

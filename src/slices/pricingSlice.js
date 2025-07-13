@@ -200,7 +200,6 @@ export const getPackageFeatures = createAsyncThunk(
       var response = await axios
         .post(BASE_URL + "/getPackageFeatures", payload, getAuthHeaders())
         .then((res) => {
-          console.log("res ", res);
           return res.data;
         })
         .catch((error) => {
@@ -289,12 +288,10 @@ const packagesSlice = createSlice({
     builder
       // Fetch services data
       .addCase(fetchMainServices.pending, (state) => {
-        console.log("loadingggggg ");
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchMainServices.fulfilled, (state, action) => {
-        console.log("rrrr ", action.payload);
         state.loading = false;
         state.services = action.payload;
       })

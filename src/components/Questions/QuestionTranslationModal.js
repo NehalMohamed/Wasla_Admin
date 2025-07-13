@@ -1,10 +1,10 @@
 import React from 'react';
 import { Modal, Spinner, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveTranslation, fetchServices } from '../../slices/servicesSlice';
+import { saveQuestionTranslation, fetchQuestions } from '../../slices/questionsSlice';
 
-// Modal component for adding/editing service translations
-const TranslationModal = ({
+// Modal component for adding/editing question translations
+const QuestionTranslationModal = ({
     show,
     setShow,
     currentTranslation,
@@ -15,16 +15,16 @@ const TranslationModal = ({
 }) => {
     const dispatch = useDispatch();
     // Get translation status from Redux store
-    const { translationStatus } = useSelector(state => state.services);
+    const { translationStatus } = useSelector(state => state.questions);
 
     // Handle translation form submission
     const handleTranslationSubmit = async (e) => {
         e.preventDefault();
         try {
             // Save translation to backend
-            const result = await dispatch(saveTranslation(currentTranslation)).unwrap();
-            // Refresh services list
-            dispatch(fetchServices())
+            const result = await dispatch(saveQuestionTranslation(currentTranslation)).unwrap();
+            // Refresh questions list
+            dispatch(fetchQuestions())
             setShow(false);
             // Show success message
             setPopupMessage(currentTranslation.id ? 'Translation updated successfully' : 'Translation added successfully');
@@ -32,7 +32,7 @@ const TranslationModal = ({
             setShowPopup(true);
         } catch (error) {
            const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to save service';
+                            error.message || 'Failed to save question translation';
                     error.toString();
 
             setPopupMessage(errorMessage);
@@ -75,27 +75,15 @@ const TranslationModal = ({
                             </Form.Select>
                         </Form.Group>
 
-                        {/* Translated service name input */}
-                        <Form.Group className="mb-3" controlId="serviceName">
-                            <Form.Label>Service Name</Form.Label>
+                        {/* Translated question title input */}
+                        <Form.Group className="mb-3" controlId="questionTitle">
+                            <Form.Label>Question Title</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="productname"
-                                value={currentTranslation.productname}
+                                name="ques_title"
+                                value={currentTranslation.ques_title}
                                 onChange={handleTranslationChange}
                                 required
-                            />
-                        </Form.Group>
-
-                        {/* Translated service description textarea */}
-                        <Form.Group className="mb-3" controlId="serviceDescription">
-                            <Form.Label>Service Description</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={3}
-                                name="product_desc"
-                                value={currentTranslation.product_desc}
-                                onChange={handleTranslationChange}
                             />
                         </Form.Group>
 
@@ -120,4 +108,4 @@ const TranslationModal = ({
     );
 };
 
-export default TranslationModal;
+export default QuestionTranslationModal;

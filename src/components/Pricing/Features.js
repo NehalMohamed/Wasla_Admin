@@ -10,10 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 const FeaturesModal = ({ show, onHide, pkg, showError }) => {
   const dispatch = useDispatch();
-  const [feature, setFeature] = useState(0);
+  const [feature, setFeature] = useState(0); // State for selected feature
   const { Features, PackageFeatures, loading, error } = useSelector(
     (state) => state.pricing
   );
+
+  // Fetch features data on component mount
   useEffect(() => {
     dispatch(getMainFeatures());
     dispatch(
@@ -24,6 +26,8 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
     );
     return () => {};
   }, []);
+
+  // Handle deleting a feature from the package
   const onDeleteFeature = (feat) => {
     const data = {
       id: feat.id,
@@ -41,12 +45,13 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
           })
         );
       } else {
-        console.log("result.payload ", result.payload);
         setFeature(0);
         showError(result.payload.errors);
       }
     });
   };
+
+  // Handle adding a feature to the package
   const handleAdd = () => {
     const data = {
       id: 0,
@@ -64,13 +69,12 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
           })
         );
       } else {
-        console.log("result.payload ", result.payload);
         setFeature(0);
         showError(result.payload.errors);
       }
     });
   };
-  console.log("PackageFeatures", PackageFeatures);
+
   return (
     <>
       <Modal show={show} onHide={onHide} size="lg">
@@ -138,11 +142,6 @@ const FeaturesModal = ({ show, onHide, pkg, showError }) => {
             </table>
           </div>
         </Modal.Body>
-        {/* <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Close
-        </Button>
-      </Modal.Footer> */}
       </Modal>
     </>
   );

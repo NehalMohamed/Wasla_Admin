@@ -9,14 +9,14 @@ import {
 } from "../../slices/pricingSlice";
 import PopUp from "../shared/popup/PopUp";
 import LoadingPage from "../Loader/LoadingPage";
-import { FaEdit, FaSearch } from "react-icons/fa";
+import { FaEdit, FaSearch, FaCheck, FaTimes } from "react-icons/fa";
 import { FiDollarSign, FiLayers, FiEdit } from "react-icons/fi";
-
 import { Form, Row, Col, Button, Accordion, Table } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import PriceModal from "./PriceModal";
 import FeatureModal from "./Features";
 import "./Pricing.scss";
+
 const PricingPackages = () => {
   const dispatch = useDispatch();
   const { services, packages, loading, error, PackagesWithService } =
@@ -26,27 +26,31 @@ const PricingPackages = () => {
     service_id: 0,
     package_id: 0,
     is_recommend: false,
-  });
-  const [menuExpanded, setMenuExpanded] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState("");
-  const [popupType, setPopupType] = useState("alert");
-  const [showPriceModal, setShowPriceModal] = useState(false);
-  const [showFeatureModal, setShowFeatureModal] = useState(false);
-  const [ActivePkg, setActivePkg] = useState(null);
+  }); // Form state for assigning packages to services
+  const [searchTerm, setSearchTerm] = useState(""); // State for search functionality
+  const [showPopup, setShowPopup] = useState(false); // State for popup visibility
+  const [popupMessage, setPopupMessage] = useState(""); // State for popup message
+  const [popupType, setPopupType] = useState("alert"); // State for popup type
+  const [showPriceModal, setShowPriceModal] = useState(false); // State for price modal visibility
+  const [showFeatureModal, setShowFeatureModal] = useState(false); // State for feature modal visibility
+  const [ActivePkg, setActivePkg] = useState(null); // State for active package
+
+  // Fetch services and packages on component mount
   useEffect(() => {
     dispatch(fetchMainServices({ isDropDown: false }));
     dispatch(fetchMainPackages({ isDropDown: false }));
     dispatch(getServiceGrpWithPkgs());
   }, []);
 
+  // Handle input changes
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
+
+  // Handle form submission for assigning packages to services
   const onSubmit = (e) => {
     e.preventDefault();
     formData["id"] = 0;
@@ -65,31 +69,13 @@ const PricingPackages = () => {
       }
     });
   };
-  // const EditPackage = (pkg) => {
-  //   const data = {
-  //     id: pkg.package_id,
-  //     package_code: pkg.package_code,
-  //     is_recommend: pkg.is_recommend,
-  //     is_custom: pkg.is_custom,
-  //     active: pkg.active,
-  //     default_name: pkg.default_name,
-  //     order: pkg.order,
-  //   };
-  //   // dispatch(SaveMainPackage(data)).then((result) => {
-  //   //   if (result.payload && result.payload.success) {
-  //   //     setShowPopup(false);
 
-  //   //     dispatch(getServiceGrpWithPkgs());
-  //   //   } else {
-  //   //     setShowPopup(true);
-  //   //     setPopupMessage(result.payload.errors);
-  //   //   }
-  //   // });
-  // };
+  // Handle showing errors
   const showError = (err) => {
     setShowPopup(true);
     setPopupMessage(err);
   };
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
@@ -164,21 +150,12 @@ const PricingPackages = () => {
                 label="Recommended"
                 name="is_recommend"
                 checked={formData.is_recommend}
-                onChange={
-                  (e) => {
-                    setFormData({
-                      ...formData,
-                      is_recommend: e.target.checked,
-                    });
-                  }
-
-                  // onInputChange({
-                  //   target: {
-                  //     name: "is_recommend",
-                  //     value: e.target.checked,
-                  //   },
-                  // })
-                }
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    is_recommend: e.target.checked,
+                  });
+                }}
               />
             </Form.Group>
           </Col>
@@ -196,7 +173,7 @@ const PricingPackages = () => {
               .toLowerCase()
               .includes(searchTerm.toLowerCase())
           ).map((row, index) => (
-            <Accordion defaultActiveKey={index}>
+            <Accordion key={index} defaultActiveKey={index}>
               <Accordion.Item eventKey={index}>
                 <Accordion.Header>
                   {row.service_code} - {row.service_default_name}
@@ -206,9 +183,9 @@ const PricingPackages = () => {
                     <thead>
                       <tr>
                         <th>Package Code</th>
-                        <th>package name</th>
-                        <th>is recommend</th>
-                        <th>is custom</th>
+                        <th>Package Name</th>
+                        <th>Recommend</th>
+                        <th>Custom</th>
                         <th>Order</th>
                         <th>actions</th>
                       </tr>
@@ -222,46 +199,39 @@ const PricingPackages = () => {
                             <td>{pkg.package_default_name}</td>
                             <td>
                               {pkg.is_recommend ? (
-                                <span>✔️</span>
+                                <FaCheck className="text-success" />
                               ) : (
-                                <span>❌</span>
+                                <FaTimes className="text-danger" />
                               )}
                             </td>
                             <td>
                               {pkg.is_custom ? (
-                                <span>✔️</span>
+                                <FaCheck className="text-success" />
                               ) : (
-                                <span>❌</span>
+                                <FaTimes className="text-danger" />
                               )}
                             </td>
                             <td>{pkg.order}</td>
                             <td>
-                              {/* <button
-                                  className="btn btn-sm action_btn"
-                                  disabled={loading}
-                                  onClick={() => EditPackage(pkg)}
-                                >
-                                  <FiEdit className="me-1" />
-                                </button> */}
                               <button
-                                className="btn btn-sm action_btn"
+                                className="btn btn-sm btn-info me-2 green-btn"
                                 disabled={loading}
                                 onClick={() => {
                                   setActivePkg(pkg);
                                   setShowPriceModal(true);
                                 }}
                               >
-                                <FiDollarSign className="me-1" />
+                                <FiDollarSign />
                               </button>
                               <button
-                                className="btn btn-sm action_btn"
+                                className="btn btn-sm btn-warning me-2 yellow-btn"
                                 disabled={loading}
                                 onClick={() => {
                                   setActivePkg(pkg);
                                   setShowFeatureModal(true);
                                 }}
                               >
-                                <FiLayers className="me-1" />
+                                <FiLayers />
                               </button>
                             </td>
                           </tr>
