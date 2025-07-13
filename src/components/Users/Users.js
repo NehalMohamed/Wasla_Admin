@@ -1,33 +1,37 @@
-import React, { useEffect } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import React, { useEffect } from "react";
+import { Container, Table } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchUsers, setSearchRole } from '../../slices/usersSlice';
-import LoadingPage from '../Loader/LoadingPage';
-import PopUp from '../shared/popup/PopUp';
-import './Users.scss';
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUsers, setSearchRole } from "../../slices/usersSlice";
+import LoadingPage from "../Loader/LoadingPage";
+import PopUp from "../shared/popup/PopUp";
+import "./Users.scss";
 
 const Users = () => {
   const dispatch = useDispatch();
-  const { data, loading, error, searchRole } = useSelector((state) => state.users);
+  const { data, loading, error, searchRole } = useSelector(
+    (state) => state.users
+  );
   const [showPopup, setShowPopup] = React.useState(false);
-  const [popupMessage, setPopupMessage] = React.useState('');
-  const [popupType, setPopupType] = React.useState('alert');
+  const [popupMessage, setPopupMessage] = React.useState("");
+  const [popupType, setPopupType] = React.useState("alert");
 
   useEffect(() => {
     dispatch(fetchUsers())
       .unwrap()
       .catch((error) => {
-        setPopupMessage(error || 'Failed to fetch users');
-        setPopupType('error');
+        setPopupMessage(error || "Failed to fetch users");
+        setPopupType("error");
         setShowPopup(true);
       });
   }, [dispatch]);
 
   // Filter users by role
   const filteredUsers = searchRole
-    ? data.filter(user => 
-        (user.roles || '').toLowerCase().includes(searchRole.toLowerCase()))
+    ? data &&
+      data.filter((user) =>
+        (user.roles || "").toLowerCase().includes(searchRole.toLowerCase())
+      )
     : data;
 
   if (loading) {
@@ -42,7 +46,7 @@ const Users = () => {
         closeAlert={() => setShowPopup(false)}
         msg={popupMessage}
         type={popupType}
-        autoClose={popupType === 'error' ? 5000 : null}
+        autoClose={popupType === "error" ? 5000 : null}
       />
 
       <div className="d-flex justify-content-between align-items-center">
@@ -79,26 +83,29 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map(user => (
-              <tr key={user.id}>
-                <td>{`${user.firstName} ${user.lastName}`}</td>
-                <td>{user.email}</td>
-                <td>{user.roles}</td>
-                <td>
-                  {user.emailConfirmed ? (
-                    <span>Confirmed</span>
-                  ) : (
-                    <span>Pending</span>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {filteredUsers &&
+              filteredUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>{`${user.firstName} ${user.lastName}`}</td>
+                  <td>{user.email}</td>
+                  <td>{user.roles}</td>
+                  <td>
+                    {user.emailConfirmed ? (
+                      <span>Confirmed</span>
+                    ) : (
+                      <span>Pending</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>
 
-      {filteredUsers.length === 0 && !loading && (
-        <div className="no-results">No users found with the specified role.</div>
+      {filteredUsers && filteredUsers.length === 0 && !loading && (
+        <div className="no-results">
+          No users found with the specified role.
+        </div>
       )}
     </Container>
   );
