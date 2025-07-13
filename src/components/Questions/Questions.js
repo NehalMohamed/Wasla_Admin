@@ -8,14 +8,19 @@ import PopUp from '../shared/popup/PopUp';
 import LoadingPage from '../Loader/LoadingPage';
 import './Questions.scss';
 
+// Main component for Questions Management
 const Questions = () => {
   const dispatch = useDispatch();
+  // Get questions data and status from Redux store
   const { items, status, error } = useSelector(state => state.questions);
+  // State for search functionality
   const [searchTerm, setSearchTerm] = useState('');
+  // State for popup management
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('alert');
 
+  // Fetch questions on component mount
   useEffect(() => {
     const loadQuestions = async () => {
       try {
@@ -30,14 +35,17 @@ const Questions = () => {
     loadQuestions();
   }, [dispatch]);
 
+  // Filter questions based on search term
   const filteredQuestions = items.filter(question =>
     question.ques_title_default.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="questions-container">
+      {/* Show loading spinner when data is loading */}
       {status === 'loading' && <LoadingPage />}
 
+      {/* Popup component for showing alerts/notifications */}
       <PopUp
         show={showPopup}
         closeAlert={() => setShowPopup(false)}
@@ -46,6 +54,7 @@ const Questions = () => {
         autoClose={3000}
       />
 
+      {/* Header section with title and search bar */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="questions-heading mb-0">Questions Management</h2>
         <div className="position-relative" style={{ width: "250px" }}>
@@ -69,12 +78,14 @@ const Questions = () => {
         </div>
       </div>
 
+      {/* Form component for adding/editing questions */}
       <QuestionsForm
         setPopupMessage={setPopupMessage}
         setPopupType={setPopupType}
         setShowPopup={setShowPopup}
       />
 
+      {/* List component displaying all questions */}
       <QuestionsList
         questions={filteredQuestions}
         loading={status === 'loading'}

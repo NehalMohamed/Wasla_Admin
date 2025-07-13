@@ -3,6 +3,8 @@ import { Row, Col } from "react-bootstrap";
 import LoginForm from "./loginForm";
 import "./login.scss";
 
+//login page 
+
 function Login() {
   return (
     <div className="SignSection">

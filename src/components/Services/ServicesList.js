@@ -6,20 +6,25 @@ import { setCurrentService, saveService, saveTranslation, fetchServices } from '
 import TranslationModal from './TranslationModal';
 import PopUp from '../shared/popup/PopUp';
 
+// Component for displaying the list of services with actions
 const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setShowPopup }) => {
     const dispatch = useDispatch();
+    // State for managing translations
     const [showTranslationModal, setShowTranslationModal] = useState(false);
     const [currentTranslation, setCurrentTranslation] = useState(null);
+    // State for expandable rows
     const [expandedRows, setExpandedRows] = useState([]);
+    // State for delete confirmations
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [serviceToDelete, setServiceToDelete] = useState(null);
     const [showTranslationDeleteConfirm, setShowTranslationDeleteConfirm] = useState(false);
     const [translationToDelete, setTranslationToDelete] = useState(null);
 
+    // Handle editing a service
     const handleEdit = async (service) => {
         try {
             dispatch(setCurrentService(service))
-            // Refresh the services data after successful deletion
+            // Refresh the services data
             dispatch(fetchServices());
         } catch (error) {
             const errorMessage = typeof error === 'string' ? error : 
@@ -30,11 +35,13 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
         }
     };
 
-     const handleDeleteClick = (service) => {
+    // Handle delete click (shows confirmation)
+    const handleDeleteClick = (service) => {
         setServiceToDelete(service);
         setShowDeleteConfirm(true);
     };
 
+    // Handle confirmed deletion (soft delete by setting active to false)
     const handleDeleteConfirm = async () => {
         setShowDeleteConfirm(false);
             try {
@@ -53,6 +60,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
             setServiceToDelete(null);
     };
 
+    // Handle adding a translation
     const handleAddTranslation = (service) => {
         setCurrentTranslation({
             id: 0,
@@ -65,30 +73,33 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
         setShowTranslationModal(true);
     };
 
+    // Handle translation delete click (shows confirmation)
     const handleDeleteTranslationClick = (translation) => {
         setTranslationToDelete(translation);
         setShowTranslationDeleteConfirm(true);
     };
 
-   const handleDeleteTranslationConfirm = async () => {
-    setShowTranslationDeleteConfirm(false);
-    try {
-        const result = await dispatch(saveTranslation({ ...translationToDelete, delete: true })).unwrap();
-        dispatch(fetchServices());
-        setPopupMessage('Translation deleted successfully');
-        setPopupType('success');
-        setShowPopup(true);
-    } catch (error) {
-        const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to delete Translation';
-        
-        setPopupMessage(errorMessage);
-        setPopupType('error');
-        setShowPopup(true);
-    }
-    setTranslationToDelete(null);
-};
+    // Handle confirmed translation deletion
+    const handleDeleteTranslationConfirm = async () => {
+        setShowTranslationDeleteConfirm(false);
+        try {
+            const result = await dispatch(saveTranslation({ ...translationToDelete, delete: true })).unwrap();
+            dispatch(fetchServices());
+            setPopupMessage('Translation deleted successfully');
+            setPopupType('success');
+            setShowPopup(true);
+        } catch (error) {
+            const errorMessage = typeof error === 'string' ? error : 
+                                error.message || 'Failed to delete Translation';
+            
+            setPopupMessage(errorMessage);
+            setPopupType('error');
+            setShowPopup(true);
+        }
+        setTranslationToDelete(null);
+    };
 
+    // Toggle row expansion (for showing translations)
     const toggleRow = (id) => {
         const currentExpandedRows = [...expandedRows];
         const isRowExpanded = currentExpandedRows.includes(id);
@@ -100,6 +111,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
         }
     };
 
+    // Render translation table header
     const renderTranslationHeader = () => {
         return (
             <tr className="translation-header">
@@ -117,6 +129,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
         );
     };
 
+    // Render a single translation row
     const renderTranslationRow = (translation) => {
         return (
             <tr key={`translation-${translation.id}`} className="translation-row">
@@ -152,6 +165,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
         );
     };
 
+    // Show loading spinner if data is loading
     if (loading) return <div className="text-center"><Spinner animation="border" /></div>;
 
     return (
@@ -170,6 +184,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                             <React.Fragment key={service.id}>
                                 <tr>
                                     <td>
+                                        {/* Expand/collapse button for translations */}
                                         {service.service_translations?.length > 0 && (
                                             <button
                                                 className="expand-button me-3"
@@ -183,6 +198,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                                     <td>{service.default_name}</td>
                                     <td>
                                         <div className="d-flex">
+                                            {/* Action buttons */}
                                             <button
                                                 className="btn btn-sm btn-info me-2 green-btn"
                                                 onClick={() => handleAddTranslation(service)}
@@ -207,6 +223,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                                         </div>
                                     </td>
                                 </tr>
+                                {/* Expanded translation rows */}
                                 {expandedRows.includes(service.id) && service.service_translations?.length > 0 && (
                                     <>
                                         {renderTranslationHeader()}
@@ -221,6 +238,7 @@ const ServicesList = ({ services, loading, setPopupMessage, setPopupType, setSho
                 </table>
             </div>
 
+            {/* Translation Modal */}
             <TranslationModal
                 show={showTranslationModal}
                 setShow={setShowTranslationModal}

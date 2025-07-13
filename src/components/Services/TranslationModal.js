@@ -3,6 +3,7 @@ import { Modal, Spinner, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveTranslation, fetchServices } from '../../slices/servicesSlice';
 
+// Modal component for adding/editing service translations
 const TranslationModal = ({
     show,
     setShow,
@@ -13,14 +14,19 @@ const TranslationModal = ({
     setShowPopup
 }) => {
     const dispatch = useDispatch();
+    // Get translation status from Redux store
     const { translationStatus } = useSelector(state => state.services);
 
+    // Handle translation form submission
     const handleTranslationSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Save translation to backend
             const result = await dispatch(saveTranslation(currentTranslation)).unwrap();
+            // Refresh services list
             dispatch(fetchServices())
             setShow(false);
+            // Show success message
             setPopupMessage(currentTranslation.id ? 'Translation updated successfully' : 'Translation added successfully');
             setPopupType('success');
             setShowPopup(true);
@@ -35,6 +41,7 @@ const TranslationModal = ({
         }
     };
 
+    // Handle input changes in translation form
     const handleTranslationChange = (e) => {
         const { name, value } = e.target;
         setCurrentTranslation(prev => ({
@@ -53,6 +60,7 @@ const TranslationModal = ({
             <Modal.Body>
                 {currentTranslation && (
                     <Form onSubmit={handleTranslationSubmit}>
+                        {/* Language selection dropdown */}
                         <Form.Group className="mb-3" controlId="langCode">
                             <Form.Label>Language</Form.Label>
                             <Form.Select
@@ -67,6 +75,7 @@ const TranslationModal = ({
                             </Form.Select>
                         </Form.Group>
 
+                        {/* Translated service name input */}
                         <Form.Group className="mb-3" controlId="serviceName">
                             <Form.Label>Service Name</Form.Label>
                             <Form.Control
@@ -78,6 +87,7 @@ const TranslationModal = ({
                             />
                         </Form.Group>
 
+                        {/* Translated service description textarea */}
                         <Form.Group className="mb-3" controlId="serviceDescription">
                             <Form.Label>Service Description</Form.Label>
                             <Form.Control
@@ -89,6 +99,7 @@ const TranslationModal = ({
                             />
                         </Form.Group>
 
+                        {/* Submit button */}
                         <div className="d-flex justify-content-end">
                             <button
                                 type="submit"

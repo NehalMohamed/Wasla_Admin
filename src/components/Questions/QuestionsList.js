@@ -6,16 +6,21 @@ import { setCurrentQuestion, saveQuestion, saveQuestionTranslation, fetchQuestio
 import QuestionTranslationModal from './QuestionTranslationModal';
 import PopUp from '../shared/popup/PopUp';
 
+// Component for displaying the list of questions with actions
 const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setShowPopup }) => {
     const dispatch = useDispatch();
+    // State for managing translations
     const [showTranslationModal, setShowTranslationModal] = useState(false);
     const [currentTranslation, setCurrentTranslation] = useState(null);
+    // State for expandable rows
     const [expandedRows, setExpandedRows] = useState([]);
+    // State for delete confirmations
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [questionToDelete, setQuestionToDelete] = useState(null);
     const [showTranslationDeleteConfirm, setShowTranslationDeleteConfirm] = useState(false);
     const [translationToDelete, setTranslationToDelete] = useState(null);
 
+    // Handle editing a question
     const handleEdit = async (question) => {
         try {
             dispatch(setCurrentQuestion(question))
@@ -29,11 +34,13 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
         }
     };
 
-     const handleDeleteClick = (question) => {
+    // Handle delete click (shows confirmation)
+    const handleDeleteClick = (question) => {
         setQuestionToDelete(question);
         setShowDeleteConfirm(true);
     };
 
+    // Handle confirmed deletion
     const handleDeleteConfirm = async () => {
         setShowDeleteConfirm(false);
             try {
@@ -56,6 +63,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
             setQuestionToDelete(null);
     };
 
+    // Handle adding a translation
     const handleAddTranslation = (question) => {
         setCurrentTranslation({
             id: 0,
@@ -67,33 +75,36 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
         setShowTranslationModal(true);
     };
 
+    // Handle translation delete click (shows confirmation)
     const handleDeleteTranslationClick = (translation) => {
         setTranslationToDelete(translation);
         setShowTranslationDeleteConfirm(true);
     };
 
-   const handleDeleteTranslationConfirm = async () => {
-    setShowTranslationDeleteConfirm(false);
-    try {
-        const result = await dispatch(saveQuestionTranslation({ 
-            ...translationToDelete, 
-            delete: true 
-        })).unwrap();
-        dispatch(fetchQuestions());
-        setPopupMessage('Translation deleted successfully');
-        setPopupType('success');
-        setShowPopup(true);
-    } catch (error) {
-        const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to delete Translation';
-        
-        setPopupMessage(errorMessage);
-        setPopupType('error');
-        setShowPopup(true);
-    }
-    setTranslationToDelete(null);
-};
+    // Handle confirmed translation deletion
+    const handleDeleteTranslationConfirm = async () => {
+        setShowTranslationDeleteConfirm(false);
+        try {
+            const result = await dispatch(saveQuestionTranslation({ 
+                ...translationToDelete, 
+                delete: true 
+            })).unwrap();
+            dispatch(fetchQuestions());
+            setPopupMessage('Translation deleted successfully');
+            setPopupType('success');
+            setShowPopup(true);
+        } catch (error) {
+            const errorMessage = typeof error === 'string' ? error : 
+                                error.message || 'Failed to delete Translation';
+            
+            setPopupMessage(errorMessage);
+            setPopupType('error');
+            setShowPopup(true);
+        }
+        setTranslationToDelete(null);
+    };
 
+    // Toggle row expansion (for showing translations)
     const toggleRow = (id) => {
         const currentExpandedRows = [...expandedRows];
         const isRowExpanded = currentExpandedRows.includes(id);
@@ -105,6 +116,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
         }
     };
 
+    // Render translation table header
     const renderTranslationHeader = () => {
         return (
             <tr className="translation-header">
@@ -121,6 +133,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
         );
     };
 
+    // Render a single translation row
     const renderTranslationRow = (translation) => {
         return (
             <tr key={`translation-${translation.id}`} className="translation-row">
@@ -155,6 +168,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
         );
     };
 
+    // Show loading spinner if data is loading
     if (loading) return <div className="text-center"><Spinner animation="border" /></div>;
 
     return (
@@ -174,6 +188,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
                                 <tr className={!question.active ? "inactive-row" : ""}>
                                     <td>{question.order}</td>
                                     <td>
+                                        {/* Expand/collapse button for translations */}
                                         {question.questions?.length > 0 && (
                                             <button
                                                 className="expand-button me-3"
@@ -186,6 +201,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
                                     </td>
                                     <td>
                                         <div className="d-flex">
+                                            {/* Action buttons */}
                                             <button
                                                 className="btn btn-sm btn-info me-2 green-btn"
                                                 onClick={() => handleAddTranslation(question)}
@@ -211,6 +227,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
                                         </div>
                                     </td>
                                 </tr>
+                                {/* Expanded translation rows */}
                                 {expandedRows.includes(question.ques_id) && question.questions?.length > 0 && (
                                     <>
                                         {renderTranslationHeader()}
@@ -225,6 +242,7 @@ const QuestionsList = ({ questions, loading, setPopupMessage, setPopupType, setS
                 </table>
             </div>
 
+            {/* Translation Modal */}
             <QuestionTranslationModal
                 show={showTranslationModal}
                 setShow={setShowTranslationModal}

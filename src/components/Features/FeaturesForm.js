@@ -6,13 +6,10 @@ import { saveFeature, fetchFeatures, clearCurrentFeature } from '../../slices/fe
 
 const FeaturesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   const dispatch = useDispatch();
-  const { currentFeature, saveStatus } = useSelector(state => state.features);
-  const [formData, setFormData] = useState({
-    id: 0,
-    feature_code: '',
-    feature_default_name: ''
-  });
+  const { currentFeature, saveStatus } = useSelector(state => state.features); // Get current feature and save status from Redux store
+  const [formData, setFormData] = useState({ id: 0, feature_code: '', feature_default_name: '' }); // Form state
 
+  // Update form data when currentFeature changes
   useEffect(() => {
     if (currentFeature) {
       setFormData({
@@ -21,31 +18,22 @@ const FeaturesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
         feature_default_name: currentFeature.feature_default_name
       });
     } else {
-      setFormData({
-        id: 0,
-        feature_code: '',
-        feature_default_name: ''
-      });
+      setFormData({ id: 0, feature_code: '', feature_default_name: '' });
     }
   }, [currentFeature]);
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const result = await dispatch(
-        saveFeature({
-          ...formData,
-          active: true,
-          delete: false
-        })
+        saveFeature({ ...formData, active: true, delete: false })
       ).unwrap();
 
       dispatch(fetchFeatures());
@@ -55,9 +43,7 @@ const FeaturesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
       setPopupType('success');
       setShowPopup(true);
     } catch (error) {
-      const errorMessage = typeof error === 'string' ? error : 
-                          error.message || 'Failed to save feature';
-      
+      const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to save feature';
       setPopupMessage(errorMessage);
       setPopupType('error');
       setShowPopup(true);

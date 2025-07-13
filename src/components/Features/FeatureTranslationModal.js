@@ -13,34 +13,30 @@ const FeatureTranslationModal = ({
     setShowPopup
 }) => {
     const dispatch = useDispatch();
-    const { translationStatus } = useSelector(state => state.features);
+    const { translationStatus } = useSelector(state => state.features); // Get translation status from Redux store
 
+    // Handle translation submission
     const handleTranslationSubmit = async (e) => {
         e.preventDefault();
         try {
             const result = await dispatch(saveFeatureTranslation(currentTranslation)).unwrap();
-            dispatch(fetchFeatures())
+            dispatch(fetchFeatures());
             setShow(false);
             setPopupMessage(currentTranslation.id ? 'Translation updated successfully' : 'Translation added successfully');
             setPopupType('success');
             setShowPopup(true);
         } catch (error) {
-           const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to save feature translation';
-                    error.toString();
-
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to save feature translation';
             setPopupMessage(errorMessage);
             setPopupType('error');
             setShowPopup(true);
         }
     };
 
+    // Handle translation input changes
     const handleTranslationChange = (e) => {
         const { name, value } = e.target;
-        setCurrentTranslation(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setCurrentTranslation(prev => ({ ...prev, [name]: value }));
     };
 
     return (

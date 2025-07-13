@@ -8,54 +8,51 @@ import PopUp from '../shared/popup/PopUp';
 
 const FeaturesList = ({ features, loading, setPopupMessage, setPopupType, setShowPopup }) => {
     const dispatch = useDispatch();
-    const [showTranslationModal, setShowTranslationModal] = useState(false);
-    const [currentTranslation, setCurrentTranslation] = useState(null);
-    const [expandedRows, setExpandedRows] = useState([]);
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [featureToDelete, setFeatureToDelete] = useState(null);
-    const [showTranslationDeleteConfirm, setShowTranslationDeleteConfirm] = useState(false);
-    const [translationToDelete, setTranslationToDelete] = useState(null);
+    const [showTranslationModal, setShowTranslationModal] = useState(false); // State for translation modal visibility
+    const [currentTranslation, setCurrentTranslation] = useState(null); // State for current translation being edited
+    const [expandedRows, setExpandedRows] = useState([]); // State for expanded rows (translations)
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // State for delete confirmation popup
+    const [featureToDelete, setFeatureToDelete] = useState(null); // State for feature to be deleted
+    const [showTranslationDeleteConfirm, setShowTranslationDeleteConfirm] = useState(false); // State for translation delete confirmation popup
+    const [translationToDelete, setTranslationToDelete] = useState(null); // State for translation to be deleted
 
+    // Handle editing a feature
     const handleEdit = async (feature) => {
         try {
-            dispatch(setCurrentFeature(feature))
+            dispatch(setCurrentFeature(feature));
             dispatch(fetchFeatures());
         } catch (error) {
-            const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to edit feature';
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to edit feature';
             setPopupMessage(errorMessage);
             setPopupType('error');
             setShowPopup(true);
         }
     };
 
-     const handleDeleteClick = (feature) => {
+    // Handle deleting a feature
+    const handleDeleteClick = (feature) => {
         setFeatureToDelete(feature);
         setShowDeleteConfirm(true);
     };
 
     const handleDeleteConfirm = async () => {
         setShowDeleteConfirm(false);
-            try {
-                const result = await dispatch(saveFeature({ 
-                    ...featureToDelete, 
-                    active: false,
-                    delete: true 
-                })).unwrap();
-                dispatch(fetchFeatures());
-                setPopupMessage('Feature deleted successfully');
-                setPopupType('success');
-                setShowPopup(true);
-            } catch (error) {
-                const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to delete feature';
-                setPopupMessage(errorMessage);
-                setPopupType('error');
-                setShowPopup(true);
-            }
-            setFeatureToDelete(null);
+        try {
+            const result = await dispatch(saveFeature({ ...featureToDelete, active: false, delete: true })).unwrap();
+            dispatch(fetchFeatures());
+            setPopupMessage('Feature deleted successfully');
+            setPopupType('success');
+            setShowPopup(true);
+        } catch (error) {
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to delete feature';
+            setPopupMessage(errorMessage);
+            setPopupType('error');
+            setShowPopup(true);
+        }
+        setFeatureToDelete(null);
     };
 
+    // Handle adding a translation
     const handleAddTranslation = (feature) => {
         setCurrentTranslation({
             id: 0,
@@ -68,44 +65,37 @@ const FeaturesList = ({ features, loading, setPopupMessage, setPopupType, setSho
         setShowTranslationModal(true);
     };
 
+    // Handle deleting a translation
     const handleDeleteTranslationClick = (translation) => {
         setTranslationToDelete(translation);
         setShowTranslationDeleteConfirm(true);
     };
 
-   const handleDeleteTranslationConfirm = async () => {
-    setShowTranslationDeleteConfirm(false);
-    try {
-        const result = await dispatch(saveFeatureTranslation({ 
-            ...translationToDelete, 
-            delete: true 
-        })).unwrap();
-        dispatch(fetchFeatures());
-        setPopupMessage('Translation deleted successfully');
-        setPopupType('success');
-        setShowPopup(true);
-    } catch (error) {
-        const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to delete Translation';
-        
-        setPopupMessage(errorMessage);
-        setPopupType('error');
-        setShowPopup(true);
-    }
-    setTranslationToDelete(null);
-};
+    const handleDeleteTranslationConfirm = async () => {
+        setShowTranslationDeleteConfirm(false);
+        try {
+            const result = await dispatch(saveFeatureTranslation({ ...translationToDelete, delete: true })).unwrap();
+            dispatch(fetchFeatures());
+            setPopupMessage('Translation deleted successfully');
+            setPopupType('success');
+            setShowPopup(true);
+        } catch (error) {
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to delete Translation';
+            setPopupMessage(errorMessage);
+            setPopupType('error');
+            setShowPopup(true);
+        }
+        setTranslationToDelete(null);
+    };
 
+    // Toggle row expansion for translations
     const toggleRow = (id) => {
         const currentExpandedRows = [...expandedRows];
         const isRowExpanded = currentExpandedRows.includes(id);
-
-        if (isRowExpanded) {
-            setExpandedRows(currentExpandedRows.filter(rowId => rowId !== id));
-        } else {
-            setExpandedRows([...currentExpandedRows, id]);
-        }
+        setExpandedRows(isRowExpanded ? currentExpandedRows.filter(rowId => rowId !== id) : [...currentExpandedRows, id]);
     };
 
+    // Render translation header row
     const renderTranslationHeader = () => {
         return (
             <tr className="translation-header">
@@ -123,6 +113,7 @@ const FeaturesList = ({ features, loading, setPopupMessage, setPopupType, setSho
         );
     };
 
+    // Render translation row
     const renderTranslationRow = (translation) => {
         return (
             <tr key={`translation-${translation.id}`} className="translation-row">
@@ -207,7 +198,6 @@ const FeaturesList = ({ features, loading, setPopupMessage, setPopupType, setSho
                                                 className="btn btn-sm btn-danger"
                                                 onClick={() => handleDeleteClick(feature)}
                                                 title="Delete"
-                                                // disabled={!feature.active}
                                             >
                                                 <FaTrash />
                                             </button>
@@ -217,9 +207,7 @@ const FeaturesList = ({ features, loading, setPopupMessage, setPopupType, setSho
                                 {expandedRows.includes(feature.feature_id) && feature.features_Translations?.length > 0 && (
                                     <>
                                         {renderTranslationHeader()}
-                                        {feature.features_Translations?.map(translation =>
-                                            renderTranslationRow(translation)
-                                        )}
+                                        {feature.features_Translations?.map(translation => renderTranslationRow(translation))}
                                     </>
                                 )}
                             </React.Fragment>
@@ -228,6 +216,7 @@ const FeaturesList = ({ features, loading, setPopupMessage, setPopupType, setSho
                 </table>
             </div>
 
+            {/* Translation Modal */}
             <FeatureTranslationModal
                 show={showTranslationModal}
                 setShow={setShowTranslationModal}

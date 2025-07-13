@@ -3,7 +3,7 @@ import { useTranslation } from "react-multi-lang";
 import Alert from "react-popup-alert";
 const PopUpMsg = ({ text, show, closeAlert }) => {
   const t = useTranslation();
-  // console.log("props.shows ", show);
+  // Popup Use Alert
   return (
     <Alert
       header={t("PopUp.Header")}

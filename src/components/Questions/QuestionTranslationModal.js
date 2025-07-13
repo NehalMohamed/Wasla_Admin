@@ -3,6 +3,7 @@ import { Modal, Spinner, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveQuestionTranslation, fetchQuestions } from '../../slices/questionsSlice';
 
+// Modal component for adding/editing question translations
 const QuestionTranslationModal = ({
     show,
     setShow,
@@ -13,14 +14,19 @@ const QuestionTranslationModal = ({
     setShowPopup
 }) => {
     const dispatch = useDispatch();
+    // Get translation status from Redux store
     const { translationStatus } = useSelector(state => state.questions);
 
+    // Handle translation form submission
     const handleTranslationSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Save translation to backend
             const result = await dispatch(saveQuestionTranslation(currentTranslation)).unwrap();
+            // Refresh questions list
             dispatch(fetchQuestions())
             setShow(false);
+            // Show success message
             setPopupMessage(currentTranslation.id ? 'Translation updated successfully' : 'Translation added successfully');
             setPopupType('success');
             setShowPopup(true);
@@ -35,6 +41,7 @@ const QuestionTranslationModal = ({
         }
     };
 
+    // Handle input changes in translation form
     const handleTranslationChange = (e) => {
         const { name, value } = e.target;
         setCurrentTranslation(prev => ({
@@ -53,6 +60,7 @@ const QuestionTranslationModal = ({
             <Modal.Body>
                 {currentTranslation && (
                     <Form onSubmit={handleTranslationSubmit}>
+                        {/* Language selection dropdown */}
                         <Form.Group className="mb-3" controlId="langCode">
                             <Form.Label>Language</Form.Label>
                             <Form.Select
@@ -67,6 +75,7 @@ const QuestionTranslationModal = ({
                             </Form.Select>
                         </Form.Group>
 
+                        {/* Translated question title input */}
                         <Form.Group className="mb-3" controlId="questionTitle">
                             <Form.Label>Question Title</Form.Label>
                             <Form.Control
@@ -78,6 +87,7 @@ const QuestionTranslationModal = ({
                             />
                         </Form.Group>
 
+                        {/* Submit button */}
                         <div className="d-flex justify-content-end">
                             <button
                                 type="submit"

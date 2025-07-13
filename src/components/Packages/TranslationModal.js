@@ -13,34 +13,30 @@ const TranslationModal = ({
     setShowPopup
 }) => {
     const dispatch = useDispatch();
-    const { translationStatus } = useSelector(state => state.packages);
+    const { translationStatus } = useSelector(state => state.packages); // Get translation status from Redux store
 
+    // Handle translation submission
     const handleTranslationSubmit = async (e) => {
         e.preventDefault();
         try {
             const result = await dispatch(savePackageTranslation(currentTranslation)).unwrap();
-            dispatch(fetchPackages())
+            dispatch(fetchPackages());
             setShow(false);
             setPopupMessage(currentTranslation.id ? 'Translation updated successfully' : 'Translation added successfully');
             setPopupType('success');
             setShowPopup(true);
         } catch (error) {
-           const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to save package translation';
-                    error.toString();
-
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to save package translation';
             setPopupMessage(errorMessage);
             setPopupType('error');
             setShowPopup(true);
         }
     };
 
+    // Handle translation input changes
     const handleTranslationChange = (e) => {
         const { name, value } = e.target;
-        setCurrentTranslation(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setCurrentTranslation(prev => ({ ...prev, [name]: value }));
     };
 
     return (

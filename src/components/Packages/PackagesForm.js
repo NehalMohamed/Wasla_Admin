@@ -6,7 +6,7 @@ import { savePackage, fetchPackages, clearCurrentPackage } from '../../slices/pa
 
 const PackagesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   const dispatch = useDispatch();
-  const { currentPackage, saveStatus } = useSelector(state => state.packages);
+  const { currentPackage, saveStatus } = useSelector(state => state.packages); // Get current package and save status from Redux store
   const [formData, setFormData] = useState({
     id: 0,
     package_code: '',
@@ -15,8 +15,9 @@ const PackagesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     is_custom: false,
     active: true,
     order: 0
-  });
+  }); // Form state
 
+  // Update form data when currentPackage changes
   useEffect(() => {
     if (currentPackage) {
       setFormData({
@@ -41,6 +42,7 @@ const PackagesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     }
   }, [currentPackage]);
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -49,6 +51,7 @@ const PackagesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -60,9 +63,7 @@ const PackagesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
       setPopupType('success');
       setShowPopup(true);
     } catch (error) {
-      const errorMessage = typeof error === 'string' ? error : 
-                          error.message || 'Failed to save package';
-      
+      const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to save package';
       setPopupMessage(errorMessage);
       setPopupType('error');
       setShowPopup(true);

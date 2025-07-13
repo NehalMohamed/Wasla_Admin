@@ -8,27 +8,28 @@ import PopUp from '../shared/popup/PopUp';
 
 const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setShowPopup }) => {
     const dispatch = useDispatch();
-    const [showTranslationModal, setShowTranslationModal] = useState(false);
-    const [currentTranslation, setCurrentTranslation] = useState(null);
-    const [expandedRows, setExpandedRows] = useState([]);
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [packageToDelete, setPackageToDelete] = useState(null);
-    const [showTranslationDeleteConfirm, setShowTranslationDeleteConfirm] = useState(false);
-    const [translationToDelete, setTranslationToDelete] = useState(null);
+    const [showTranslationModal, setShowTranslationModal] = useState(false); // State for translation modal visibility
+    const [currentTranslation, setCurrentTranslation] = useState(null); // State for current translation being edited
+    const [expandedRows, setExpandedRows] = useState([]); // State for expanded rows (translations)
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // State for delete confirmation popup
+    const [packageToDelete, setPackageToDelete] = useState(null); // State for package to be deleted
+    const [showTranslationDeleteConfirm, setShowTranslationDeleteConfirm] = useState(false); // State for translation delete confirmation popup
+    const [translationToDelete, setTranslationToDelete] = useState(null); // State for translation to be deleted
 
+    // Handle editing a package
     const handleEdit = async (pkg) => {
         try {
-            dispatch(setCurrentPackage(pkg))
+            dispatch(setCurrentPackage(pkg));
             dispatch(fetchPackages());
         } catch (error) {
-            const errorMessage = typeof error === 'string' ? error :
-                error.message || 'Failed to edit package';
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to edit package';
             setPopupMessage(errorMessage);
             setPopupType('error');
             setShowPopup(true);
         }
     };
 
+    // Handle deleting a package
     const handleDeleteClick = (pkg) => {
         setPackageToDelete(pkg);
         setShowDeleteConfirm(true);
@@ -43,8 +44,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
             setPopupType('success');
             setShowPopup(true);
         } catch (error) {
-            const errorMessage = typeof error === 'string' ? error :
-                error.message || 'Failed to delete package';
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to delete package';
             setPopupMessage(errorMessage);
             setPopupType('error');
             setShowPopup(true);
@@ -52,6 +52,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
         setPackageToDelete(null);
     };
 
+    // Handle adding a translation
     const handleAddTranslation = (pkg) => {
         setCurrentTranslation({
             id: 0,
@@ -65,6 +66,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
         setShowTranslationModal(true);
     };
 
+    // Handle deleting a translation
     const handleDeleteTranslationClick = (translation) => {
         setTranslationToDelete(translation);
         setShowTranslationDeleteConfirm(true);
@@ -79,9 +81,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
             setPopupType('success');
             setShowPopup(true);
         } catch (error) {
-            const errorMessage = typeof error === 'string' ? error :
-                error.message || 'Failed to delete Translation';
-
+            const errorMessage = typeof error === 'string' ? error : error.message || 'Failed to delete Translation';
             setPopupMessage(errorMessage);
             setPopupType('error');
             setShowPopup(true);
@@ -89,17 +89,14 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
         setTranslationToDelete(null);
     };
 
+    // Toggle row expansion for translations
     const toggleRow = (id) => {
         const currentExpandedRows = [...expandedRows];
         const isRowExpanded = currentExpandedRows.includes(id);
-
-        if (isRowExpanded) {
-            setExpandedRows(currentExpandedRows.filter(rowId => rowId !== id));
-        } else {
-            setExpandedRows([...currentExpandedRows, id]);
-        }
+        setExpandedRows(isRowExpanded ? currentExpandedRows.filter(rowId => rowId !== id) : [...currentExpandedRows, id]);
     };
 
+    // Render translation header row
     const renderTranslationHeader = () => {
         return (
             <tr className="translation-header">
@@ -118,6 +115,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
         );
     };
 
+    // Render translation row
     const renderTranslationRow = (translation) => {
         return (
             <tr key={`translation-${translation.id}`} className="translation-row">
@@ -229,9 +227,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
                                 {expandedRows.includes(pkg.id) && pkg.package_translations?.length > 0 && (
                                     <>
                                         {renderTranslationHeader()}
-                                        {pkg.package_translations?.map(translation =>
-                                            renderTranslationRow(translation)
-                                        )}
+                                        {pkg.package_translations?.map(translation => renderTranslationRow(translation))}
                                     </>
                                 )}
                             </React.Fragment>
@@ -240,6 +236,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
                 </table>
             </div>
 
+            {/* Translation Modal */}
             <TranslationModal
                 show={showTranslationModal}
                 setShow={setShowTranslationModal}
@@ -250,6 +247,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
                 setShowPopup={setShowPopup}
             />
 
+            {/* Package Delete Confirmation Popup */}
             <PopUp
                 show={showDeleteConfirm}
                 closeAlert={() => setShowDeleteConfirm(false)}
@@ -260,6 +258,7 @@ const PackagesList = ({ packages, loading, setPopupMessage, setPopupType, setSho
                 cancelText="Cancel"
             />
 
+            {/* Translation Delete Confirmation Popup */}
             <PopUp
                 show={showTranslationDeleteConfirm}
                 closeAlert={() => setShowTranslationDeleteConfirm(false)}

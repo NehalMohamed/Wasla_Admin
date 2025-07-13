@@ -4,9 +4,12 @@ import { FaPlus, FaEdit } from 'react-icons/fa';
 import { Spinner, Form, Button, Row, Col } from 'react-bootstrap';
 import { saveQuestion, fetchQuestions, clearCurrentQuestion } from '../../slices/questionsSlice';
 
+// Component for the question form (add/edit)
 const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   const dispatch = useDispatch();
+  // Get current question and save status from Redux store
   const { currentQuestion, saveStatus } = useSelector(state => state.questions);
+  // Form state
   const [formData, setFormData] = useState({
     ques_id: 0,
     ques_title_default: '',
@@ -15,6 +18,7 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     active: true
   });
 
+  // Update form data when currentQuestion changes (for editing)
   useEffect(() => {
     if (currentQuestion) {
       setFormData({
@@ -25,6 +29,7 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
         active: currentQuestion.active
       });
     } else {
+      // Reset form when no question is selected
       setFormData({
         ques_id: 0,
         ques_title_default: '',
@@ -35,6 +40,7 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     }
   }, [currentQuestion]);
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -43,9 +49,11 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Save question to backend
       const result = await dispatch(
         saveQuestion({
           ...formData,
@@ -54,13 +62,16 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
         })
       ).unwrap();
 
+      // Refresh questions list and reset form
       dispatch(fetchQuestions());
       dispatch(clearCurrentQuestion());
       
+      // Show success message
       setPopupMessage(formData.ques_id ? 'Question updated successfully' : 'Question added successfully');
       setPopupType('success');
       setShowPopup(true);
     } catch (error) {
+      // Handle errors
       const errorMessage = typeof error === 'string' ? error : 
                           error.message || 'Failed to save question';
       
@@ -73,6 +84,7 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Row className="mb-3">
+        {/* Question Title Field */}
         <Col md={5}>
           <Form.Group controlId="questionTitle">
             <Form.Label>Question Title</Form.Label>
@@ -86,6 +98,8 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
             />
           </Form.Group>
         </Col>
+        
+        {/* Order Field */}
         <Col md={4}>
           <Form.Group controlId="questionOrder">
             <Form.Label>Order</Form.Label>
@@ -99,6 +113,8 @@ const QuestionsForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
             />
           </Form.Group>
         </Col>
+        
+        {/* Submit Button */}
         <Col md={3} className="d-flex align-items-end">
           <Button
             type="submit"

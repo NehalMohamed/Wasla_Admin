@@ -6,23 +6,28 @@ import {
 import { Modal, Button, Form, Col, Table, Row } from "react-bootstrap";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+
 const PriceModal = ({ show, onHide, pkg }) => {
   const dispatch = useDispatch();
-  const [price, setPrice] = useState(0);
-  const [salePrice, setSalePrice] = useState(0);
-  const [currency, setCurrency] = useState("EGP");
+  const [price, setPrice] = useState(0); // State for package price
+  const [salePrice, setSalePrice] = useState(0); // State for package sale price
+  const [currency, setCurrency] = useState("EGP"); // State for selected currency
   const { Prices, loading, error } = useSelector((state) => state.pricing);
   const currencies = [
     { code: "USD", symbol: "$" },
     { code: "EUR", symbol: "€" },
     { code: "EGP", symbol: "EGP" },
-  ];
+  ]; // Available currencies
+
+  // Fetch package prices on component mount
   useEffect(() => {
     dispatch(
       getServicePackagePrice({ service_package_id: pkg.service_package_id })
     );
     return () => {};
   }, []);
+
+  // Handle deleting a price from the package
   const onDeletePrice = (row) => {
     const data = {
       id: row.id,
@@ -49,6 +54,8 @@ const PriceModal = ({ show, onHide, pkg }) => {
       }
     });
   };
+
+  // Handle adding a price to the package
   const handleAdd = () => {
     const data = {
       id: 0,
@@ -75,6 +82,7 @@ const PriceModal = ({ show, onHide, pkg }) => {
       }
     });
   };
+
   return (
     <Modal show={show} onHide={onHide} size="lg">
       <Modal.Header closeButton>
@@ -93,7 +101,6 @@ const PriceModal = ({ show, onHide, pkg }) => {
                 placeholder="Enter price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                //onKeyPress={(e) => e.key === "Enter" && handleAdd()}
               ></Form.Control>
             </Form.Group>
           </Col>
@@ -106,7 +113,6 @@ const PriceModal = ({ show, onHide, pkg }) => {
                 placeholder="Enter sale price"
                 value={salePrice}
                 onChange={(e) => setSalePrice(e.target.value)}
-                //onKeyPress={(e) => e.key === "Enter" && handleAdd()}
               ></Form.Control>
             </Form.Group>
           </Col>

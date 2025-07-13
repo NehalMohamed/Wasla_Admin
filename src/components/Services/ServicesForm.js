@@ -4,15 +4,19 @@ import { FaPlus, FaEdit } from 'react-icons/fa';
 import { Spinner, Form, Button, Row, Col } from 'react-bootstrap';
 import { saveService, fetchServices, clearCurrentService } from '../../slices/servicesSlice';
 
+// Component for the service form (add/edit)
 const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
   const dispatch = useDispatch();
+  // Get current service and save status from Redux store
   const { currentService, saveStatus } = useSelector(state => state.services);
+  // Form state
   const [formData, setFormData] = useState({
     id: 0,
     service_code: '',
     default_name: ''
   });
 
+  // Update form data when currentService changes (for editing)
   useEffect(() => {
     if (currentService) {
       setFormData({
@@ -21,6 +25,7 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
         default_name: currentService.default_name
       });
     } else {
+      // Reset form when no service is selected
       setFormData({
         id: 0,
         service_code: '',
@@ -29,6 +34,7 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     }
   }, [currentService]);
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -37,36 +43,41 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const result = await dispatch(
-      saveService({
-        ...formData,
-        active: true
-      })
-    ).unwrap();
+    e.preventDefault();
+    try {
+      // Save service to backend
+      const result = await dispatch(
+        saveService({
+          ...formData,
+          active: true
+        })
+      ).unwrap();
 
-     dispatch(fetchServices());
-     dispatch(clearCurrentService());
-    
-    setPopupMessage(formData.id ? 'Service updated successfully' : 'Service added successfully');
-    setPopupType('success');
-    setShowPopup(true);
-  } catch (error) {
-    // Handle array of errors or single error message
-   const errorMessage = typeof error === 'string' ? error : 
-                            error.message || 'Failed to save service';
-    
-    setPopupMessage(errorMessage);
-    setPopupType('error');
-    setShowPopup(true);
-  }
-};
+      // Refresh services list and reset form
+      dispatch(fetchServices());
+      dispatch(clearCurrentService());
+      
+      // Show success message
+      setPopupMessage(formData.id ? 'Service updated successfully' : 'Service added successfully');
+      setPopupType('success');
+      setShowPopup(true);
+    } catch (error) {
+      // Handle errors (either string or error object)
+      const errorMessage = typeof error === 'string' ? error : 
+                          error.message || 'Failed to save service';
+      
+      setPopupMessage(errorMessage);
+      setPopupType('error');
+      setShowPopup(true);
+    }
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
       <Row className="mb-3">
+        {/* Service Code Field */}
         <Col md={5}>
           <Form.Group controlId="serviceCode">
             <Form.Label>Service Code</Form.Label>
@@ -80,6 +91,8 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
             />
           </Form.Group>
         </Col>
+        
+        {/* Default Name Field */}
         <Col md={5}>
           <Form.Group controlId="defaultName">
             <Form.Label>Default Name</Form.Label>
@@ -93,6 +106,8 @@ const ServicesForm = ({ setPopupMessage, setPopupType, setShowPopup }) => {
             />
           </Form.Group>
         </Col>
+        
+        {/* Submit Button */}
         <Col md={2} className="d-flex align-items-end">
           <Button
             type="submit"
