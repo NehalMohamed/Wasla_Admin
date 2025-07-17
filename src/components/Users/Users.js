@@ -11,7 +11,9 @@ import "./Users.scss";
 const Users = () => {
   const dispatch = useDispatch();
   // Get users data and status from Redux store
-  const { data, loading, error, searchRole } = useSelector((state) => state.users);
+  const { data, loading, error, searchRole } = useSelector(
+    (state) => state.users
+  );
   // State for popup management
   const [showPopup, setShowPopup] = React.useState(false);
   const [popupMessage, setPopupMessage] = React.useState("");
@@ -109,7 +111,9 @@ const Users = () => {
 
       {/* Show message if no users found */}
       {filteredUsers.length === 0 && !loading && (
-        <div className="no-results">No users found with the specified role.</div>
+        <div className="no-results">
+          No users found with the specified role.
+        </div>
       )}
     </Container>
   );
