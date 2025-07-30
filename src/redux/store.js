@@ -11,12 +11,12 @@ export const store = configureStore({
   reducer: {
     login: LoginReducer,
     questions: questionsReducer,
-    products: productReducer, 
+    products: productReducer,
     users: usersReducer,
     pricing: pricingReducer,
     packages: packagesReducer,
     services: servicesReducer,
-    features: featuresReducer
+    features: featuresReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

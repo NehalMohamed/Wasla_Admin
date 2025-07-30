@@ -1,9 +1,10 @@
-$primary-color: #542D72;
+$primary-color: #542d72;
 $secondary-color: lighten($primary-color, 20%);
 $light-purple: lighten($primary-color, 60%);
 $white: #ffffff;
 $light-gray: #f8f9fa;
 $deleted-row: #ffebee; // Light red background for deleted rows
+$dark-color: #343a40;
 
 .features-container {
   background-color: transparent;
@@ -21,7 +22,7 @@ $deleted-row: #ffebee; // Light red background for deleted rows
 .features-heading {
   font-size: 30px;
   font-weight: bold;
-  color: #542D72;
+  color: #542d72;
   margin: 0;
 }
 
@@ -45,24 +46,24 @@ $deleted-row: #ffebee; // Light red background for deleted rows
 
 .form-control,
 .form-select {
-  height: 55px;
-  font-size: 18px;
+  height: 45px;
+  font-size: 14px;
   border-radius: 10px;
 }
 
-.btn-primary {
-  height: 55px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 10px;
-  background-color: #542d72;
-  border-color: #542d72;
-}
+// .btn-primary {
+//   height: 55px;
+//   font-size: 18px;
+//   font-weight: bold;
+//   border-radius: 10px;
+//   background-color: #542d72;
+//   border-color: #542d72;
+// }
 
-.btn-primary:hover {
-  background-color: #b181d6;
-  border-color: #b181d6;
-}
+// .btn-primary:hover {
+//   background-color: #b181d6;
+//   border-color: #b181d6;
+// }
 
 /* Table Styling */
 .table-wrapper {
@@ -76,8 +77,8 @@ table {
 }
 
 .table th {
-  background-color: #f1e6fb;
-  color: #542d72;
+  background-color: $secondary-color;
+  color: white;
   text-align: center;
   padding: 15px;
 }
@@ -109,7 +110,7 @@ select.form-select:focus {
 .inactive-row {
   background-color: #ffeeee !important;
   color: #cc0000;
-  
+
   td {
     text-decoration: line-through;
     opacity: 0.8;
@@ -132,12 +133,12 @@ select.form-select:focus {
 }
 
 .translation-header {
-   background-color: #f1e6fb;
-  
+  background-color: #f1e6fb;
+
   td {
     padding: 8px 15px !important;
     border-top: none !important;
-    color: #542D72;
+    color: #542d72;
     background-color: #f1e6fb;
     text-align: center;
   }
@@ -145,7 +146,7 @@ select.form-select:focus {
 
 .translation-row {
   background-color: $light-gray;
-  
+
   td {
     padding: 10px 15px 10px 50px !important;
     border-top: none !important;
@@ -178,12 +179,12 @@ select.form-select:focus {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .search-container {
     width: 100%;
     margin-top: 15px;
   }
-  
+
   .features-heading {
     font-size: 24px;
   }
@@ -194,10 +195,10 @@ select.form-select:focus {
     font-size: 16px;
   }
 
-  .btn-primary {
-    height: 45px;
-    font-size: 16px;
-  }
+  // .btn-primary {
+  //   height: 45px;
+  //   font-size: 16px;
+  // }
 
   .table th,
   .table td {
@@ -208,16 +209,16 @@ select.form-select:focus {
   .translation-header {
     display: none;
   }
-  
+
   .translation-row {
     td {
       padding: 10px !important;
     }
-    
+
     .d-flex {
       flex-direction: column;
       gap: 5px;
-      
+
       > div {
         width: 100% !important;
       }

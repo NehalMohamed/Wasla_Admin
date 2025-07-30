@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_AUTH_API_URL;
 
@@ -15,10 +15,22 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
+export const fetchUsersWithRoles = createAsyncThunk(
+  "users/GetUsersGrp",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/GetUsersGrp`);
+      return response.data.result;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 const usersSlice = createSlice({
   name: "users",
   initialState: {
     data: [],
+    UsersList: [],
     loading: false,
     error: null,
     searchRole: "",
@@ -39,6 +51,18 @@ const usersSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch users";
+      })
+      .addCase(fetchUsersWithRoles.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUsersWithRoles.fulfilled, (state, action) => {
+        state.loading = false;
+        state.UsersList = action.payload;
+      })
+      .addCase(fetchUsersWithRoles.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch users";
       });

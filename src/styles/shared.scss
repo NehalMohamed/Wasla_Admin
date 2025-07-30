@@ -11,7 +11,7 @@
 }
 .FullWidthBtn {
   width: 100% !important;
-  height: 50px !important;
+  height: 45px !important;
   border-radius: 5px !important;
   margin: 30px 0 !important;
   border-width: 1px !important;
@@ -22,7 +22,7 @@
 }
 .SmallWidthBtn {
   width: 300px;
-  height: 50px !important;
+  height: 45px !important;
   margin: 30px 0;
   border-width: 1px !important;
   font-size: 20px !important;
@@ -101,38 +101,94 @@ a:active {
   color: $dark-green-color;
 }
 
-  .yellow-btn {
+.yellow-btn {
+  color: white;
+  background-color: $yellow-btn !important;
+  &:hover {
     color: white;
-    background-color: $yellow-btn !important;
-    &:hover{
-      color: white;
-      background-color: $yellow-btn-hover !important;
-    }
+    background-color: $yellow-btn-hover !important;
   }
-   
-  .green-btn {
-    color: #fff !important;
+}
+.red-btn {
+  color: #fff !important;
+  background-color: red !important;
+  border-color: red !important;
+  &:hover {
+    color: white;
+    background-color: red !important;
+    border-color: red !important;
+  }
+}
+.green-btn {
+  color: #fff !important;
+  background-color: #00bc82 !important;
+  border-color: #00bc82 !important;
+  &:hover {
+    color: white;
     background-color: #00bc82 !important;
     border-color: #00bc82 !important;
-    &:hover{
-       color: white;
-       background-color: #00bc82 !important; 
-        border-color: #00bc82 !important;
-    }
   }
-  .purple-btn{
+}
+.purple-btn {
+  color: white;
+  background-color: $primary-color !important;
+  &:hover {
     color: white;
     background-color: $primary-color !important;
-    &:hover{
-       color: white;
-       background-color: $primary-color !important; 
+  }
+}
+
+input.form-control:hover,
+input.form-control:focus,
+select.form-select:hover,
+select.form-select:focus {
+  border-color: #9375aa;
+  box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
+}
+
+.result_list {
+  margin: 20px 0;
+  .accordion {
+    margin-bottom: 20px;
+  }
+  th {
+    text-align: center;
+    padding: 10px;
+    text-transform: capitalize;
+  }
+  td {
+    padding: 10px;
+    text-align: center;
+  }
+  .action_btn {
+    margin: 0 3px;
+    background-color: transparent !important;
+    border: 0;
+    color: #00bc82;
+    &:hover {
+      background-color: transparent !important;
+      border: 0;
     }
   }
-
-  input.form-control:hover,
-  input.form-control:focus,
-  select.form-select:hover,
-  select.form-select:focus {
-    border-color: #9375aa;
-    box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
+  .accordion-button {
+    background-color: #f1e6fb;
+    color: #3f3f3f !important;
+    font-weight: bold;
+    &:hove {
+      border-color: #542d72 !important;
+    }
   }
+}
+.btn-primary {
+  height: 40px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+
+.btn-primary:hover {
+  background-color: $dark-green-color;
+  border-color: $dark-green-color;
+}

@@ -10,7 +10,8 @@ import {
   FiChevronRight,
   FiSearch,
   FiDollarSign,
-  FiLayers
+  FiLayers,
+  FiUsers,
 } from "react-icons/fi";
 import { IoLogoFirebase } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
@@ -121,7 +122,7 @@ const SideMenu = ({ onToggle }) => {
             <FiSettings className="menu-icon" />
             {isExpanded && <span>Services</span>}
           </Nav.Link>
-           <Nav.Link
+          <Nav.Link
             href="/packages"
             className="side-menu-item"
             onClick={(e) => handleNavigation(e, "/packages")}
@@ -137,7 +138,14 @@ const SideMenu = ({ onToggle }) => {
             <FiDollarSign className="menu-icon" />
             {isExpanded && <span>Pricing</span>}
           </Nav.Link>
-         
+          <Nav.Link
+            href="/users"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/users")}
+          >
+            <FiUsers className="menu-icon" />
+            {isExpanded && <span>Users</span>}
+          </Nav.Link>
         </Nav>
 
         {/* Bottom Section */}

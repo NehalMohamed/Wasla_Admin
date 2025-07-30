@@ -1,17 +1,22 @@
-import React , { useState } from "react";
-import Users from "../components/Users/Users";
+import React, { useState } from "react";
+// import Users from "../components/Users/Users";
+import Users from "../components/Users/UsersComp";
 import SideMenu from "../components/Navbar/SideMenu";
 
 const UsersPage = () => {
-   const [menuExpanded, setMenuExpanded] = useState(true); // State to track side menu expansion
+  const [menuExpanded, setMenuExpanded] = useState(true); // State to track side menu expansion
 
   return (
-     <div className="app-container">
+    <div className="app-container">
       {/* SideMenu component with toggle functionality */}
-      <SideMenu onToggle={setMenuExpanded}/>
+      <SideMenu onToggle={setMenuExpanded} />
       {/* Main content adjusts based on menu state */}
-      <main className={`main-content ${menuExpanded ? 'menu-expanded' : 'menu-collapsed'}`}>
-      <Users /> {/* Renders the Users component */}
+      <main
+        className={`main-content ${
+          menuExpanded ? "menu-expanded" : "menu-collapsed"
+        }`}
+      >
+        <Users /> {/* Renders the Users component */}
       </main>
     </div>
   );
