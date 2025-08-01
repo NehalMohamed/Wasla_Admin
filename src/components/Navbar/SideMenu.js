@@ -14,9 +14,10 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { IoLogoFirebase } from "react-icons/io5";
+import { FaFileInvoice } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./SideMenu.scss";
-import { FaFileInvoice } from "react-icons/fa";
+
 
 const SideMenu = ({ onToggle }) => {
   const navigate = useNavigate();
@@ -92,12 +93,20 @@ const SideMenu = ({ onToggle }) => {
       <div className="side-menu-content">
         <Nav className="flex-column">
           <Nav.Link
+            href="/home"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/home")}
+          >
+            <FiHome className="menu-icon" />
+            {isExpanded && <span>Home</span>}
+          </Nav.Link>
+          <Nav.Link
             href="/users"
             className="side-menu-item"
             onClick={(e) => handleNavigation(e, "/users")}
           >
-            <FiHome className="menu-icon" />
-            {isExpanded && <span>Home</span>}
+            <FiUsers className="menu-icon" />
+            {isExpanded && <span>Users</span>}
           </Nav.Link>
           <Nav.Link
             href="/questions"
@@ -129,7 +138,7 @@ const SideMenu = ({ onToggle }) => {
             onClick={(e) => handleNavigation(e, "/packages")}
           >
             <IoLogoFirebase className="menu-icon" />
-            {isExpanded && <span>packages</span>}
+            {isExpanded && <span>Packages</span>}
           </Nav.Link>
           <Nav.Link
             href="/pricing"
@@ -145,16 +154,9 @@ const SideMenu = ({ onToggle }) => {
             onClick={(e) => handleNavigation(e, "/invoices")}
           >
             <FaFileInvoice className="menu-icon" />
-            {isExpanded && <span>invoices</span>}
+            {isExpanded && <span>Invoices</span>}
           </Nav.Link>
-          <Nav.Link
-            href="/users"
-            className="side-menu-item"
-            onClick={(e) => handleNavigation(e, "/users")}
-          >
-            <FiUsers className="menu-icon" />
-            {isExpanded && <span>Users</span>}
-          </Nav.Link>
+          
         </Nav>
 
         {/* Bottom Section */}

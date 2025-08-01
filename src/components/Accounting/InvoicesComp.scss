@@ -4,6 +4,8 @@
   padding: 20px;
   background-color: white;
   border-radius: 6px;
+  transition: all 0.3s ease;
+
   .react-datepicker-wrapper {
     display: block;
     width: 100%;
@@ -19,10 +21,19 @@
     padding: 0 10px;
     border-color: $purple-color !important;
     color: $purple-color;
+
     &:active,
     &:focus {
       outline: 0;
       border: 1px solid #ddd;
     }
+  }
+}
+
+.filter-toggle-btn {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #f8f9fa;
   }
 }

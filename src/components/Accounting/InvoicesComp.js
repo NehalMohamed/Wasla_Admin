@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { GetAllInvoices } from "../../slices/AccountingSlice";
-import { FaEdit, FaSearch, FaCheck, FaTimes } from "react-icons/fa";
+import { FaEdit, FaSearch, FaCheck, FaTimes, FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { Form, Col, Row, Button, Table } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,6 +9,7 @@ import "./InvoicesComp.scss";
 import { FiCheck, FiFilter, FiPrinter } from "react-icons/fi";
 function InvoicesComp() {
   const dispatch = useDispatch();
+  const [filterExpanded, setFilterExpanded] = useState(false);
   //get to_date = now date minus one month
   const newDate = new Date();
   newDate.setMonth(newDate.getMonth() - 1);
@@ -57,7 +58,8 @@ function InvoicesComp() {
     <>
       <div className="d-flex justify-content-between align-items-center">
         <h2 className="mb-4 page-title">Invoices Management</h2>
-        <div className="mb-4 position-relative" style={{ width: "250px" }}>
+         <div className="d-flex align-items-center"></div>
+         <div className="mb-4 position-relative" style={{ width: "250px" }}>
           <FaSearch
             className="position-absolute"
             style={{
@@ -76,8 +78,18 @@ function InvoicesComp() {
             style={{ paddingLeft: "30px" }}
           />
         </div>
+
+        <Button 
+          variant="light" 
+          onClick={() => setFilterExpanded(!filterExpanded)}
+          className="filter-toggle-btn mb-4"
+        >
+          {filterExpanded ? <FaChevronUp /> : <FaChevronDown />}
+          <span className="ms-2">Filters</span>
+        </Button>
       </div>
-      <div className="filter_panel">
+      {filterExpanded && (
+        <div className="filter_panel">
         <Form>
           <Row>
             <Col md={6} xs={12}>
@@ -159,6 +171,7 @@ function InvoicesComp() {
           </Row>
         </Form>
       </div>
+      )}
       <div className="result_list">
         <Table responsive hover>
           <thead>
@@ -167,11 +180,11 @@ function InvoicesComp() {
               <th>client email</th>
               {/* <th>client name</th> */}
               <th>status</th>
-              <th>tax amount</th>
+              <th>tax</th>
               {/* <th>tax code</th> */}
               {/* <th>copoun</th> */}
-              <th>copoun_discount</th>
-              <th>invoice date</th>
+              <th>Copoun Discount</th>
+              <th>Date</th>
               <th>total price</th>
               <th>currency</th>
               <th>grand total price</th>

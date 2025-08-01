@@ -11,6 +11,7 @@ import PackagesPage from "./pages/PackagesPage";
 import PricingPage from "./pages/PricingPage";
 import FeaturesPage from "./pages/FeaturesPage";
 import Login from "./components/login/login";
+import Dashboard from "./pages/DashboardPage";
 import InvoicesPage from "./pages/InvoicesPage";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +22,7 @@ function App() {
           {/* <div className="main-container"> */}
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Dashboard/>} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/questions" element={<QuestionsPage />} />
             <Route exact path="/features" element={<FeaturesPage />} />
