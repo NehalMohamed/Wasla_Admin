@@ -16,6 +16,7 @@ import {
 import { IoLogoFirebase } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import "./SideMenu.scss";
+import { FaFileInvoice } from "react-icons/fa";
 
 const SideMenu = ({ onToggle }) => {
   const navigate = useNavigate();
@@ -137,6 +138,14 @@ const SideMenu = ({ onToggle }) => {
           >
             <FiDollarSign className="menu-icon" />
             {isExpanded && <span>Pricing</span>}
+          </Nav.Link>
+          <Nav.Link
+            href="/invoices"
+            className="side-menu-item"
+            onClick={(e) => handleNavigation(e, "/invoices")}
+          >
+            <FaFileInvoice className="menu-icon" />
+            {isExpanded && <span>invoices</span>}
           </Nav.Link>
           <Nav.Link
             href="/users"

@@ -1,16 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Table, Button, Accordion } from "react-bootstrap";
 import { FaSearch, FaCheck, FaTimes, FaPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchUsers,
   setSearchRole,
   fetchUsersWithRoles,
+  DeleteUser,
 } from "../../slices/usersSlice";
 import LoadingPage from "../Loader/LoadingPage";
 import PopUp from "../shared/popup/PopUp";
 import "./Users.scss";
 import { FiDelete, FiEdit, FiX } from "react-icons/fi";
+import AddUserModal from "./AddUserModal";
 
 function UsersComp() {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function UsersComp() {
   const [showPopup, setShowPopup] = React.useState(false);
   const [popupMessage, setPopupMessage] = React.useState("");
   const [popupType, setPopupType] = React.useState("alert");
+  const [showUserModal, setShowUserModal] = useState(false);
 
   // Fetch users on component mount
   useEffect(() => {
@@ -46,6 +48,17 @@ function UsersComp() {
   if (loading) {
     return <LoadingPage />;
   }
+  const RemoveUser = (userId) => {
+    dispatch(DeleteUser(userId)).then((result) => {
+      if (result.payload && result.payload.success) {
+        setPopupType("success");
+      } else {
+        setPopupType("error");
+      }
+      setPopupMessage(result.payload?.message);
+      setShowPopup(true);
+    });
+  };
   return (
     <Container className="users-page">
       {/* PopUp for displaying error messages */}
@@ -81,7 +94,7 @@ function UsersComp() {
         </div>
         <div className="mb-4 position-relative">
           {" "}
-          <Button className="purbleBtn">
+          <Button className="purbleBtn" onClick={() => setShowUserModal(true)}>
             {" "}
             <FaPlus className="me-1" /> Add User
           </Button>
@@ -93,7 +106,7 @@ function UsersComp() {
           UsersList?.filter((item) =>
             item.roles.toLowerCase().includes(searchRole.toLowerCase())
           ).map((row, index) => (
-            <Accordion key={index} defaultActiveKey={index}>
+            <Accordion key={index}>
               <Accordion.Item eventKey={index}>
                 <Accordion.Header>
                   {row.roles} - ({row.count}) users
@@ -123,13 +136,14 @@ function UsersComp() {
                             </td>
                             <td>
                               <button
-                                className="btn btn-sm btn-info me-2 red-btn"
+                                className="btn btn-sm btn-info me-2 red-btn grid_btn"
                                 disabled={loading}
+                                onClick={() => RemoveUser()}
                               >
                                 <FiX />
                               </button>
                               <button
-                                className="btn btn-sm btn-warning me-2 yellow-btn"
+                                className="btn btn-sm btn-warning me-2 yellow-btn grid_btn"
                                 disabled={loading}
                               >
                                 <FiEdit />
@@ -147,6 +161,15 @@ function UsersComp() {
             </Accordion>
           ))}
       </div>
+      {showUserModal ? (
+        <AddUserModal
+          show={showUserModal}
+          refreshUsers={() => dispatch(fetchUsersWithRoles())}
+          onHide={() => {
+            setShowUserModal(false);
+          }}
+        />
+      ) : null}
     </Container>
   );
 }
