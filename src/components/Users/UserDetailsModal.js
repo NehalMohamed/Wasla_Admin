@@ -14,7 +14,6 @@ function UserDetailsModal({ show, onHide, client_id }) {
     (state) => state.profile
   );
   useEffect(() => {
-    console.log("client_id ", client_id);
     dispatch(GetClientProfileByAdmin(client_id)).unwrap();
     dispatch(GetClientProfileImageByAdmin(client_id)).unwrap();
 

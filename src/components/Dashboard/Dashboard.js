@@ -43,7 +43,6 @@ const Dashboard = ({ userRole = "admin" }) => {
     const userLocal = localStorage.getItem("user");
     if (userLocal) {
       const user = JSON.parse(userLocal);
-      console.log("user ", user);
       if (user) {
         const authorizedMenuItems = allMenuItems.filter((item) =>
           item.roles.includes(user.role)

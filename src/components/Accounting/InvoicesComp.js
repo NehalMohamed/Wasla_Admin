@@ -113,33 +113,41 @@ function InvoicesComp() {
   const handleDownload = async (invoice) => {
     try {
       // Ensure we have the latest profile data
-      await dispatch(GetClientProfileByAdmin(invoice.client_id)).unwrap();
-
-      downloadInvoice({
-        user: profileData?.full_name || invoice.client_name || "",
-        contact: profileData?.phone_number || invoice.contact_info || "",
-        address: profileData?.address || invoice.user_address || "",
-        InvoiceNo: invoice.invoice_code || "",
-        Date: invoice.invoice_date || new Date().toLocaleDateString(),
-        SubTtotal: invoice.total_price || "0",
-        Discount: invoice.discount || "0",
-        Total: invoice.grand_total_price || "0",
-        services: invoice.pkgs || [],
-      });
+      // await dispatch(GetClientProfileByAdmin(invoice.client_id)).unwrap();
+      await dispatch(GetClientProfileByAdmin(invoice.client_id)).then(
+        (result) => {
+          const data = result.payload;
+          if (data != null) {
+            downloadInvoice({
+              user: data?.full_name || invoice.client_name || "",
+              contact: data?.phone_number,
+              address: data?.address || "",
+              InvoiceNo: invoice.invoice_code || "",
+              Date: invoice.invoice_date || new Date().toLocaleDateString(),
+              SubTtotal: invoice.total_price || "0",
+              Discount: invoice.discount || "0",
+              Total: invoice.grand_total_price || "0",
+              services: invoice.pkgs || [],
+            });
+          }
+        }
+      );
     } catch (error) {
-      console.error("Failed to fetch profile:", error);
       // Fallback to invoice data if profile fetch fails
-      downloadInvoice({
-        user: invoice.client_name || "",
-        contact: invoice.contact_info || "",
-        address: invoice.user_address || "",
-        InvoiceNo: invoice.invoice_code || "",
-        Date: invoice.invoice_date || new Date().toLocaleDateString(),
-        SubTtotal: invoice.total_price || "0",
-        Discount: invoice.discount || "0",
-        Total: invoice.grand_total_price || "0",
-        services: invoice.pkgs || [],
-      });
+      // downloadInvoice({
+      //   user: invoice.client_name || "",
+      //   contact: "",
+      //   address: invoice.user_address || "",
+      //   InvoiceNo: invoice.invoice_code || "",
+      //   Date: invoice.invoice_date || new Date().toLocaleDateString(),
+      //   SubTtotal: invoice.total_price || "0",
+      //   Discount: invoice.discount || "0",
+      //   Total: invoice.grand_total_price || "0",
+      //   services: invoice.pkgs || [],
+      // });
+      setPopupMessage(error.toString() || "Failed to fetch profile");
+      setShowPopup(true);
+      setPopupType("error");
     }
   };
   const renderTooltip = (props) => (
