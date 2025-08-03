@@ -1,4 +1,3 @@
-
 import { jwtDecode } from "jwt-decode";
 
 // Check if Token Expired
@@ -23,4 +22,3 @@ export const checkAUTH = () => {
     return false;
   }
 };
-

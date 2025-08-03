@@ -16,20 +16,32 @@ import {
 import { IoLogoFirebase } from "react-icons/io5";
 import { FaFileInvoice } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { menuItems, allMenuItems } from "./MenuItems";
+import * as FiIcons from "react-icons/fi";
+import * as FaIcons from "react-icons/fa";
+import * as IO5Icons from "react-icons/io5";
 import "./SideMenu.scss";
+const allIcons = { ...FaIcons, ...IO5Icons, ...FiIcons };
 
 const SideMenu = ({ onToggle }) => {
   const navigate = useNavigate();
   const [MyName, setMyName] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
+  const [Items, setItems] = useState([]);
   useEffect(() => {
     const userLocal = localStorage.getItem("user");
     if (userLocal) {
       const user = JSON.parse(userLocal);
       if (user) {
         setMyName(`${user.firstName} ${user.lastName}`);
+
+        // Filter menu items based on user role
+        const authorizedMenuItems = allMenuItems.filter((item) =>
+          item.roles.includes(user.role)
+        );
+        setItems(authorizedMenuItems || []);
+        // setItems(menuItems[user.role] || []);
       }
     }
 
@@ -69,7 +81,7 @@ const SideMenu = ({ onToggle }) => {
     if (onToggle) onToggle(false);
     navigate(path);
   };
-  console.log("isExpanded ", isExpanded);
+
   return (
     <div
       className={`side-menu ${isExpanded ? "expanded" : "collapsed"} ${
@@ -91,7 +103,22 @@ const SideMenu = ({ onToggle }) => {
       {/* Main Menu Content */}
       <div className="side-menu-content">
         <Nav className="flex-column">
-          <Nav.Link
+          {Items &&
+            Items.map((item, index) => {
+              const IconComponent = allIcons[item.icon];
+              return (
+                <Nav.Link
+                  key={index}
+                  href={item.path}
+                  className="side-menu-item"
+                  onClick={(e) => handleNavigation(e, item.path)}
+                >
+                  {IconComponent && <IconComponent className="menu-icon" />}
+                  {isExpanded && <span>{item.title}</span>}
+                </Nav.Link>
+              );
+            })}
+          {/* <Nav.Link
             href="/home"
             className="side-menu-item"
             onClick={(e) => handleNavigation(e, "/home")}
@@ -154,7 +181,7 @@ const SideMenu = ({ onToggle }) => {
           >
             <FaFileInvoice className="menu-icon" />
             {isExpanded && <span>Invoices</span>}
-          </Nav.Link>
+          </Nav.Link> */}
         </Nav>
 
         {/* Bottom Section */}

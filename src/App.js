@@ -13,6 +13,8 @@ import FeaturesPage from "./pages/FeaturesPage";
 import Login from "./components/login/login";
 import Dashboard from "./pages/DashboardPage";
 import InvoicesPage from "./pages/InvoicesPage";
+import PrivateRoute from "./components/shared/PrivateRoute";
+import UnauthorizedPage from "./components/ErrorsPages/UnauthorizedPage";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   return (
@@ -22,14 +24,30 @@ function App() {
           {/* <div className="main-container"> */}
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/home" element={<Dashboard/>} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/questions" element={<QuestionsPage />} />
+              <Route exact path="/features" element={<FeaturesPage />} />
+              <Route exact path="/services" element={<ServicesPage />} />
+              <Route exact path="/packages" element={<PackagesPage />} />
+            </Route>
+            <Route
+              element={<PrivateRoute allowedRoles={["accountant", "Admin"]} />}
+            >
+              <Route path="/home" element={<Dashboard />} />
+              <Route exact path="/pricing" element={<PricingPage />} />
+              <Route exact path="/invoices" element={<InvoicesPage />} />
+            </Route>
+            {/* <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/questions" element={<QuestionsPage />} />
             <Route exact path="/features" element={<FeaturesPage />} />
             <Route exact path="/services" element={<ServicesPage />} />
             <Route exact path="/packages" element={<PackagesPage />} />
             <Route exact path="/pricing" element={<PricingPage />} />
-            <Route exact path="/invoices" element={<InvoicesPage />} />
+            <Route exact path="/invoices" element={<InvoicesPage />} /> */}
           </Routes>
           {/* </div> */}
         </Container>
