@@ -10,8 +10,9 @@ import {
 import LoadingPage from "../Loader/LoadingPage";
 import PopUp from "../shared/popup/PopUp";
 import "./Users.scss";
-import { FiDelete, FiEdit, FiX } from "react-icons/fi";
+import { FiDelete, FiEdit, FiEye, FiX } from "react-icons/fi";
 import AddUserModal from "./AddUserModal";
+import UserDetailsModal from "./UserDetailsModal";
 
 function UsersComp() {
   const dispatch = useDispatch();
@@ -24,25 +25,18 @@ function UsersComp() {
   const [popupMessage, setPopupMessage] = React.useState("");
   const [popupType, setPopupType] = React.useState("alert");
   const [showUserModal, setShowUserModal] = useState(false);
-
+  const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
+  const [client_id, setclient_id] = useState("");
   // Fetch users on component mount
   useEffect(() => {
     dispatch(fetchUsersWithRoles())
       .unwrap()
       .catch((error) => {
-        setPopupMessage(error || "Failed to fetch users");
+        setPopupMessage("Failed to fetch users");
         setPopupType("error");
         setShowPopup(true);
       });
   }, [dispatch]);
-
-  // Filter users by role if searchRole is specified
-  const filteredUsers = searchRole
-    ? UsersList &&
-      UsersList.filter((user) =>
-        (user.roles || "").toLowerCase().includes(searchRole.toLowerCase())
-      )
-    : UsersList;
 
   // Show loading spinner if data is loading
   if (loading) {
@@ -102,7 +96,7 @@ function UsersComp() {
       </div>
 
       <div className="result_list">
-        {UsersList &&
+        {UsersList != null && UsersList.length > 0 ? (
           UsersList?.filter((item) =>
             item.roles.toLowerCase().includes(searchRole.toLowerCase())
           ).map((row, index) => (
@@ -142,12 +136,18 @@ function UsersComp() {
                               >
                                 <FiX />
                               </button>
-                              <button
-                                className="btn btn-sm btn-warning me-2 yellow-btn grid_btn"
-                                disabled={loading}
-                              >
-                                <FiEdit />
-                              </button>
+                              {row.roles == "User" ? (
+                                <button
+                                  className="btn btn-sm btn-warning me-2 yellow-btn grid_btn"
+                                  disabled={loading}
+                                  onClick={() => {
+                                    setShowUserDetailsModal(true);
+                                    setclient_id(user.id);
+                                  }}
+                                >
+                                  <FiEye />
+                                </button>
+                              ) : null}
                             </td>
                           </tr>
                         ))}
@@ -159,7 +159,10 @@ function UsersComp() {
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
-          ))}
+          ))
+        ) : (
+          <p>No Users</p>
+        )}
       </div>
       {showUserModal ? (
         <AddUserModal
@@ -167,6 +170,15 @@ function UsersComp() {
           refreshUsers={() => dispatch(fetchUsersWithRoles())}
           onHide={() => {
             setShowUserModal(false);
+          }}
+        />
+      ) : null}
+      {showUserDetailsModal && client_id ? (
+        <UserDetailsModal
+          client_id={client_id}
+          show={showUserDetailsModal}
+          onHide={() => {
+            setShowUserDetailsModal(false);
           }}
         />
       ) : null}

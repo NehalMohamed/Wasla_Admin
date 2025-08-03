@@ -1,9 +1,4 @@
-$primary-color: #542d72;
-$secondary-color: lighten($primary-color, 20%);
-$light-purple: lighten($primary-color, 60%);
-$white: #ffffff;
-$light-gray: #f8f9fa;
-$deleted-row: #ffebee; // Light red background for deleted rows
+@import "../../styles/variables";
 .services-container {
   background-color: transparent;
   width: 100%;
@@ -42,12 +37,12 @@ $deleted-row: #ffebee; // Light red background for deleted rows
   width: 100%;
 }
 
-.form-control,
-.form-select {
-  height: 55px;
-  font-size: 18px;
-  border-radius: 10px;
-}
+// .form-control,
+// .form-select {
+//   height: 55px;
+//   font-size: 18px;
+//   border-radius: 10px;
+// }
 
 // .btn-primary {
 //   height: 55px;

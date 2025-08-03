@@ -3,7 +3,7 @@ import Features from "../components/Features/Features";
 import SideMenu from "../components/Navbar/SideMenu";
 
 const FeaturesPage = () => {
-   const [menuExpanded, setMenuExpanded] = useState(true); // State to track side menu expansion
+   const [menuExpanded, setMenuExpanded] = useState(false); // State to track side menu expansion
 
   return (
      <div className="app-container">

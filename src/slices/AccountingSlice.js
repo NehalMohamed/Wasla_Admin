@@ -40,6 +40,30 @@ export const GetAllInvoices = createAsyncThunk(
     }
   }
 );
+
+// confirm invoice
+export const ConfirmInvoice = createAsyncThunk(
+  "accounting/ConfirmInvoice",
+  async (data, { rejectWithValue }) => {
+    if (checkAUTH()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/ChangeInvoiceStatus`,
+          data,
+          getAuthHeaders()
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
+    } else {
+      // Redirect to login if not authenticated
+      history.push("/");
+      window.location.reload();
+      return null;
+    }
+  }
+);
 const AccountingSlice = createSlice({
   name: "accounting",
   initialState: {
@@ -64,6 +88,17 @@ const AccountingSlice = createSlice({
         state.Invoices = action.payload;
       })
       .addCase(GetAllInvoices.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(ConfirmInvoice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(ConfirmInvoice.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(ConfirmInvoice.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

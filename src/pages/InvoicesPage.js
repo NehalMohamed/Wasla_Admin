@@ -3,7 +3,7 @@ import SideMenu from "../components/Navbar/SideMenu";
 import InvoicesComp from "../components/Accounting/InvoicesComp";
 
 function InvoicesPage() {
-  const [menuExpanded, setMenuExpanded] = useState(true); // State to track side menu expansion
+  const [menuExpanded, setMenuExpanded] = useState(false); // State to track side menu expansion
   return (
     <div className="app-container">
       {/* SideMenu component with toggle functionality */}

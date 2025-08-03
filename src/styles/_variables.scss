@@ -7,13 +7,12 @@ $light-green-color: #36d9a7;
 $yellow-color: #f9f871;
 $pink-color: #ff5e78;
 
-$primary-color: #542D72;
+$primary-color: #542d72;
 $secondary-color: lighten($primary-color, 20%);
 $light-color: #f8f9fa;
 $dark-color: #343a40;
 $yellow-btn: #ffb300e0;
 $yellow-btn-hover: #ffb300cb;
-
 
 $text-color: #2c3e50;
 $secondary-text: #7f8c8d;
@@ -25,7 +24,9 @@ $shadow-color: rgba(0, 0, 0, 0.1);
 $light-bg: #f8f9fa;
 $active-favorite-bg: #fff3cd;
 $active-favorite-border: #ffeeba;
-
+$white: #ffffff;
+$light-gray: #f8f9fa;
+$deleted-row: #ffebee;
 //mediaqueries
 $maxMobile: 767px;
 $minMedium: 992px;

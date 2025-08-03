@@ -1,10 +1,4 @@
-$primary-color: #542d72;
-$secondary-color: lighten($primary-color, 20%);
-$light-purple: lighten($primary-color, 60%);
-$white: #ffffff;
-$light-gray: #f8f9fa;
-$deleted-row: #ffebee; // Light red background for deleted rows
-$dark-color: #343a40;
+@import "../../styles/variables";
 
 .features-container {
   background-color: transparent;

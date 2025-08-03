@@ -18,11 +18,10 @@ import { FaFileInvoice } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./SideMenu.scss";
 
-
 const SideMenu = ({ onToggle }) => {
   const navigate = useNavigate();
   const [MyName, setMyName] = useState("");
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -47,9 +46,9 @@ const SideMenu = ({ onToggle }) => {
       // }
     };
 
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
+    // window.addEventListener("resize", handleResize);
+    // handleResize();
+    // return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const logOut = () => {
@@ -70,7 +69,7 @@ const SideMenu = ({ onToggle }) => {
     if (onToggle) onToggle(false);
     navigate(path);
   };
-
+  console.log("isExpanded ", isExpanded);
   return (
     <div
       className={`side-menu ${isExpanded ? "expanded" : "collapsed"} ${
@@ -156,7 +155,6 @@ const SideMenu = ({ onToggle }) => {
             <FaFileInvoice className="menu-icon" />
             {isExpanded && <span>Invoices</span>}
           </Nav.Link>
-          
         </Nav>
 
         {/* Bottom Section */}

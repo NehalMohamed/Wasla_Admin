@@ -3,7 +3,7 @@ import Services from "../components/Services/Services";
 import SideMenu from "../components/Navbar/SideMenu";
 
 const ServicesPage = () => {
-   const [menuExpanded, setMenuExpanded] = useState(true); // State for side menu expansion
+   const [menuExpanded, setMenuExpanded] = useState(false); // State for side menu expansion
 
   return (
      <div className="app-container">

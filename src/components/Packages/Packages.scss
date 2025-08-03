@@ -1,9 +1,4 @@
-$primary-color: #542d72;
-$secondary-color: lighten($primary-color, 20%);
-$light-purple: lighten($primary-color, 60%);
-$white: #ffffff;
-$light-gray: #f8f9fa;
-$deleted-row: #ffebee;
+@import "../../styles/variables";
 
 .packages-container {
   background-color: transparent;
@@ -43,12 +38,12 @@ $deleted-row: #ffebee;
   width: 100%;
 }
 
-.form-control,
-.form-select {
-  height: 55px;
-  font-size: 18px;
-  border-radius: 10px;
-}
+// .form-control,
+// .form-select {
+//   height: 55px;
+//   font-size: 18px;
+//   border-radius: 10px;
+// }
 
 // .btn-primary {
 //   height: 55px;
@@ -186,11 +181,11 @@ select.form-select:focus {
     font-size: 24px;
   }
 
-  .form-control,
-  .form-select {
-    height: 45px;
-    font-size: 16px;
-  }
+  // .form-control,
+  // .form-select {
+  //   height: 45px;
+  //   font-size: 16px;
+  // }
 
   // .btn-primary {
   //   height: 45px;

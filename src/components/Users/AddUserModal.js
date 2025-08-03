@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form, Col, Table, Row } from "react-bootstrap";
+import { Modal, Button, Form, Col, Row } from "react-bootstrap";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateUserByAdmin, fetchRoles } from "../../slices/usersSlice";

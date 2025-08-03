@@ -31,6 +31,7 @@ const PopUp = ({
       alert: "bg-primary",
     }[type] || "bg-primary";
 
+  console.log("type ", msg);
   return (
     <Modal show={show} onHide={closeAlert} centered className="popup-modal">
       <Modal.Header closeButton className={`text-white ${headerClass}`}>
