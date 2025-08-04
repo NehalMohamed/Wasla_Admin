@@ -132,7 +132,7 @@ function UsersComp() {
                               <button
                                 className="btn btn-sm btn-info me-2 red-btn grid_btn"
                                 disabled={loading}
-                                onClick={() => RemoveUser()}
+                                onClick={() => RemoveUser(user.id)}
                               >
                                 <FiX />
                               </button>

@@ -213,16 +213,19 @@ const PricingPackages = () => {
                             </td>
                             <td>{pkg.order}</td>
                             <td>
-                              <button
-                                className="btn btn-sm btn-info me-2 green-btn"
-                                disabled={loading}
-                                onClick={() => {
-                                  setActivePkg(pkg);
-                                  setShowPriceModal(true);
-                                }}
-                              >
-                                <FiDollarSign />
-                              </button>
+                              {!pkg.is_custom ? (
+                                <button
+                                  className="btn btn-sm btn-info me-2 green-btn"
+                                  disabled={loading}
+                                  onClick={() => {
+                                    setActivePkg(pkg);
+                                    setShowPriceModal(true);
+                                  }}
+                                >
+                                  <FiDollarSign />
+                                </button>
+                              ) : null}
+
                               <button
                                 className="btn btn-sm btn-warning me-2 yellow-btn"
                                 disabled={loading}

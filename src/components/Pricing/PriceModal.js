@@ -6,13 +6,17 @@ import {
 import { Modal, Button, Form, Col, Table, Row } from "react-bootstrap";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-
+import PopUp from "../shared/popup/PopUp";
 const PriceModal = ({ show, onHide, pkg }) => {
   const dispatch = useDispatch();
   const [price, setPrice] = useState(0); // State for package price
   const [salePrice, setSalePrice] = useState(0); // State for package sale price
   const [currency, setCurrency] = useState("EGP"); // State for selected currency
+  const [showPopup, setShowPopup] = useState(false); // State for popup visibility
+  const [popupMessage, setPopupMessage] = useState(""); // State for popup message
+  const [popupType, setPopupType] = useState("alert"); // State for popup type
   const { Prices, loading, error } = useSelector((state) => state.pricing);
+
   const currencies = [
     { code: "USD", symbol: "$" },
     { code: "EUR", symbol: "€" },
@@ -41,6 +45,8 @@ const PriceModal = ({ show, onHide, pkg }) => {
     };
     dispatch(AssignPriceToPackage(data)).then((result) => {
       if (result.payload && result.payload.success) {
+        setShowPopup(false);
+        setPopupMessage("");
         setPrice(0);
         setSalePrice(0);
         setCurrency("");
@@ -51,6 +57,9 @@ const PriceModal = ({ show, onHide, pkg }) => {
         setPrice(0);
         setSalePrice(0);
         setCurrency("");
+        setPopupType("error");
+        setShowPopup(true);
+        setPopupMessage(result.payload.errors);
       }
     });
   };
@@ -69,6 +78,7 @@ const PriceModal = ({ show, onHide, pkg }) => {
     };
     dispatch(AssignPriceToPackage(data)).then((result) => {
       if (result.payload && result.payload.success) {
+        setShowPopup(false);
         setPrice(0);
         setSalePrice(0);
         setCurrency("");
@@ -79,101 +89,117 @@ const PriceModal = ({ show, onHide, pkg }) => {
         setPrice(0);
         setSalePrice(0);
         setCurrency("");
+        setPopupType("error");
+        setShowPopup(true);
+        setPopupMessage(result.payload.errors);
       }
     });
   };
 
   return (
-    <Modal show={show} onHide={onHide} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title className="page-title">
-          Prices for {pkg.service_default_name} / {pkg.package_default_name}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Row>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                className="form-control"
-                placeholder="Enter price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label>Sale Price</Form.Label>
-              <Form.Control
-                type="number"
-                className="form-control"
-                placeholder="Enter sale price"
-                value={salePrice}
-                onChange={(e) => setSalePrice(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md={3}>
-            <Form.Group controlId="curr_code">
-              <Form.Label>Currency</Form.Label>
-              <Form.Control
-                as="select"
-                name="curr_code"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                required
+    <>
+      <Modal show={show} onHide={onHide} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title className="page-title">
+            Prices for {pkg.service_default_name} / {pkg.package_default_name}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>Price</Form.Label>
+                <Form.Control
+                  type="number"
+                  className="form-control"
+                  placeholder="Enter price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>Sale Price</Form.Label>
+                <Form.Control
+                  type="number"
+                  className="form-control"
+                  placeholder="Enter sale price"
+                  value={salePrice}
+                  onChange={(e) => setSalePrice(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group controlId="curr_code">
+                <Form.Label>Currency</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="curr_code"
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  required
+                >
+                  {currencies.map((currency, index) => (
+                    <option key={index} value={currency.code}>
+                      {currency.code}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </Col>
+            <div className="col-md-2">
+              <Button
+                className="purbleBtn FullWidthBtn"
+                onClick={handleAdd}
+                // className="w-100"
               >
-                {currencies.map((currency, index) => (
-                  <option key={index} value={currency.code}>
-                    {currency.code}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          <div className="col-md-2">
-            <Button variant="primary" onClick={handleAdd} className="w-100">
-              <FaPlus className="me-1" /> Add
-            </Button>
-          </div>
-        </Row>
+                <FaPlus className="me-1" /> Add
+              </Button>
+            </div>
+          </Row>
 
-        <div className="table-wrapper">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Price</th>
-                <th>Sale Price</th>
-                <th>Currency</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Prices &&
-                Prices.map((row, idx) => (
-                  <tr key={idx}>
-                    <td>{row.package_price}</td>
-                    <td>{row.package_sale_price}</td>
-                    <td>{row.curr_code}</td>
-                    <td>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => onDeletePrice(row)}
-                      >
-                        <FaTrash className="me-1" /> Delete
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-      </Modal.Body>
-    </Modal>
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Price</th>
+                  <th>Sale Price</th>
+                  <th>Currency</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Prices &&
+                  Prices.map((row, idx) => (
+                    <tr key={idx}>
+                      <td>{row.package_price}</td>
+                      <td>{row.package_sale_price}</td>
+                      <td>{row.curr_code}</td>
+                      <td>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => onDeletePrice(row)}
+                        >
+                          <FaTrash className="me-1" /> Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </Modal.Body>
+      </Modal>
+      <PopUp
+        show={showPopup}
+        closeAlert={() => setShowPopup(false)}
+        msg={popupMessage}
+        type={popupType}
+        autoClose={3000}
+      />
+    </>
   );
 };
 
