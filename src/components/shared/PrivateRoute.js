@@ -10,10 +10,14 @@ const PrivateRoute = ({ allowedRoles }) => {
     const userLocal = localStorage.getItem("user");
     if (userLocal) {
       const user = JSON.parse(userLocal);
-      if (user) {
+      if (user != null && user.role !== null) {
         // seUser(user);
         setAuth(true);
-        if (allowedRoles.includes(user.role)) {
+        const result = allowedRoles
+          .map((e) => e.toLowerCase())
+          .includes(user.role.toLowerCase());
+        // if (allowedRoles.includes(user.role)) {
+        if (result) {
           setAllow(true);
         } else {
           setAllow(false);
