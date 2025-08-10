@@ -15,6 +15,9 @@ import Dashboard from "./pages/DashboardPage";
 import InvoicesPage from "./pages/InvoicesPage";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import UnauthorizedPage from "./components/ErrorsPages/UnauthorizedPage";
+import TransactionPage from "./pages/TransactionPage";
+import ReportsPage from "./pages/ReportsPage";
+
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   return (
@@ -31,6 +34,7 @@ function App() {
               <Route exact path="/features" element={<FeaturesPage />} />
               <Route exact path="/services" element={<ServicesPage />} />
               <Route exact path="/packages" element={<PackagesPage />} />
+              <Route exact path="/transactions" element={<TransactionPage />} />
             </Route>
             <Route
               element={<PrivateRoute allowedRoles={["accountant", "Admin"]} />}
@@ -38,6 +42,7 @@ function App() {
               <Route path="/home" element={<Dashboard />} />
               <Route exact path="/pricing" element={<PricingPage />} />
               <Route exact path="/invoices" element={<InvoicesPage />} />
+              <Route exact path="/reports" element={<ReportsPage />} />
             </Route>
             {/* <Route path="/" element={<Login />} />
             <Route path="/home" element={<Dashboard />} />

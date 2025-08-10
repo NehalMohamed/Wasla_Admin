@@ -1,0 +1,13 @@
+@import "../../styles/variables";
+.pagination {
+  margin: 30px auto;
+  .page-link {
+    color: $dark-green-color !important;
+  }
+  .active > .page-link,
+  .page-link.active {
+    background-color: $dark-green-color !important;
+    color: white !important;
+    border-color: $dark-green-color !important;
+  }
+}

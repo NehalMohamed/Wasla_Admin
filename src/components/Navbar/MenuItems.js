@@ -63,4 +63,18 @@ export const allMenuItems = [
     path: "/invoices",
     roles: ["Admin", "manager", "accountant"],
   },
+  {
+    id: "transactions",
+    title: "Transactions",
+    icon: "FiDatabase",
+    path: "/transactions",
+    roles: ["Admin", "manager", "accountant"],
+  },
+  {
+    id: "reports",
+    title: "Reports",
+    icon: "FiFileText",
+    path: "/reports",
+    roles: ["Admin", "accountant"],
+  },
 ];

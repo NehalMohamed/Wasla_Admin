@@ -46,6 +46,7 @@ function UsersComp() {
     dispatch(DeleteUser(userId)).then((result) => {
       if (result.payload && result.payload.success) {
         setPopupType("success");
+        dispatch(fetchUsersWithRoles());
       } else {
         setPopupType("error");
       }
