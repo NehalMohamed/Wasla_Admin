@@ -2,7 +2,6 @@
   "name": "waslaadmin",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://152.53.126.186:4431",
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.1",
     "@testing-library/dom": "^10.4.0",

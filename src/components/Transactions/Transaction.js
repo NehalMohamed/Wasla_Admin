@@ -56,7 +56,7 @@ function Transaction() {
           <input
             type="text"
             className="form-control ps-6"
-            placeholder="Search By Invoice ..."
+            placeholder="Search By Operation ..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ paddingLeft: "30px" }}
