@@ -30,7 +30,31 @@
     }
   }
 }
-
+.invoice_tbl {
+  th {
+    width: fit-content;
+    white-space: nowrap;
+  }
+  .payedInvoice {
+    background-color: $dark-green-color;
+    td {
+      background-color: $dark-green-color;
+      padding: 10px 5px !important;
+      width: fit-content;
+      white-space: nowrap;
+    }
+  }
+  .NotPayedInv {
+    td {
+      padding: 10px 5px !important;
+      white-space: nowrap;
+      width: fit-content;
+    }
+  }
+  // .grid_btn {
+  //   min-width: 100px;
+  // }
+}
 .filter-toggle-btn {
   transition: all 0.3s ease;
 

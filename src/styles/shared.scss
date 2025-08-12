@@ -114,6 +114,16 @@ a:active {
     background-color: $yellow-btn-hover !important;
   }
 }
+.dark-btn {
+  color: white;
+  background-color: #222 !important;
+  border-color: #222 !important;
+  &:hover {
+    color: white;
+    background-color: #222 !important;
+    border-color: #222 !important;
+  }
+}
 .red-btn {
   color: #fff !important;
   background-color: red !important;
@@ -205,7 +215,7 @@ select.form-select:focus {
   border-color: $dark-green-color;
 }
 .grid_btn {
-  margin-bottom: 5px;
+  margin: 5px;
 }
 
 .table th,

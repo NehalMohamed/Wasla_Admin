@@ -35,7 +35,7 @@ function InvoicesComp() {
   const statusLst = [
     { name: "pending", id: 1 },
     { name: "checkout", id: 2 },
-    { name: "confirmed", id: 3 },
+    { name: "payed", id: 3 },
   ];
   // Get invoices data and status from Redux store
   const { Invoices, loading, error } = useSelector((state) => state.accounting);
@@ -81,7 +81,7 @@ function InvoicesComp() {
   const mapStatusName = (statusId) => {
     //console.log(statusId);
     if (statusId == 2) return "CheckOut";
-    else if (statusId == 3) return "Confirmed";
+    else if (statusId == 3) return "Payed";
     else return "Pending";
   };
   const GetInvoicesByFilter = () => {
@@ -152,7 +152,7 @@ function InvoicesComp() {
   };
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Confirm Invoice
+      Payed
     </Tooltip>
   );
   return (
@@ -283,7 +283,7 @@ function InvoicesComp() {
         </div>
       )}
       <div className="result_list">
-        <Table responsive hover>
+        <Table responsive hover className="invoice_tbl">
           <thead>
             <tr>
               <th>Invoice Code</th>
@@ -308,7 +308,12 @@ function InvoicesComp() {
                   .toLowerCase()
                   .includes(searchTerm.toLowerCase())
               ).map((invoice, key) => (
-                <tr key={key}>
+                <tr
+                  key={key}
+                  className={
+                    invoice.status == 3 ? "payedInvoice" : "NotPayedInv"
+                  }
+                >
                   <td>{invoice.invoice_code}</td>
                   <td>{invoice.client_email}</td>
                   {/* <td>{invoice.client_name}</td> */}
@@ -329,7 +334,7 @@ function InvoicesComp() {
                         overlay={renderTooltip}
                       >
                         <button
-                          className="btn btn-sm btn-info me-2 green-btn grid_btn"
+                          className="btn btn-sm btn-info green-btn grid_btn"
                           disabled={loading}
                           onClick={() =>
                             ConfirmClientInvoice(
@@ -344,7 +349,7 @@ function InvoicesComp() {
                     ) : null}
 
                     <button
-                      className="btn btn-sm btn-warning me-2 yellow-btn grid_btn"
+                      className="btn btn-sm btn-warning dark-btn grid_btn"
                       disabled={loading}
                       onClick={() => handleDownload(invoice)}
                     >

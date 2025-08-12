@@ -11,6 +11,7 @@ import { Table, Pagination } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { GetAudit_Logs } from "../../slices/LogSlice";
 import "./Transaction.scss";
+import LoadingPage from "../Loader/LoadingPage";
 function Transaction() {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
@@ -119,6 +120,7 @@ function Transaction() {
           />
         </Pagination>
       </div>
+      {loading && <LoadingPage />}
     </>
   );
 }
