@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SideMenu from "../components/Navbar/SideMenu";
-import InvoicesComp from "../components/Accounting/InvoicesComp";
+import InvoicesComp from "../components/Accounting/Invoices/InvoicesComp";
 
 function InvoicesPage() {
   const [menuExpanded, setMenuExpanded] = useState(false); // State to track side menu expansion

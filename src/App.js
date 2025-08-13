@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 import "./styles/shared.scss";
 import QuestionsPage from "./pages/QuestionsPage";

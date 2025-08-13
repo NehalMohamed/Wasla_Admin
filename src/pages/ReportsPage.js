@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SideMenu from "../components/Navbar/SideMenu";
-import Reports from "../components/Reports/Reports";
+import Reports from "../components/Accounting/Reports/Reports";
 function ReportsPage() {
   const [menuExpanded, setMenuExpanded] = useState(false); // State to track side menu expansion
 

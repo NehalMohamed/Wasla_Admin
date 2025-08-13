@@ -64,12 +64,62 @@ export const ConfirmInvoice = createAsyncThunk(
     }
   }
 );
+
+//get reports dropdown
+export const GetReports_Mains = createAsyncThunk(
+  "accounting/GetReports",
+  async (_, { rejectWithValue }) => {
+    if (checkAUTH()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/GetReports`,
+          {},
+          getAuthHeaders()
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
+    } else {
+      // Redirect to login if not authenticated
+      history.push("/");
+      window.location.reload();
+      return null;
+    }
+  }
+);
+
+//get reports dropdown
+export const GetReportData = createAsyncThunk(
+  "accounting/GetReportData",
+  async (data, { rejectWithValue }) => {
+    if (checkAUTH()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/GetReportData`,
+          data,
+          getAuthHeaders()
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
+    } else {
+      // Redirect to login if not authenticated
+      history.push("/");
+      window.location.reload();
+      return null;
+    }
+  }
+);
 const AccountingSlice = createSlice({
   name: "accounting",
   initialState: {
     loading: false,
     error: null,
     Invoices: [],
+    reports: [],
+    data: [],
   },
   reducers: {
     clearError: (state) => {
@@ -99,6 +149,30 @@ const AccountingSlice = createSlice({
         state.loading = false;
       })
       .addCase(ConfirmInvoice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(GetReports_Mains.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetReports_Mains.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reports = action.payload;
+      })
+      .addCase(GetReports_Mains.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(GetReportData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetReportData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(GetReportData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
