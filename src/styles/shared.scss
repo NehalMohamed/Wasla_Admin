@@ -224,3 +224,18 @@ select.form-select:focus {
   padding: 10px;
   font-size: 14px;
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: $secondary-color;
+  color: white;
+  text-align: center;
+}
+
+.table td {
+  text-align: center;
+  border-top: 1px solid #ddd;
+}

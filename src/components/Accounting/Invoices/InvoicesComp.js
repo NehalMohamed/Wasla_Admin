@@ -162,7 +162,7 @@ function InvoicesComp() {
   };
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Payed
+      paid
     </Tooltip>
   );
   return (

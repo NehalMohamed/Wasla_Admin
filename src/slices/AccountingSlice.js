@@ -119,7 +119,7 @@ const AccountingSlice = createSlice({
     error: null,
     Invoices: [],
     reports: [],
-    data: [],
+    reportData: [],
   },
   reducers: {
     clearError: (state) => {
@@ -170,7 +170,7 @@ const AccountingSlice = createSlice({
       })
       .addCase(GetReportData.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.reportData = action.payload;
       })
       .addCase(GetReportData.rejected, (state, action) => {
         state.loading = false;

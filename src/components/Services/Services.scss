@@ -64,23 +64,23 @@
   overflow-x: auto;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+// table {
+//   width: 100%;
+//   border-collapse: collapse;
+// }
 
-.table th {
-  background-color: #f1e6fb;
-  color: #542d72;
-  text-align: center;
-  padding: 15px;
-}
+// .table th {
+//   background-color: #f1e6fb;
+//   color: #542d72;
+//   text-align: center;
+//   padding: 15px;
+// }
 
-.table td {
-  text-align: center;
-  padding: 15px;
-  border-top: 1px solid #ddd;
-}
+// .table td {
+//   text-align: center;
+//   padding: 15px;
+//   border-top: 1px solid #ddd;
+// }
 
 .yellow-btn {
   color: white;
@@ -92,13 +92,13 @@ table {
   background-color: #ffb300cb !important;
 }
 
-input.form-control:hover,
-input.form-control:focus,
-select.form-select:hover,
-select.form-select:focus {
-  border-color: #9375aa;
-  box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
-}
+// input.form-control:hover,
+// input.form-control:focus,
+// select.form-select:hover,
+// select.form-select:focus {
+//   border-color: #9375aa;
+//   box-shadow: 0 4px 10px rgba(84, 45, 114, 0.5);
+// }
 
 .inactive-row {
   background-color: #ffeeee !important;
@@ -192,11 +192,11 @@ select.form-select:focus {
   //   font-size: 16px;
   // }
 
-  .table th,
-  .table td {
-    padding: 10px;
-    font-size: 14px;
-  }
+  // .table th,
+  // .table td {
+  //   padding: 10px;
+  //   font-size: 14px;
+  // }
 
   .translation-header {
     display: none;

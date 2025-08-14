@@ -10,6 +10,7 @@ import featuresReducer from "../slices/featuresSlice";
 import AccountingSlice from "../slices/AccountingSlice";
 import profileReducer from "../slices/profileSlice";
 import LogReducer from "../slices/LogSlice";
+import ReportsSlice from "../slices/ReportsSlice";
 export const store = configureStore({
   reducer: {
     login: LoginReducer,
@@ -23,6 +24,7 @@ export const store = configureStore({
     accounting: AccountingSlice,
     profile: profileReducer,
     transactions: LogReducer,
+    reports: ReportsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

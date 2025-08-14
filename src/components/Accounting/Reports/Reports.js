@@ -4,13 +4,22 @@ import {
   GetReports_Mains,
   GetReportData,
 } from "../../../slices/AccountingSlice";
+import {
+  PrintSummaryInvoice,
+  PrintSummaryService,
+} from "../../../slices/ReportsSlice";
 import DatePicker from "react-datepicker";
 import LoadingPage from "../../Loader/LoadingPage";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { format } from "date-fns";
 import { TbFileReport } from "react-icons/tb";
-import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { FaChevronUp, FaChevronDown, FaPrint } from "react-icons/fa";
 import SummaryInvoice from "./SummaryInvoice";
+import "./Reports.scss";
+import { FiPrinter } from "react-icons/fi";
+import axios from "axios";
+import SummaryService from "./SummaryService";
+import PopUp from "../../shared/popup/PopUp";
 function Reports() {
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = React.useState(false);
@@ -26,8 +35,30 @@ function Reports() {
     date_to: format(new Date(), "dd-MM-yyyy hh:mm:ss"),
     report_id: 0,
   });
-  const { reports, loading, error } = useSelector((state) => state.accounting);
+  const { reports, loading, error, reportData } = useSelector(
+    (state) => state.accounting
+  );
 
+  const PrintPDF = () => {
+    let FormData = {
+      date_from: format(newDate, "dd-MM-yyyy hh:mm:ss"),
+      date_to: format(new Date(), "dd-MM-yyyy hh:mm:ss"),
+      invoices: reportData,
+    };
+    if (formData.report_id == 1) {
+      dispatch(PrintSummaryInvoice(FormData)).catch((error) => {
+        setPopupMessage(error || "Failed to fetch data");
+        setPopupType("error");
+        setShowPopup(true);
+      });
+    } else if (formData.report_id == 2) {
+      dispatch(PrintSummaryService(FormData)).catch((error) => {
+        setPopupMessage(error || "Failed to fetch data");
+        setPopupType("error");
+        setShowPopup(true);
+      });
+    }
+  };
   // Fetch invoices on component mount
   useEffect(() => {
     dispatch(GetReports_Mains()).catch((error) => {
@@ -44,15 +75,15 @@ function Reports() {
     });
   };
   const GetData = () => {
+    formData["date_from"] = format(date_from, "dd-MM-yyyy hh:mm:ss");
+    formData["date_to"] = format(date_to, "dd-MM-yyyy hh:mm:ss");
     dispatch(GetReportData(formData)).catch((error) => {
       setPopupMessage(error || "Failed to fetch data");
       setPopupType("error");
       setShowPopup(true);
     });
   };
-  if (loading) {
-    return <LoadingPage />;
-  }
+
   return (
     <>
       {" "}
@@ -116,9 +147,21 @@ function Reports() {
             <Row>
               <Col md={4}></Col>
               <Col md={{ span: 4, offset: 4 }}>
-                <Button className="purbleBtn FullWidthBtn" onClick={GetData}>
+                <Button
+                  className="purbleBtn FullWidthBtn filter_btn"
+                  onClick={GetData}
+                  disabled={formData.report_id == 0}
+                >
                   <TbFileReport className="btn_icon" />
                   Generate
+                </Button>
+                <Button
+                  className="purbleBtn FullWidthBtn filter_btn"
+                  onClick={PrintPDF}
+                  disabled={reportData == null || reportData.length == 0}
+                >
+                  <FiPrinter className="btn_icon" />
+                  Download
                 </Button>
               </Col>
             </Row>
@@ -126,8 +169,20 @@ function Reports() {
         </div>
       )}
       <div className="result_list">
-        {formData.report_id == 1 ? <SummaryInvoice /> : null}
+        {formData.report_id == 1 ? (
+          <SummaryInvoice data={reportData} />
+        ) : formData.report_id == 2 ? (
+          <SummaryService data={reportData} />
+        ) : null}
       </div>
+      {loading ? <LoadingPage /> : null}
+      <PopUp
+        show={showPopup}
+        closeAlert={() => setShowPopup(false)}
+        msg={popupMessage}
+        type={popupType}
+        autoClose={3000}
+      />
     </>
   );
 }
