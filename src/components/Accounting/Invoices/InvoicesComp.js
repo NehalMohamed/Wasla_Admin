@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   GetAllInvoices,
-  ConfirmInvoice,
+  ChangeInvoiceStatus,
 } from "../../../slices/AccountingSlice";
 import { GetClientProfileByAdmin } from "../../../slices/profileSlice";
 import {
@@ -28,7 +28,7 @@ import {
 import DatePicker from "react-datepicker";
 
 import "./InvoicesComp.scss";
-import { FiCheck, FiDownload, FiFilter, FiPrinter } from "react-icons/fi";
+import { FiCheck, FiDownload, FiFilter, FiPrinter, FiX } from "react-icons/fi";
 import LoadingPage from "../../Loader/LoadingPage";
 import { format } from "date-fns";
 import downloadInvoice from "../../../utils/downloadInvoice";
@@ -90,9 +90,13 @@ function InvoicesComp() {
       setShowPopup(true);
     });
   };
-  const ConfirmClientInvoice = (client_id, invoice_id) => {
-    const req = { status: 3, client_id: client_id, invoice_id: invoice_id };
-    dispatch(ConfirmInvoice(req)).then((result) => {
+  const ChangeClientInvoiceStatus = (client_id, invoice_id, status) => {
+    const req = {
+      status: status,
+      client_id: client_id,
+      invoice_id: invoice_id,
+    };
+    dispatch(ChangeInvoiceStatus(req)).then((result) => {
       if (result.payload && result.payload.success) {
         setPopupType("success");
         dispatch(GetAllInvoices(formData)).catch((error) => {
@@ -160,11 +164,23 @@ function InvoicesComp() {
         return "pending";
     }
   };
-  const renderTooltip = (props) => (
+
+  const renderPaidTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       paid
     </Tooltip>
   );
+  const renderNonPaidTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Non Paid
+    </Tooltip>
+  );
+  const renderDownTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Download
+    </Tooltip>
+  );
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
@@ -340,36 +356,64 @@ function InvoicesComp() {
                       <OverlayTrigger
                         placement="top"
                         delay={{ show: 250, hide: 400 }}
-                        overlay={renderTooltip}
+                        overlay={renderPaidTooltip}
                       >
                         <button
                           className="btn btn-sm btn-info green-btn grid_btn"
                           disabled={loading}
                           onClick={() =>
-                            ConfirmClientInvoice(
+                            ChangeClientInvoiceStatus(
                               invoice.client_id,
-                              invoice.invoice_id
+                              invoice.invoice_id,
+                              3
                             )
                           }
                         >
                           <FiCheck />
                         </button>
                       </OverlayTrigger>
-                    ) : null}
-
-                    <button
-                      className="btn btn-sm btn-warning dark-btn grid_btn"
-                      disabled={loading}
-                      onClick={() => handleDownload(invoice)}
+                    ) : (
+                      invoice.status == 3 && (
+                        <OverlayTrigger
+                          placement="top"
+                          delay={{ show: 250, hide: 400 }}
+                          overlay={renderNonPaidTooltip}
+                        >
+                          <button
+                            className="btn btn-sm btn-info red-btn grid_btn"
+                            disabled={loading}
+                            onClick={() =>
+                              ChangeClientInvoiceStatus(
+                                invoice.client_id,
+                                invoice.invoice_id,
+                                2
+                              )
+                            }
+                          >
+                            <FiX />
+                          </button>
+                        </OverlayTrigger>
+                      )
+                    )}
+                    <OverlayTrigger
+                      placement="top"
+                      delay={{ show: 250, hide: 400 }}
+                      overlay={renderDownTooltip}
                     >
-                      <FiDownload />
-                    </button>
+                      <button
+                        className="btn btn-sm btn-warning dark-btn grid_btn"
+                        disabled={loading}
+                        onClick={() => handleDownload(invoice)}
+                      >
+                        <FiDownload />
+                      </button>
+                    </OverlayTrigger>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colspan="10">No Invoices</td>
+                <td colSpan="10">No Invoices</td>
               </tr>
             )}
           </tbody>

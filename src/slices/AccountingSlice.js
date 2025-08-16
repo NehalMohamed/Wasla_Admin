@@ -42,8 +42,8 @@ export const GetAllInvoices = createAsyncThunk(
 );
 
 // confirm invoice
-export const ConfirmInvoice = createAsyncThunk(
-  "accounting/ConfirmInvoice",
+export const ChangeInvoiceStatus = createAsyncThunk(
+  "accounting/ChangeInvoiceStatus",
   async (data, { rejectWithValue }) => {
     if (checkAUTH()) {
       try {
@@ -141,14 +141,14 @@ const AccountingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(ConfirmInvoice.pending, (state) => {
+      .addCase(ChangeInvoiceStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(ConfirmInvoice.fulfilled, (state, action) => {
+      .addCase(ChangeInvoiceStatus.fulfilled, (state, action) => {
         state.loading = false;
       })
-      .addCase(ConfirmInvoice.rejected, (state, action) => {
+      .addCase(ChangeInvoiceStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
