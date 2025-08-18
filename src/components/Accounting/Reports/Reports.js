@@ -38,7 +38,8 @@ function Reports() {
   const { reports, loading, error, reportData } = useSelector(
     (state) => state.accounting
   );
-
+  const printLoading = useSelector((state) => state.reports?.loading);
+  // const printLoading = useSelector((state) => console.log(state.reports));
   const PrintPDF = () => {
     let FormData = {
       date_from: format(newDate, "dd-MM-yyyy hh:mm:ss"),
@@ -83,7 +84,7 @@ function Reports() {
       setShowPopup(true);
     });
   };
-
+  console.log("printLoading ", printLoading);
   return (
     <>
       {" "}
@@ -176,6 +177,7 @@ function Reports() {
         ) : null}
       </div>
       {loading ? <LoadingPage /> : null}
+      {printLoading ? <LoadingPage /> : null}
       <PopUp
         show={showPopup}
         closeAlert={() => setShowPopup(false)}

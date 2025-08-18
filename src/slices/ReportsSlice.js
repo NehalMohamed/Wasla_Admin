@@ -93,6 +93,9 @@ const ReportsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(PrintSummaryInvoice.pending, (state, action) => {
+        state.loading = true;
+      })
       .addCase(PrintSummaryInvoice.fulfilled, (state, action) => {
         state.loading = false;
         //state.Invoices = action.payload;
@@ -104,6 +107,13 @@ const ReportsSlice = createSlice({
         document.body.appendChild(link);
         link.click();
         link.remove();
+      })
+      .addCase(PrintSummaryInvoice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(PrintSummaryService.pending, (state, action) => {
+        state.loading = true;
       })
       .addCase(PrintSummaryService.fulfilled, (state, action) => {
         state.loading = false;
@@ -117,20 +127,24 @@ const ReportsSlice = createSlice({
         link.click();
         link.remove();
       })
-      .addMatcher(
-        (action) => action.type.endsWith("/pending"),
-        (state) => {
-          //state.status = "loading";
-          state.loading = true;
-        }
-      )
-      .addMatcher(
-        (action) => action.type.endsWith("/rejected"),
-        (state, action) => {
-          state.loading = false;
-          state.error = action.payload;
-        }
-      );
+      .addCase(PrintSummaryService.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+    // .addMatcher(
+    //   (action) => action.type.endsWith("/pending"),
+    //   (state) => {
+    //     //state.status = "loading";
+    //     state.loading = true;
+    //   }
+    // )
+    // .addMatcher(
+    //   (action) => action.type.endsWith("/rejected"),
+    //   (state, action) => {
+    //     state.loading = false;
+    //     state.error = action.payload;
+    //   }
+    // );
   },
 });
 
