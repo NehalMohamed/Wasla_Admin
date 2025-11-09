@@ -33,15 +33,17 @@ const loginSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(LoginUser.fulfilled, (state, action) => {
-      if (action.payload.status != null && action.payload.status != 200) {
-        state.User = null;
-        state.loading = false;
-        state.errors = JSON.stringify(action.payload.errors);
+      state.loading = false;
+      state.success = action.payload.isSuccessed;
+      state.message = action.payload?.message;
+
+      if (action.payload.isSuccessed) {
+        state.User = action.payload?.user;
+        state.Token = action.payload?.user?.accessToken;
+        localStorage.setItem("token", action.payload?.user?.accessToken);
+        localStorage.setItem("user", JSON.stringify(action.payload?.user));
       } else {
-        state.User = action.payload;
-        state.loading = false;
-        localStorage.setItem("token", action.payload.accessToken);
-        localStorage.setItem("user", JSON.stringify(action.payload));
+        state.errors = action.payload?.message || "Login failed";
       }
     });
     builder.addCase(LoginUser.rejected, (state, action) => {

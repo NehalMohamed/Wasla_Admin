@@ -1,3 +1,4 @@
+
 export const createAuthError = (message = 'Session expired. Please login again.') => {
   return {
     message,
