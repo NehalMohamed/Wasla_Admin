@@ -2,42 +2,42 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { checkAUTH } from "../helper/helperFN";
 import { history } from "../index";
-
+import api from "../api/axios";
 const BASE_URL = process.env.REACT_APP_API_URL;
 
 // Helper function to get authentication headers
-const getAuthHeaders = () => {
-  let accessToken = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-      "Accept-Language": "en",
-    },
-  };
-};
+// const getAuthHeaders = () => {
+//   let accessToken = localStorage.getItem("token");
+//   return {
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//       "Content-Type": "application/json",
+//       "Accept-Language": "en",
+//     },
+//   };
+// };
 
 // get log table data which contain all tables transactions (insert, update, delete)
 export const GetAudit_Logs = createAsyncThunk(
   "log/GetAudit_Logs",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/GetAudit_Logs`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/GetAudit_Logs`,
+        data
+        // getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 

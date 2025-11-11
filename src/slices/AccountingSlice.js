@@ -1,43 +1,43 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+// import axios from "axios";
 import { checkAUTH } from "../helper/helperFN";
 import { history } from "../index";
-
+import api from "../api/axios";
 const BASE_URL = process.env.REACT_APP_ACC_API_URL;
 
 // Helper function to get authentication headers
-const getAuthHeaders = () => {
-  let accessToken = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-      "Accept-Language": "en",
-    },
-  };
-};
+// const getAuthHeaders = () => {
+//   let accessToken = localStorage.getItem("token");
+//   return {
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//       "Content-Type": "application/json",
+//       "Accept-Language": "en",
+//     },
+//   };
+// };
 
 // GetAllInvoices
 export const GetAllInvoices = createAsyncThunk(
   "accounting/GetAllInvoices",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/GetAllInvoices`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/GetAllInvoices`,
+        data
+        //getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 
@@ -45,23 +45,23 @@ export const GetAllInvoices = createAsyncThunk(
 export const ChangeInvoiceStatus = createAsyncThunk(
   "accounting/ChangeInvoiceStatus",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/ChangeInvoiceStatus`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/ChangeInvoiceStatus`,
+        data
+        //getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 
@@ -69,23 +69,23 @@ export const ChangeInvoiceStatus = createAsyncThunk(
 export const GetReports_Mains = createAsyncThunk(
   "accounting/GetReports",
   async (_, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/GetReports`,
-          {},
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/GetReports`,
+        {}
+        //getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 
@@ -93,23 +93,23 @@ export const GetReports_Mains = createAsyncThunk(
 export const GetReportData = createAsyncThunk(
   "accounting/GetReportData",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/GetReportData`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/GetReportData`,
+        data
+        // getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 const AccountingSlice = createSlice({

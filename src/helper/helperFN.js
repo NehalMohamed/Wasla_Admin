@@ -15,7 +15,7 @@ const isTokenExpired = (token) => {
 
 export const checkAUTH = () => {
   const authToken = localStorage.getItem("token");
-  if (authToken && !isTokenExpired(authToken)) {
+  if (authToken) {
     return true;
   } else {
     // console.log("token is null Or expired");

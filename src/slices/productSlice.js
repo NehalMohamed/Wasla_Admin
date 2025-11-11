@@ -1,69 +1,70 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+// import axios from "axios";
 import { checkAUTH } from "../helper/helperFN";
 import { history } from "../index";
+import api from "../api/axios";
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Helper function to get authentication headers
-const getAuthHeaders = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-  };
-};
+// const getAuthHeaders = () => {
+//   const user = JSON.parse(localStorage.getItem("user"));
+//   const accessToken = user?.accessToken;
+//   return {
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//       "Content-Type": "application/json",
+//     },
+//   };
+// };
 // Async thunks
 export const fetchParentProducts = createAsyncThunk(
   "products/fetchParentProducts",
   async () => {
-    if (checkAUTH()) {
-      const response = await axios.post(
-        `${API_URL}/GetProduct`,
-        {
-          parent: 0,
-          active: true,
-        },
-        getAuthHeaders()
-      );
-      return response.data;
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
-    }
+    // if (checkAUTH()) {
+    const response = await api.post(
+      `${API_URL}/GetProduct`,
+      {
+        parent: 0,
+        active: true,
+      }
+      //getAuthHeaders()
+    );
+    return response.data;
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 
 export const fetchProductTree = createAsyncThunk(
   "products/fetchProductTree",
   async () => {
-    if (checkAUTH()) {
-      const response = await axios.post(
-        `${API_URL}/GetProduct_Tree`,
-        {},
-        getAuthHeaders()
-      );
-      return response.data;
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
-    }
+    // if (checkAUTH()) {
+    const response = await api.post(
+      `${API_URL}/GetProduct_Tree`,
+      {}
+      //getAuthHeaders()
+    );
+    return response.data;
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 
 export const saveProduct = createAsyncThunk(
   "products/saveProduct",
   async (productData) => {
-    const response = await axios.post(
+    const response = await api.post(
       `${API_URL}/SaveProduct`,
-      productData,
-      getAuthHeaders()
+      productData
+      //getAuthHeaders()
     );
     return response.data;
   }

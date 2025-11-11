@@ -1,46 +1,47 @@
 // pricingSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+// import axios from "axios";
 import { checkAUTH } from "../helper/helperFN";
 import { history } from "../index";
+import api from "../api/axios";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
 // Helper function to get authentication headers
-const getAuthHeaders = () => {
-  let accessToken = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-      "Accept-Language": "en",
-    },
-  };
-};
+// const getAuthHeaders = () => {
+//   let accessToken = localStorage.getItem("token");
+//   return {
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//       "Content-Type": "application/json",
+//       "Accept-Language": "en",
+//     },
+//   };
+// };
 
 //services dropdown data
 export const fetchMainServices = createAsyncThunk(
   "fetchMainServices",
   async (payload, thunkAPI) => {
-    if (checkAUTH()) {
-      var response = await axios
-        .post(BASE_URL + "/getMainServices", payload, getAuthHeaders())
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          if (error.response.status == 401) {
-            history.push("/login");
-            window.location.reload();
-          } else {
-            return error.response.data;
-          }
-        });
-      return response;
-    } else {
-      history.push("/");
-      window.location.reload();
-    }
+    // if (checkAUTH()) {
+    var response = await api
+      .post(BASE_URL + "/getMainServices", payload)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        // if (error.response.status == 401) {
+        //   history.push("/login");
+        //   window.location.reload();
+        // } else {
+        return error.response.data;
+        //}
+      });
+    return response;
+    // } else {
+    //   history.push("/");
+    //   window.location.reload();
+    // }
   }
 );
 ////packages dropdown data
@@ -48,25 +49,25 @@ export const fetchMainServices = createAsyncThunk(
 export const fetchMainPackages = createAsyncThunk(
   "fetchMainPackages",
   async (payload, thunkAPI) => {
-    if (checkAUTH()) {
-      var response = await axios
-        .post(BASE_URL + "/getMainPackages", payload, getAuthHeaders())
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          if (error.response.status == 401) {
-            history.push("/login");
-            window.location.reload();
-          } else {
-            return error.response.data;
-          }
-        });
-      return response;
-    } else {
-      history.push("/");
-      window.location.reload();
-    }
+    // if (checkAUTH()) {
+    var response = await api
+      .post(BASE_URL + "/getMainPackages", payload)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        // if (error.response.status == 401) {
+        //   history.push("/login");
+        //   window.location.reload();
+        // } else {
+        return error.response.data;
+        // }
+      });
+    return response;
+    // } else {
+    //   history.push("/");
+    //   window.location.reload();
+    // }
   }
 );
 
@@ -74,23 +75,23 @@ export const fetchMainPackages = createAsyncThunk(
 export const AssignPriceToPackage = createAsyncThunk(
   "AssignPriceToPackage",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/AssignPriceToPackage`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/AssignPriceToPackage`,
+        data
+        //getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 ////packages data with service grouping
@@ -98,71 +99,71 @@ export const AssignPriceToPackage = createAsyncThunk(
 export const getServiceGrpWithPkgs = createAsyncThunk(
   "getServiceGrpWithPkgs",
   async (payload, thunkAPI) => {
-    if (checkAUTH()) {
-      var response = await axios
-        .post(BASE_URL + "/getServiceGrpWithPkgs", {}, getAuthHeaders())
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          if (error.response.status == 401) {
-            history.push("/login");
-            window.location.reload();
-          } else {
-            return error.response.data;
-          }
-        });
-      return response;
-    } else {
-      history.push("/");
-      window.location.reload();
-    }
+    // if (checkAUTH()) {
+    var response = await api
+      .post(BASE_URL + "/getServiceGrpWithPkgs")
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        // if (error.response.status == 401) {
+        //   history.push("/login");
+        //   window.location.reload();
+        // } else {
+        return error.response.data;
+        // }
+      });
+    return response;
+    // } else {
+    //   history.push("/");
+    //   window.location.reload();
+    // }
   }
 );
 //edit & save main package
 export const SaveMainPackage = createAsyncThunk(
   "SaveMainPackage",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/SaveMainPackage`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/SaveMainPackage`,
+        data
+        // getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 // Async thunk for saving pricing package
 export const AssignPackagesToService = createAsyncThunk(
   "AssignPackagesToService",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/AssignPackagesToService`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/AssignPackagesToService`,
+        data
+        //getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 
@@ -170,25 +171,25 @@ export const AssignPackagesToService = createAsyncThunk(
 export const getServicePackagePrice = createAsyncThunk(
   "getServicePackagePrice",
   async (payload, thunkAPI) => {
-    if (checkAUTH()) {
-      var response = await axios
-        .post(BASE_URL + "/getServicePackagePrice", payload, getAuthHeaders())
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          if (error.response.status == 401) {
-            history.push("/");
-            window.location.reload();
-          } else {
-            return error.response.data;
-          }
-        });
-      return response;
-    } else {
-      history.push("/");
-      window.location.reload();
-    }
+    // if (checkAUTH()) {
+    var response = await api
+      .post(BASE_URL + "/getServicePackagePrice", payload)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        // if (error.response.status == 401) {
+        //   history.push("/");
+        //   window.location.reload();
+        // } else {
+        return error.response.data;
+        // }
+      });
+    return response;
+    // } else {
+    //   history.push("/");
+    //   window.location.reload();
+    // }
   }
 );
 
@@ -196,25 +197,25 @@ export const getServicePackagePrice = createAsyncThunk(
 export const getPackageFeatures = createAsyncThunk(
   "getPackageFeatures",
   async (payload, thunkAPI) => {
-    if (checkAUTH()) {
-      var response = await axios
-        .post(BASE_URL + "/getPackageFeatures", payload, getAuthHeaders())
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          if (error.response.status == 401) {
-            history.push("/");
-            window.location.reload();
-          } else {
-            return error.response.data;
-          }
-        });
-      return response;
-    } else {
-      history.push("/");
-      window.location.reload();
-    }
+    // if (checkAUTH()) {
+    var response = await api
+      .post(BASE_URL + "/getPackageFeatures", payload)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        // if (error.response.status == 401) {
+        //   history.push("/");
+        //   window.location.reload();
+        // } else {
+        return error.response.data;
+        // }
+      });
+    return response;
+    // } else {
+    //   history.push("/");
+    //   window.location.reload();
+    // }
   }
 );
 
@@ -222,25 +223,25 @@ export const getPackageFeatures = createAsyncThunk(
 export const getMainFeatures = createAsyncThunk(
   "getMainFeatures",
   async (payload, thunkAPI) => {
-    if (checkAUTH()) {
-      var response = await axios
-        .post(BASE_URL + "/getMainFeatures", {}, getAuthHeaders())
-        .then((res) => {
-          return res.data;
-        })
-        .catch((error) => {
-          if (error.response.status == 401) {
-            history.push("/");
-            window.location.reload();
-          } else {
-            return error.response.data;
-          }
-        });
-      return response;
-    } else {
-      history.push("/");
-      window.location.reload();
-    }
+    // if (checkAUTH()) {
+    var response = await api
+      .post(BASE_URL + "/getMainFeatures")
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        // if (error.response.status == 401) {
+        //   history.push("/");
+        //   window.location.reload();
+        // } else {
+        return error.response.data;
+        // }
+      });
+    return response;
+    // } else {
+    //   history.push("/");
+    //   window.location.reload();
+    // }
   }
 );
 
@@ -248,23 +249,23 @@ export const getMainFeatures = createAsyncThunk(
 export const AssignFeaturesToPackage = createAsyncThunk(
   "AssignFeaturesToPackage",
   async (data, { rejectWithValue }) => {
-    if (checkAUTH()) {
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/AssignFeaturesToPackage`,
-          data,
-          getAuthHeaders()
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || error.message);
-      }
-    } else {
-      // Redirect to login if not authenticated
-      history.push("/");
-      window.location.reload();
-      return null;
+    // if (checkAUTH()) {
+    try {
+      const response = await api.post(
+        `${BASE_URL}/AssignFeaturesToPackage`,
+        data
+        // getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+    // } else {
+    //   // Redirect to login if not authenticated
+    //   history.push("/");
+    //   window.location.reload();
+    //   return null;
+    // }
   }
 );
 const packagesSlice = createSlice({

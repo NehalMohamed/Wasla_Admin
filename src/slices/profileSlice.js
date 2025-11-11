@@ -1,23 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { checkAUTH } from "../helper/helperFN";
 import { createAuthError } from "../utils/authError";
-import axios from "axios";
-
+// import axios from "axios";
+import api from "../api/axios";
 // Base API URL from environment variables
 const BASE_URL = process.env.REACT_APP_CLIENT_API_URL;
 
-const getAuthHeaders = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = user?.accessToken;
-  let lang = localStorage.getItem("lang");
-  return {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-      "Accept-Language": lang,
-    },
-  };
-};
+// const getAuthHeaders = () => {
+//   const user = JSON.parse(localStorage.getItem("user"));
+//   const accessToken = user?.accessToken;
+//   let lang = localStorage.getItem("lang");
+//   return {
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//       "Content-Type": "application/json",
+//       "Accept-Language": lang,
+//     },
+//   };
+// };
 
 // Helper to extract error message from different response formats
 const getErrorMessage = (error) => {
@@ -40,23 +40,21 @@ const getErrorMessage = (error) => {
 export const GetClientProfileByAdmin = createAsyncThunk(
   "profile/GetClientProfileByAdmin",
   async (clientId, { rejectWithValue }) => {
-    if (!checkAUTH()) {
-      return rejectWithValue(createAuthError());
-    }
+    // if (!checkAUTH()) {
+    //   return rejectWithValue(createAuthError());
+    // }
 
     try {
       // Make API call to get client profiles
-      const response = await axios.post(
-        BASE_URL + "/GetClientProfileByAdmin?clientId=" + clientId,
-        {},
-        getAuthHeaders()
+      const response = await api.post(
+        BASE_URL + "/GetClientProfileByAdmin?clientId=" + clientId
       );
 
       return response.data?.[0] || {};
     } catch (error) {
-      if (error.response?.status === 401) {
-        return rejectWithValue(createAuthError());
-      }
+      // if (error.response?.status === 401) {
+      //   return rejectWithValue(createAuthError());
+      // }
       return rejectWithValue(getErrorMessage(error));
     }
   }
@@ -66,15 +64,15 @@ export const GetClientProfileByAdmin = createAsyncThunk(
 export const saveProfile = createAsyncThunk(
   "profile/saveProfile",
   async (formData, { rejectWithValue }) => {
-    if (!checkAUTH()) {
-      return rejectWithValue(createAuthError());
-    }
+    // if (!checkAUTH()) {
+    //   return rejectWithValue(createAuthError());
+    // }
     try {
       // Make API call to save profile
-      const response = await axios.post(
+      const response = await api.post(
         BASE_URL + "/saveMainProfile",
-        formData,
-        getAuthHeaders()
+        formData
+        //getAuthHeaders()
       );
 
       if (response.data.success == false) {
@@ -88,9 +86,9 @@ export const saveProfile = createAsyncThunk(
         message: response.data.errors,
       };
     } catch (error) {
-      if (error.response?.status == 401) {
-        return rejectWithValue(createAuthError());
-      }
+      // if (error.response?.status == 401) {
+      //   return rejectWithValue(createAuthError());
+      // }
       return rejectWithValue(getErrorMessage(error));
     }
   }
@@ -100,22 +98,20 @@ export const saveProfile = createAsyncThunk(
 export const GetClientProfileImageByAdmin = createAsyncThunk(
   "profile/GetClientProfileImageByAdmin",
   async (clientId, { rejectWithValue }) => {
-    if (!checkAUTH()) {
-      return rejectWithValue(createAuthError());
-    }
+    // if (!checkAUTH()) {
+    //   return rejectWithValue(createAuthError());
+    // }
     try {
       // Make API call to get profile image
-      const response = await axios.post(
-        BASE_URL + "/GetClientProfileImageByAdmin?clientId=" + clientId,
-        {},
-        getAuthHeaders()
+      const response = await api.post(
+        BASE_URL + "/GetClientProfileImageByAdmin?clientId=" + clientId
       );
 
       return response.data?.[0]?.img_path || null;
     } catch (error) {
-      if (error.response?.status === 401) {
-        return rejectWithValue(createAuthError());
-      }
+      // if (error.response?.status === 401) {
+      //   return rejectWithValue(createAuthError());
+      // }
       return rejectWithValue(getErrorMessage(error));
     }
   }
@@ -125,24 +121,25 @@ export const GetClientProfileImageByAdmin = createAsyncThunk(
 export const uploadProfileImage = createAsyncThunk(
   "profile/uploadProfileImage",
   async (imageFile, { rejectWithValue }) => {
-    if (!checkAUTH()) {
-      return rejectWithValue(createAuthError());
-    }
+    // if (!checkAUTH()) {
+    //   return rejectWithValue(createAuthError());
+    // }
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const accessToken = user?.accessToken;
       const requestBody = { img: imageFile };
 
       // Make API call to upload image with multipart/form-data
-      const response = await axios.post(
+      const response = await api.post(
         BASE_URL + "/saveProfileImage",
         requestBody,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        { isFormData: true }
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // }
       );
 
       // Return both object URL for immediate display and API response
@@ -152,9 +149,9 @@ export const uploadProfileImage = createAsyncThunk(
         message: response.data.errors,
       };
     } catch (error) {
-      if (error.response?.status === 401) {
-        return rejectWithValue(createAuthError());
-      }
+      // if (error.response?.status === 401) {
+      //   return rejectWithValue(createAuthError());
+      // }
       return rejectWithValue(getErrorMessage(error));
     }
   }
